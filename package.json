@@ -1,0 +1,23 @@
+{
+  "name": "projetchallenge2",
+  "version": "1.0.0",
+  "description": "git clone url du projet dans <code>\r npm init -y pour installer le projet\r npm install sass pour installer les dependances\r npm run compile pour compiler le projet et faire la commande a chaque fois pour mettre a jour le css",
+  "main": "index.js",
+  "scripts": {
+    "compile": "sass www/scss/:www/css/ --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sass": "^1.62.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Project-ESGI/ChallengeS2/tree/main"
+  },
+  "bugs": {
+    "url": "https://github.com/Project-ESGI/ChallengeS2/tree/main/issues"
+  },
+  "homepage": "https://github.com/Project-ESGI/ChallengeS2/tree/main#readme"
+}

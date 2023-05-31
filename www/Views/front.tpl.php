@@ -2,11 +2,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Ma super page</title>
-    <meta name="description" content="Ceci est ma super page">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+		<script src="../src/js/main.js"></script>
+        <title>Dashboard</title>
 </head>
 <body>
-<h1>Template de front</h1>
+<h1>Accueil</h1>
 
 <?php include $this->view; ?>
 

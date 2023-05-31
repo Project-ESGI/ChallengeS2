@@ -1,0 +1,52 @@
+header {
+  background-color: #73ed4a;
+  color: #FFFFFF;
+}
+
+footer {
+  background-color: #111111;
+  color: #FFFFFF;
+}
+
+body {
+  background-color: #73ed4a;
+  color: #FFFFFF;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-block {
+  display: block;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-around {
+  justify-content: space-around;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.mr-auto {
+  margin: auto;
+}
+
+/*# sourceMappingURL=main.css.map */
