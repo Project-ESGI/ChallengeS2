@@ -2,14 +2,6 @@
   controller: Main
   action: index
 
-/dashboard:
-  controller: Main
-  action: dashboard
-
-/contact:
-  controller: Main
-  action: contact
-
 /login:
   controller: Security
   action: login
@@ -22,7 +14,7 @@
   controller: Security
   action: register
 
-  /admin:
+/admin:
   controller: Admin
   action: dashboard
   security: true

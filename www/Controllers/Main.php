@@ -8,7 +8,4 @@ class Main{
         $view = new View("Main/header", "Main/footer","front");
     }
 
-    public function dashboard(){
-        echo "Mon tableau de bord";
-    }
 }

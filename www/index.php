@@ -46,7 +46,9 @@ $routes = yaml_parse_file("routes.yml");
 
 //Page 404
 if(empty($routes[$uri])) {
-    die("Page 404");
+    http_response_code(404);
+    include('./Views/Error/404.view.php');
+    exit;
 }
 
 if(empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"])) {
