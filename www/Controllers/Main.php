@@ -5,13 +5,7 @@ use App\Core\View;
 class Main{
     public function index(){
 
-        //$pseudo = "User";
-        $header = new View("Main/header", "Main/footer","front");
-        //$index->assign("pseudo", $pseudo);
-    }
-
-    public function contact(){
-        $view = new View("Main/contact", "front");
+        $view = new View("Main/header", "Main/footer","front");
     }
 
     public function dashboard(){

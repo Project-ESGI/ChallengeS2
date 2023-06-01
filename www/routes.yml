@@ -21,3 +21,10 @@
 /register:
   controller: Security
   action: register
+
+  /admin:
+  controller: Admin
+  action: dashboard
+  security: true
+  role: [ADMIN,EDITOR]
+  

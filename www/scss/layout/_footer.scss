@@ -1,5 +1,16 @@
 @import'../variables';
 footer{
-    background-color: $secondary;
+    background-color: $background-secondary;
     color: $primary;
+    font-size: 12px;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+nav div a img{
+	transition: 0.5s all ease-in-out;
+
+	&:hover{
+		transform: translateY(-5px);
+	}
 }
