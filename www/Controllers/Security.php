@@ -15,7 +15,7 @@ class Security{
     public function register(): void
     {
         $form = new AddUser();
-        $view = new View("Auth/register", "front");
+        $view = new View("Auth/register", "connection");
         $view->assign('form', $form->getConfig());
 
 

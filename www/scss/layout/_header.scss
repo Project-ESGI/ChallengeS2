@@ -33,11 +33,12 @@ header{
 	}
 	& nav li a{
 		padding: 0.5em;
-		color: $secondary;
+		color: $primary;
 		text-decoration: none;
-	}
-	& nav.open ul li:nth-child(4), & nav.open ul li a#shop-button{
-		display: none;
+
+		&:hover{
+			color: $primary-hover;
+		}
 	}
 }
 img{

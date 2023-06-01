@@ -1,13 +1,15 @@
 <?php
 namespace App\Core;
-class View {
+class Partial {
 
-    private String $view;
+    private String $header;
+    private String $footer;
     private String $template;
     private $data = [];
 
-    public function __construct(String $view, String $template){
-        $this->setView($view);
+    public function __construct(String $header,String $footer,String $template="back"){
+        $this->setHeader($header);
+        $this->setFooter($footer);
         $this->setTemplate($template);
     }
 
@@ -17,14 +19,24 @@ class View {
         $this->data[$key]=$value;
     }
 
-    public function setView(String $view): void
+    public function setHeader(String $header): void
     {
-        $view = "Views/".trim($view).".view.php";
-        if(!file_exists($view)){
-            die("La vue ".$view." n'existe pas");
+        $header = "Views/".trim($header).".view.php";
+        if(!file_exists($header)){
+            die("La vue ".$header." n'existe pas");
         }
-        $this->view = $view;
+        $this->header = $header;
     }
+
+    public function setFooter(String $footer): void
+    {
+        $footer = "Views/".trim($footer).".view.php";
+        if(!file_exists($footer)){
+            die("La vue ".$footer." n'existe pas");
+        }
+        $this->footer = $footer;
+    }
+
     public function setTemplate(String $template): void
     {
         $template = "Views/".trim($template).".tpl.php";

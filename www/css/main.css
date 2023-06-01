@@ -33,11 +33,11 @@ header nav ul {
 }
 header nav li a {
   padding: 0.5em;
-  color: #818181;
+  color: #FFFFFF;
   text-decoration: none;
 }
-header nav.open ul li:nth-child(4), header nav.open ul li a#shop-button {
-  display: none;
+header nav li a:hover {
+  color: #73ed4a;
 }
 
 img {

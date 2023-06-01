@@ -1,11 +1,11 @@
 <?php
 namespace App\Controllers;
-use App\Core\View;
+use App\Core\Partial;
 
 class Main{
     public function index(){
 
-        $view = new View("Main/header", "Main/footer","front");
+        $view = new Partial("Main/header", "Main/footer","dashboard");
     }
 
 }
