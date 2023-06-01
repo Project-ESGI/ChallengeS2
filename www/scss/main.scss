@@ -1,9 +1,11 @@
 @import './layout/header';
 @import './layout/footer';
+@import './layout/container';
 
 body{
-    background-color:$primary-1;
-    color: $secondary-1;
+    background-color:$background-primary;
+    color: $primary;
+	margin: 0;
 }
 
 .d-flex{

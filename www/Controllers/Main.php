@@ -5,9 +5,9 @@ use App\Core\View;
 class Main{
     public function index(){
 
-        $pseudo = "User";
-        $view = new View("Main/index", "front");
-        $view->assign("pseudo", $pseudo);
+        //$pseudo = "User";
+        $header = new View("Main/header", "Main/footer","front");
+        //$index->assign("pseudo", $pseudo);
     }
 
     public function contact(){
