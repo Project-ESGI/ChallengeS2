@@ -51,6 +51,12 @@ if(empty($routes[$uri])) {
     exit;
 }
 
+if (isset($route['security'])/* && !$user->isAdmin()*/) {
+    http_response_code(404);
+    include('./Views/Error/404.view.php');
+    exit;
+}
+
 if(empty($routes[$uri]["controller"]) || empty($routes[$uri]["action"])) {
     die("Absence de controller ou d'action dans le ficher de routing pour la route ".$uri);
 }

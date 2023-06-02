@@ -12,8 +12,9 @@
 						<ul class="d-flex">
 							<div class="lien-nav">
 							<li><a href="">ACCUEIL</a></li>
-							<li><a href="">LES CLUBS</a></li>
-							<li><a href="">SAISON</a></li>
+							<li><a href="">UTILISATEURS</a></li>
+							<li><a href="">PAGES</a></li>
+							<li><a href="">MON COMPTE</a></li>
 							</div>
 						</ul>
 					</nav>

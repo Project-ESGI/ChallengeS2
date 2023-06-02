@@ -1,6 +1,7 @@
 /:
   controller: Main
   action: index
+  security: true
 
 /login:
   controller: Security
