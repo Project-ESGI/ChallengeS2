@@ -1,0 +1,3 @@
+spring.datasource.url=jdbc:postgresql://database:8080/challenge
+spring.datasource.username=s2
+spring.datasource.password=Test1234
