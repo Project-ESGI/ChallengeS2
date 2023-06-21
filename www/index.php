@@ -2,7 +2,6 @@
 namespace App;
 //Contrainte : utilisation des Namespace
 
-
 spl_autoload_register(function ($class) {
     //Core/View.php
     $class = str_replace("App\\","", $class);
@@ -11,7 +10,6 @@ spl_autoload_register(function ($class) {
         include $class;
     }
 });
-
 
 
 //Récupérer dans l'url l'uri /login ou /user/toto

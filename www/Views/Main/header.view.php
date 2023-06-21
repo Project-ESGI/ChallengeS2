@@ -1,4 +1,4 @@
-
+<script src="../../js/Main.js"></script>
 		<header>
 			<div class="container-header">
 				<button id="menu-button" onclick="changeSvg('-')"></button>
@@ -11,9 +11,9 @@
 					<nav id="site-nav">
 						<ul class="d-flex">
 							<div class="lien-nav">
-							<li><a href="">ACCUEIL</a></li>
+							<li><a href="./dashboard">ACCUEIL</a></li>
 							<li><a href="">UTILISATEURS</a></li>
-							<li><a href="">PAGES</a></li>
+							<li><a href="./page">PAGES</a></li>
 							<li><a href="">MON COMPTE</a></li>
 							</div>
 						</ul>

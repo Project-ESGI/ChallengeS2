@@ -2,6 +2,7 @@
 namespace App\Controllers;
 use App\Core\View;
 use App\Forms\AddUser;
+use App\Forms\AddPage;
 use App\Models\User;
 use App\Core\Verificator;
 
@@ -34,6 +35,26 @@ class Security{
         $user->save();
         */
     }
+
+    public function addPage(): void
+{
+    $form = new Page();
+    $view = new View("Page/add", "layout");
+    $view->assign('form', $form->getConfig());
+
+    if ($form->isSubmit()) {
+        $errors = Verificator::form($form->getConfig(), $_POST);
+        if (empty($errors)) {
+            $page = new Page();
+            $page->setTitle($_POST['title']);
+            $page->setContent($_POST['content']);
+            $page->save();
+            echo "Page ajoutée avec succès";
+        } else {
+            $view->assign('errors', $errors);
+        }
+    }
+}
 
     public function logout(): void
     {

@@ -11,3 +11,11 @@ function changeSvg(){
         $('header div button').attr('id', 'menu-button');
     }
 }
+
+function toggleMenu() {
+    document.getElementById('site-nav').classList.toggle('open');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('menu-button').addEventListener('click', toggleMenu);
+});
