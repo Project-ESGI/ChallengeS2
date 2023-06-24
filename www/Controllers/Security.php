@@ -1,16 +1,33 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Core\View;
 use App\Forms\AddUser;
-use App\Forms\AddPage;
-use App\Models\User;
+use App\Forms\ConnectionUser;
+use App\Models\Users;
 use App\Core\Verificator;
 
-class Security{
+class Security
+{
 
     public function login(): void
     {
-        echo "Login";
+        $form = new ConnectionUser();
+        $view = new View("Auth/connection", "front");
+        $view->assign('form', $form->getConfig());
+        if ($form->isSubmit()) {
+            $errors = Verificator::formConnection($form->getConfig(), $_POST);
+            if (empty($errors)) {
+                $user = new Users();
+                $user->setEmail($_POST['user_email']);
+                $user->setPassword($_POST['user_password']);
+                $user->save();
+                echo "Connecter";
+            } else {
+                $view->assign('errors', $errors);
+            }
+        }
     }
 
     public function register(): void
@@ -18,47 +35,24 @@ class Security{
         $form = new AddUser();
         $view = new View("Auth/register", "connection");
         $view->assign('form', $form->getConfig());
-
-
-        if($form->isSubmit()){
-            $errors = Verificator::form($form->getConfig(), $_POST);
-            if(empty($errors)){
+        if ($form->isSubmit()) {
+            $errors = Verificator::formRegister($form->getConfig(), $_POST);
+            if (empty($errors)) {
+                $user = new Users();
+                $user->setFirstname($_POST['user_firstname']);
+                $user->setLastname($_POST['user_lastname']);
+                $user->setEmail($_POST['user_email']);
+                $user->setPassword($_POST['user_password']);
+                $user->save();
                 echo "Insertion en BDD";
-            }else{
+            } else {
                 $view->assign('errors', $errors);
             }
         }
-        /*
-        $user = new User();
-        $user->setId(2);
-        $user->setEmail("test@gmail.com");
-        $user->save();
-        */
     }
-
-    public function addPage(): void
-{
-    $form = new Page();
-    $view = new View("Page/add", "layout");
-    $view->assign('form', $form->getConfig());
-
-    if ($form->isSubmit()) {
-        $errors = Verificator::form($form->getConfig(), $_POST);
-        if (empty($errors)) {
-            $page = new Page();
-            $page->setTitle($_POST['title']);
-            $page->setContent($_POST['content']);
-            $page->save();
-            echo "Page ajoutée avec succès";
-        } else {
-            $view->assign('errors', $errors);
-        }
-    }
-}
 
     public function logout(): void
     {
         echo "Logout";
     }
-
 }
