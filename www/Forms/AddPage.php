@@ -1,29 +1,31 @@
 <?php
-namespace App\Forms;
-use App\Core\Sql;
-use App\Models\Page;
 
-class AddPage extends Sql {
+namespace App\Forms;
+
+use App\Forms\Abstract\AForm;
+
+class AddPage extends AForm
+{
     protected $method = "POST";
 
-    public function addPage()
+    public function getConfig(): array
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Récupérer les données de la nouvelle page depuis la requête POST
-            $page = new Page();
-            $page->setTitle($_POST['title']);
-            $page->setContent($_POST['content']);
-
-            // Insérer la page dans la base de données
-            $queryPrepared = $this->pdo->prepare("INSERT INTO " . $this->table . " (title, content) VALUES (?, ?)");
-            $queryPrepared->execute([$page->getTitle(), $page->getContent()]);
-
-            // Autre logique nécessaire après l'ajout de la page, si nécessaire
-        }
+        return [
+            "config" => [
+                "method" => $this->getMethod(),
+                "action" => "",
+                "enctype" => "",
+                "submit" => "Créer",
+            ],
+            "inputs" => [
+                "page_title" => [
+                    "type" => "text",
+                    "placeholder" => "Titre de la page",
+                    "min" => 2,
+                    "max" => 100,
+                    "error" => "Titre incorrect!"
+                ]
+            ]
+        ];
     }
 }
-
-// Exemple d'utilisation
-$addPage = new addPage();
-$addPage->addPage();
-?>

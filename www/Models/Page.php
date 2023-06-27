@@ -6,7 +6,8 @@ class Page extends Sql {
 
     protected int $id = 0;
     protected string $title;
-    protected string $content;
+    protected $date_inserted;
+    protected $date_updated;
 
     /**
      * @return int
@@ -41,18 +42,34 @@ class Page extends Sql {
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getContent(): string
+    public function getDateInserted()
     {
-        return $this->content;
+        return $this->date_inserted;
     }
 
     /**
-     * @param string $content
+     * @param mixed $date_inserted
      */
-    public function setContent(string $content): void
+    public function setDateInserted($date_inserted): void
     {
-        $this->content = $content;
+        $this->date_inserted = $date_inserted;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateUpdated()
+    {
+        return $this->date_updated;
+    }
+
+    /**
+     * @param mixed $date_updated
+     */
+    public function setDateUpdated($date_updated): void
+    {
+        $this->date_updated = $date_updated;
     }
 }

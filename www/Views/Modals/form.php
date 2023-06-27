@@ -1,4 +1,4 @@
-<form
+<form class="d-flex justify-content-center"
         method="<?= $config["config"]["method"]??"GET" ?>"
         action="<?= $config["config"]["action"] ?>">
 
@@ -23,5 +23,5 @@
 
 
     <input type="submit" name="submit" value="<?= $config["config"]["submit"] ?>">
-    <input type="reset" value="<?= $config["config"]["cancel"] ?>">
+<!--    <input type="reset" value="--><?//= $config["config"]["cancel"] ?><!--">-->
 </form>

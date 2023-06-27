@@ -1,16 +1,15 @@
 <?php
+
 namespace App\Forms;
 
-use App\Core\Sql;
-use App\Models\Page;
+use App\Forms\Abstract\AForm;
 
-class ListPage extends Sql {
-    protected $method = "POST";
+class ListPage extends AForm
+{
 
-    public function getAllPages()
+    public function getConfig(): array
     {
-        $queryPrepared = $this->pdo->prepare("SELECT * FROM " . $this->table);
-        $queryPrepared->execute();
-        return $queryPrepared->fetchAll(\PDO::FETCH_ASSOC);
+        // TODO: Implement getConfig() method.
+        return [];
     }
 }

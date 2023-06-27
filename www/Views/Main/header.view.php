@@ -14,7 +14,7 @@
 							<li><a href="./dashboard">ACCUEIL</a></li>
 							<li><a href="">UTILISATEURS</a></li>
 							<li><a href="./page">PAGES</a></li>
-							<li><a href="">MON COMPTE</a></li>
+							<li><a href="./register">Se connecter</a></li>
 							</div>
 						</ul>
 					</nav>

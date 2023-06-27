@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 use App\Core\Sql;
+use Cassandra\Date;
 
 class User extends Sql {
 
@@ -121,9 +122,10 @@ class User extends Sql {
     /**
      * @param int $status
      */
-    public function setStatus(int $status): void
+    public function setStatus(int $status): String
     {
         $this->status = $status;
+        return $status;
     }
 
     /**
@@ -142,6 +144,22 @@ class User extends Sql {
         return $this->date_updated;
     }
 
+    /**
+     * @param mixed $date_inserted
+     */
+    public function setDateInserted($date_inserted): Date
+    {
+        $this->date_inserted = $date_inserted;
+        return $date_inserted;
+    }
 
+    /**
+     * @param mixed $date_updated
+     */
+    public function setDateUpdated($date_updated): Date
+    {
+        $this->date_updated = $date_updated;
+        return $date_updated;
+    }
 
 }

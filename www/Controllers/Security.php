@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Core\View;
 use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
-use App\Models\Users;
+use App\Models\User;
 use App\Core\Verificator;
 
 class Security
@@ -17,16 +17,12 @@ class Security
         $view = new View("Auth/connection", "front");
         $view->assign('form', $form->getConfig());
         if ($form->isSubmit()) {
-            $errors = Verificator::formConnection($form->getConfig(), $_POST);
-            if (empty($errors)) {
-                $user = new Users();
+            // $errors = Verificator::formConnection($form->getConfig(), $_POST);
+                $user = new User();
                 $user->setEmail($_POST['user_email']);
                 $user->setPassword($_POST['user_password']);
                 $user->save();
                 echo "Connecter";
-            } else {
-                $view->assign('errors', $errors);
-            }
         }
     }
 
@@ -34,20 +30,20 @@ class Security
     {
         $form = new AddUser();
         $view = new View("Auth/register", "connection");
+        $date = new \DateTime();
+        $formattedDate = $date->format('Y-m-d');
         $view->assign('form', $form->getConfig());
         if ($form->isSubmit()) {
-            $errors = Verificator::formRegister($form->getConfig(), $_POST);
-            if (empty($errors)) {
-                $user = new Users();
+            // $errors = Verificator::formRegister($form->getConfig(), $_POST);
+                $user = new User();
                 $user->setFirstname($_POST['user_firstname']);
                 $user->setLastname($_POST['user_lastname']);
                 $user->setEmail($_POST['user_email']);
                 $user->setPassword($_POST['user_password']);
+                $user->setDateInserted($formattedDate);
+                $user->setDateUpdated($formattedDate);
                 $user->save();
                 echo "Insertion en BDD";
-            } else {
-                $view->assign('errors', $errors);
-            }
         }
     }
 
