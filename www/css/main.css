@@ -128,46 +128,42 @@ nav div a img:hover {
   margin: 20px;
 }
 
-body {
-  background-color: #73ed4a;
-  color: #FFFFFF;
-  margin: 0;
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-.d-flex {
-  display: flex;
+.modal-content {
+  width: 50% !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.d-block {
-  display: block;
+.close {
+  font-size: 28px;
+  font-weight: bold;
 }
 
-.text-center {
-  text-align: center;
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.justify-content-center {
-  justify-content: center;
+input[type=submit] {
+  width: 100px;
 }
 
-.justify-content-between {
-  justify-content: space-between;
-}
-
-.justify-content-around {
-  justify-content: space-around;
-}
-
-.align-items-center {
-  align-items: center;
-}
-
-.flex-direction-column {
-  flex-direction: column;
-}
-
-.mr-auto {
-  margin: auto;
+input[type=text] {
+  width: 150px;
 }
 
 /*# sourceMappingURL=main.css.map */
