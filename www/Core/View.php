@@ -43,6 +43,12 @@ class View
         include "Views/Modals/" . $name . ".php";
     }
 
+    public function render(): void
+    {
+        extract($this->data);
+        include $this->template;
+    }
+
     public function __destruct()
     {
         extract($this->data);

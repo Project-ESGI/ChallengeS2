@@ -41,4 +41,22 @@ abstract class Sql{
 
         $queryPrepared->execute($columns);
     }
+
+    public function existsWithTitle(string $title): bool
+    {
+        $queryPrepared = $this->pdo->prepare("SELECT COUNT(*) FROM " . $this->table . " WHERE title = :title");
+        $queryPrepared->bindParam(':title', $title);
+        $queryPrepared->execute();
+
+        return $queryPrepared->fetchColumn() > 0;
+    }
+
+    public function getAllPage(): array
+    {
+        $queryPrepared = $this->pdo->prepare("SELECT * FROM " . $this->table);
+        $queryPrepared->execute();
+
+        return $queryPrepared->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
 }

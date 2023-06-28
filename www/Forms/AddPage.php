@@ -28,4 +28,16 @@ class AddPage extends AForm
             ]
         ];
     }
+
+    public function addError(string $fieldName, string $errorMessage) {
+        $this->errors[$fieldName] = $errorMessage;
+    }
+
+    public function hasErrors(): bool {
+        return !empty($this->errors);
+    }
+
+    public function getErrors(): array {
+        return $this->errors;
+    }
 }
