@@ -30,7 +30,5 @@ class Main
 
         $view = new View("Auth/page", "page");
         $view->assign('table', $table);
-
-
     }
 }

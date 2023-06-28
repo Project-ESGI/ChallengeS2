@@ -21,26 +21,34 @@ abstract class Sql{
     public function save(): void
     {
         $columns = get_object_vars($this);
-        $columnsToDeleted =get_class_vars(get_class());
+        $columnsToDeleted = get_class_vars(get_class());
         $columns = array_diff_key($columns, $columnsToDeleted);
         unset($columns["id"]);
 
-        if(is_numeric($this->getId()) && $this->getId()>0)
-        {
+        if ($this->getId() !== 0) {
+            // Mise à jour des données
             $columnsUpdate = [];
-            foreach ($columns as $key=>$value)
-            {
-                $columnsUpdate[]= $key."=:".$key;
+            foreach ($columns as $key => $value) {
+                $columnsUpdate[] = $key . "=:" . $key;
             }
-            $queryPrepared = $this->pdo->prepare("UPDATE ".$this->table." SET ".implode(",",$columnsUpdate)." WHERE id=".$this->getId());
-
-        }else{
-            $queryPrepared = $this->pdo->prepare("INSERT INTO ".$this->table." (".implode(",", array_keys($columns)).") 
-                            VALUES (:".implode(",:", array_keys($columns)).")");
+            $queryPrepared = $this->pdo->prepare("UPDATE " . $this->table . " SET " . implode(",", $columnsUpdate) . " WHERE id=:id");
+            $columns['id'] = $this->getId();
+        } else {
+            // Insertion de nouvelles données
+            $queryPrepared = $this->pdo->prepare("INSERT INTO " . $this->table . " (" . implode(",", array_keys($columns)) . ") 
+                        VALUES (:" . implode(",:", array_keys($columns)) . ")");
         }
 
         $queryPrepared->execute($columns);
     }
+
+    public function delete(): void
+    {
+        $queryPrepared = $this->pdo->prepare("DELETE FROM " . $this->table . " WHERE id=:id");
+        $queryPrepared->execute(['id' => $this->getId()]);
+    }
+
+
 
     public function existsWithTitle(string $title): bool
     {

@@ -1,4 +1,4 @@
-/dashboard:
+/:
   controller: Main
   action: index
   security: true
@@ -17,11 +17,23 @@
 
 /page:
   controller: Main
+  action: page
+
+/addPage:
+  controller: Main
   action: addPage
+
+/modifyPage:
+  controller: Main
+  action: modifyPage
+
+/deletePage:
+  controller: Main
+  action: deletePage
 
 /admin:
   controller: Admin
   action: dashboard
   security: true
-  role: [ADMIN,EDITOR]
+  role: [ ADMIN,EDITOR ]
   
