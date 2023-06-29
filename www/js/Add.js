@@ -4,13 +4,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (action) {
         case "created":
-            alert("Page créée avec succès");
+            alert("Article créée avec succès");
+            window.location.href = "page";
             break;
         case "updated":
-            alert("Page modifiée avec succès");
+            alert("Article modifiée avec succès");
+            window.location.href = "page";
             break;
         case "deleted":
-            alert("Page supprimée avec succès");
+            alert("Article supprimée avec succès");
+            window.location.href = "page";
             break;
     }
 

@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Menu;
 use App\Core\View;
-use App\Models\Page;
+use App\Models\Article;
 
 class Liste
 {
@@ -12,6 +12,7 @@ class Liste
     {
         $view = new View("Auth/page", "dashboard");
     }
+<<<<<<< HEAD
 
     public function listPages(): array
     {
@@ -53,4 +54,6 @@ class Liste
 
         return $table;
     }
+=======
+>>>>>>> 49c78ceabcf1a1104ea0a5b2646f81d462aa750a
 }
