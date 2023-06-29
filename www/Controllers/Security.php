@@ -66,6 +66,32 @@ class Security
         $view->assign('table', $table);
     }
 
+    public function user(): void
+    {
+        $user = new User();
+        $users = $user->getAllValue();
+        $table = [];
+
+        foreach ($users as $user) {
+            $table[] = [
+                'id' => $user['id'],
+                'firstname' => $user['firstname'],
+                'lastname' => $user['lastname'],
+                'email' => $user['email'],
+                'date_inserted' => $user['date_inserted'],
+                'date_updated' => $user['date_updated'],
+                'country' => $user['country'],
+                'banned' => $user['banned'],
+                'password' => $user['password'],
+                'role' => $user['role']
+            ];
+        }
+
+        $view = new View("Auth/user", "user");
+        $view->assign('table', $table);
+    }
+
+
     public function logout(): void
     {
         echo "Logout";

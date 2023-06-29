@@ -54,4 +54,45 @@ class Update
         }
     }
 
+
+    public function modifyUser()
+    {
+        $id = $_GET['id'];
+        $user = new User();
+        $user->setIdValue($id);
+        $date = new \DateTime();
+        $result = $user->getById($id);
+
+        $formattedDate = $date->format('Y-m-d');
+        $view = new View("Auth/addUser", "user");
+        $form = new addUser();
+        $view->assign('form', $form->getConfig($result));
+
+        // Vérifier si le user existe
+        if ($user !== null) {
+            if ($form->isSubmit()) {
+                if (empty($_POST['user_firstname'])) {
+                    echo 'Le user doit avoir un prénom';
+                } else {
+                    $firstname = $_POST['user_firstname'];
+
+                    if ($user->existsWithFirstname($firstname, $user->getId())) {
+                        echo 'Un user avec ce firstname existe déjà';
+                    } else {
+                        $user->setTitle($firstname);
+                        $user->setDateInserted($user->getDateInserted());
+                        $user->setDateUpdated($formattedDate);
+
+                        $user->save();
+                        header('Location: page?action=updated');
+                        exit;
+
+                    }
+                }
+            }
+        } else {
+            echo "Le user à modifier n'existe pas.";
+        }
+    }
+
 }

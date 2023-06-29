@@ -9,7 +9,7 @@
         <th scope="col">Actions</th>
     </tr>
     </thead>
-    <tbody>
+    <body>
     <?php foreach ($table as $page) : ?>
         <tr>
             <td><?php echo $page['title']; ?></td>
@@ -21,5 +21,5 @@
             </td>
         </tr>
     <?php endforeach; ?>
-    </tbody>
+    </body>
 </table>

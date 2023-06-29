@@ -23,6 +23,10 @@
   controller: Add
   action: addPage
 
+/adduser:
+  controller: Add
+  action: addUser
+
 /modifypage:
   controller: Update
   action: modifyPage
@@ -30,6 +34,11 @@
 /deletepage:
   controller: Delete
   action: deletePage
+
+/user:
+  controller: Security
+  action: user
+
 
 /admin:
   controller: Admin

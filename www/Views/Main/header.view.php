@@ -12,7 +12,7 @@
 						<ul class="d-flex">
 							<div class="lien-nav">
 							<li><a href="./">ACCUEIL</a></li>
-							<li><a href="">UTILISATEURS</a></li>
+							<li><a href="./user">UTILISATEURS</a></li>
 							<li><a href="./page">PAGES</a></li>
 							<li><a href="./register">Se connecter</a></li>
 							</div>

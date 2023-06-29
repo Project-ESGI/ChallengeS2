@@ -29,4 +29,28 @@ class Liste
 
         return $table;
     }
+
+    public function listUsers(): array
+    {
+        $user = new User();
+        $users = $user->getAllValue();
+        $table = [];
+
+        foreach ($users as $user) {
+            $table[] = [
+                'id' => $user['id'],
+                'firstname' => $user['firstname'],
+                'lastname' => $user['lastname'],
+                'email' => $user['email'],
+                'date_inserted' => $user['date_inserted'],
+                'date_updated' => $user['date_updated'],
+                'country' => $user['country'],
+                'banned' => $user['banned'],
+                'password' => $user['password'],
+                'role' => $user['role']
+            ];
+        }
+
+        return $table;
+    }
 }

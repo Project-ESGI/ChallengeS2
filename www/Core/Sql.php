@@ -78,6 +78,30 @@ abstract class Sql
         return $queryPrepared->fetchColumn() > 0;
     }
 
+
+    /**
+     * Vérifie si un enregistrement avec le même titre existe déjà dans la base de données.
+     *
+     * @param string $title Le titre à vérifier.
+     * @param int|null $id L'ID de l'enregistrement actuel (facultatif).
+     * @return bool True si un enregistrement avec le même titre existe déjà, sinon False.
+     */
+    public function existsWithFirstname(string $firstname, int $id = null): bool
+    {
+        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE firstname = :firstname";
+        $parameters = [':firstname' => $firstname];
+
+        if ($id !== null) {
+            $query .= " AND id <> :id";
+            $parameters[':id'] = $id;
+        }
+
+        $queryPrepared = $this->pdo->prepare($query);
+        $queryPrepared->execute($parameters);
+
+        return $queryPrepared->fetchColumn() > 0;
+    }
+
     /**
      * Récupère toutes les valeurs de la table.
      *
