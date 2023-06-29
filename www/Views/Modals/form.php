@@ -10,7 +10,7 @@
         <?php if ($input["type"] == "select"): ?>
             <select name="<?= $name; ?>">
                 <?php foreach ($input["options"] as $option): ?>
-                    <option <?= ($option === $input["value"]) ? "selected" : "" ?>>
+                    <option <?= ($option === ($input["value"] ?? null)) ? "selected" : "" ?>>
                         <?= $option; ?>
                     </option>
                 <?php endforeach; ?>
