@@ -50,7 +50,6 @@ class AddPage extends AForm
         ];
     }
 
-
     public function addError(string $fieldName, string $errorMessage)
     {
         $this->errors[$fieldName] = $errorMessage;

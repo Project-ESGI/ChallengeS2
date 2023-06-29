@@ -7,7 +7,6 @@ use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
 use App\Models\Page;
 use App\Models\User;
-use App\Core\Verificator;
 
 class Security
 {
