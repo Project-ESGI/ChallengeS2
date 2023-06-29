@@ -1,13 +1,16 @@
 <?php
+
 namespace App\Models;
+
 use App\Core\Sql;
 
-class Page extends Sql {
+class Article extends Sql
+{
 
     protected int $id = 0;
     protected string $title;
     protected string $content;
-    protected string $author;
+    protected int $author; // ID de l'auteur au lieu d'un objet User
     protected string $category;
     protected $date_inserted;
     protected $date_updated;
@@ -93,17 +96,22 @@ class Page extends Sql {
     }
 
     /**
-     * @return string
+     * @return User|null
      */
-    public function getAuthor(): string
+    public function getAuthor(): ?User
     {
-        return $this->author;
+        if ($this->author !== 0) {
+            $user = new User();
+            $user->getById($this->author);
+            return $user;
+        }
+        return null;
     }
 
     /**
-     * @param string $author
+     * @param int $author
      */
-    public function setAuthor(string $author): void
+    public function setAuthorId(int $author): void
     {
         $this->author = $author;
     }
@@ -124,5 +132,5 @@ class Page extends Sql {
         $this->category = $category;
     }
 
-    
+
 }
