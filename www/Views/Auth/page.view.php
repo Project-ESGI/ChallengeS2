@@ -1,11 +1,4 @@
-<a  class="openModalBtn btn btn-primary">Ajouter une page</a>
-
-<div class="myModal modal">
-    <div class="modal-content">
-        <span class="closeModalBtn close">&times;</span>
-        <?php $this->modal("form", $form); ?>
-    </div>
-</div>
+<a href="addpage" class="openModalBtn btn btn-primary">Ajouter une page</a>
 
 <table class="table table-striped table-bordered">
     <thead class="thead-dark">
@@ -23,8 +16,8 @@
             <td><?php echo $page['date_inserted']; ?></td>
             <td><?php echo $page['date_updated']; ?></td>
             <td>
-                <a href="modifyPage?id=<?php echo $page['title']; ?>" class="btn btn-primary">Modifier</a>
-                <a href="deletePage" class="btn btn-danger">Supprimer</a>
+                <a href="modifypage?id=<?php echo $page['id']; ?>" class="btn btn-primary">Modifier</a>
+                <a href="deletepage?id=<?php echo $page['id']; ?>" class="btn btn-danger">Supprimer</a>
             </td>
         </tr>
     <?php endforeach; ?>

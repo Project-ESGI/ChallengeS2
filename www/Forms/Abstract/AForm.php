@@ -16,4 +16,14 @@ abstract class AForm
     {
         return strtolower($this->method);
     }
+
+    public function getElement($label = [], $value = []): array
+    {
+        return [
+            "label" => $label,
+            "value" => $value
+        ];
+    }
+
+
 }

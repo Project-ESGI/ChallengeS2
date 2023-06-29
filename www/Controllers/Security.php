@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\View;
 use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
+use App\Models\Page;
 use App\Models\User;
 use App\Core\Verificator;
 
@@ -45,6 +46,25 @@ class Security
                 $user->save();
                 echo "Insertion en BDD";
         }
+    }
+
+    public function page(): void
+    {
+        $page = new Page();
+        $pages = $page->getAllValue();
+        $table = [];
+
+        foreach ($pages as $page) {
+            $table[] = [
+                'id' => $page['id'],
+                'title' => $page['title'],
+                'date_inserted' => $page['date_inserted'],
+                'date_updated' => $page['date_updated']
+            ];
+        }
+
+        $view = new View("Auth/page", "page");
+        $view->assign('table', $table);
     }
 
     public function logout(): void

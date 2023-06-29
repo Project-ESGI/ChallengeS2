@@ -1,23 +1,29 @@
 <?php
+
 namespace App\Core;
 
-abstract class Sql{
+abstract class Sql
+{
 
     private $pdo;
     private $table;
 
-    public function __construct(){
+    public function __construct()
+    {
         //Mettre en place un SINGLETON
-        try{
-            $this->pdo = new \PDO("pgsql:host=database;port=5432;dbname=challenge" , "s2" , "Test1234" );
-        }catch(\Exception $e){
-            die("Erreur SQL : ".$e->getMessage());
+        try {
+            $this->pdo = new \PDO("pgsql:host=database;port=5432;dbname=challenge", "s2", "Test1234");
+        } catch (\Exception $e) {
+            die("Erreur SQL : " . $e->getMessage());
         }
         $classExploded = explode("\\", get_called_class());
         $this->table = end($classExploded);
-        $this->table = "esgi_".$this->table;
+        $this->table = "esgi_" . $this->table;
     }
 
+    /**
+     * Sauvegarde l'objet en base de données.
+     */
     public function save(): void
     {
         $columns = get_object_vars($this);
@@ -49,17 +55,35 @@ abstract class Sql{
     }
 
 
-
-    public function existsWithTitle(string $title): bool
+    /**
+     * Vérifie si un enregistrement avec le même titre existe déjà dans la base de données.
+     *
+     * @param string $title Le titre à vérifier.
+     * @param int|null $id L'ID de l'enregistrement actuel (facultatif).
+     * @return bool True si un enregistrement avec le même titre existe déjà, sinon False.
+     */
+    public function existsWithTitle(string $title, int $id = null): bool
     {
-        $queryPrepared = $this->pdo->prepare("SELECT COUNT(*) FROM " . $this->table . " WHERE title = :title");
-        $queryPrepared->bindParam(':title', $title);
-        $queryPrepared->execute();
+        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE title = :title";
+        $parameters = [':title' => $title];
+
+        if ($id !== null) {
+            $query .= " AND id <> :id";
+            $parameters[':id'] = $id;
+        }
+
+        $queryPrepared = $this->pdo->prepare($query);
+        $queryPrepared->execute($parameters);
 
         return $queryPrepared->fetchColumn() > 0;
     }
 
-    public function getAllPage(): array
+    /**
+     * Récupère toutes les valeurs de la table.
+     *
+     * @return array Un tableau contenant toutes les valeurs de la table.
+     */
+    public function getAllValue(): array
     {
         $queryPrepared = $this->pdo->prepare("SELECT * FROM " . $this->table);
         $queryPrepared->execute();
@@ -67,4 +91,32 @@ abstract class Sql{
         return $queryPrepared->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Récupère les données d'un enregistrement par son ID.
+     *
+     * @param int $id L'ID de l'enregistrement à récupérer.
+     * @return array|null Les données de l'enregistrement, ou null si l'ID n'existe pas.
+     */
+    public function getById($id): ?array
+    {
+        $queryPrepared = $this->pdo->prepare("SELECT * FROM " . $this->table . " WHERE id = :id");
+        $queryPrepared->bindValue(':id', $id, \PDO::PARAM_INT);
+        $queryPrepared->execute();
+
+        $pageData = $queryPrepared->fetch(\PDO::FETCH_ASSOC);
+
+        return $pageData ?: null;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setIdValue(int $id): array //Mettre à jour les valeurs pour l'id
+    {
+        $data = $this->getById($id);
+        foreach ($data as $key => $value) {
+            $this->$key = $value;
+        }
+        return $data;
+    }
 }

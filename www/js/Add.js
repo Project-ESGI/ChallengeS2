@@ -1,19 +1,17 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var openModalBtn = document.querySelector(".openModalBtn");
-    var closeModalBtn = document.querySelector(".closeModalBtn");
-    var modal = document.querySelector(".myModal");
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get("action");
 
-    openModalBtn.addEventListener("click", function() {
-        modal.style.display = "block";
-    });
+    switch (action) {
+        case "created":
+            alert("Page créée avec succès");
+            break;
+        case "updated":
+            alert("Page modifiée avec succès");
+            break;
+        case "deleted":
+            alert("Page supprimée avec succès");
+            break;
+    }
 
-    closeModalBtn.addEventListener("click", function() {
-        modal.style.display = "none";
-    });
-
-    window.addEventListener("click", function(event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
 });

@@ -16,19 +16,19 @@
   action: register
 
 /page:
-  controller: Main
+  controller: Security
   action: page
 
-/addPage:
-  controller: Main
+/addpage:
+  controller: Add
   action: addPage
 
-/modifyPage:
-  controller: Main
+/modifypage:
+  controller: Update
   action: modifyPage
 
-/deletePage:
-  controller: Main
+/deletepage:
+  controller: Delete
   action: deletePage
 
 /admin:

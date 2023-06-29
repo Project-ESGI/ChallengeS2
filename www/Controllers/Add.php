@@ -7,24 +7,17 @@ use App\Core\View;
 use App\Forms\AddPage;
 use App\Models\Page;
 
-class Main
+class Add
 {
-    public function index()
-    {
-        $view = new View("Auth/page", "dashboard");
-    }
-
     public function addPage(): void
     {
         $form = new AddPage();
-        $view = new View("Auth/page", "page");
+        $view = new View("Auth/addPage", "page");
         $date = new \DateTime();
         $formattedDate = $date->format('Y-m-d');
         $view->assign('form', $form->getConfig());
-
         if ($form->isSubmit()) {
             $page = new Page();
-
             if (empty($_POST['page_title'])) {
                 echo 'La page doit avoir un titre';
             } else {
@@ -37,7 +30,8 @@ class Main
                     $page->setDateInserted($formattedDate);
                     $page->setDateUpdated($formattedDate);
                     $page->save();
-                    echo "Page créée avec succès";
+                    header('Location: page?action=created');
+                    exit;
                 }
             }
         }
