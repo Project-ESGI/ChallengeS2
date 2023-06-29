@@ -6,6 +6,9 @@ class Page extends Sql {
 
     protected int $id = 0;
     protected string $title;
+    protected string $content;
+    protected string $author;
+    protected string $category;
     protected $date_inserted;
     protected $date_updated;
 
@@ -72,4 +75,54 @@ class Page extends Sql {
     {
         $this->date_updated = $date_updated;
     }
+
+    /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string $author
+     */
+    public function setAuthor(string $author): void
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategory(): string
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param string $category
+     */
+    public function setCategory(string $category): void
+    {
+        $this->category = $category;
+    }
+
+    
 }
