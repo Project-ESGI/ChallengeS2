@@ -43,7 +43,8 @@ class AddPage extends AForm
                     "type" => "select",
                     "placeholder" => "Catégorie",
                     "required" => "required",
-                    "options" => ["Match entrainement", "Exercice"]
+                    "options" => ["Match entrainement", "Exercice"],
+                    "value" => trim($row['category'])
                 ]
             ];
 

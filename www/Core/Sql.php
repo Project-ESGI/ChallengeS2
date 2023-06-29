@@ -62,7 +62,7 @@ abstract class Sql
      * @param int|null $id L'ID de l'enregistrement actuel (facultatif).
      * @return bool True si un enregistrement avec le même titre existe déjà, sinon False.
      */
-    public function existsWithTitle(string $title, int $id = null): bool
+    public function existsWith(string $title, int $id = null): bool
     {
         $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE title = :title";
         $parameters = [':title' => $title];

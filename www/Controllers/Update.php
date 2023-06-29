@@ -41,7 +41,7 @@ class Update
                     $content = $_POST['content'];
                     $category = $_POST['category'];
 
-                    if ($page->existsWithTitle($title, $page->getId())) {
+                    if ($page->existsWith($title, $page->getId())) {
                         echo 'Une page avec ce titre existe déjà';
                     } else {
                         $page->setTitle($title);
