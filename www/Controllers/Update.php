@@ -40,8 +40,6 @@ class Update
                     $title = $_POST['title'];
                     $content = $_POST['content'];
                     $category = $_POST['category'];
-                    var_dump($_POST['config']);
-                    var_dump('e');
 
                     if ($page->existsWithTitle($title, $page->getId())) {
                         echo 'Une page avec ce titre existe déjà';
@@ -50,7 +48,7 @@ class Update
                         $page->setContent($content);
                         $page->setCategory($category);
                         $page->setDateUpdated($formattedDate);
-
+                        header('Location: page?action=updated');
                         $page->save();
                         exit;
 
