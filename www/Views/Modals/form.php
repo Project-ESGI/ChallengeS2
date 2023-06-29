@@ -15,7 +15,7 @@
                     name="<?= $name; ?>"
                     type="<?= $input["type"] ?>"
                     placeholder=" <?= $input["placeholder"] ?>"
-                    value="<?= $input["value"] ?>"
+                    value="<?= isset($input["value"]) ? $input["value"] : '' ?>"
             >
         <?php endif; ?>
 
