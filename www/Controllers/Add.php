@@ -30,7 +30,7 @@ class Add
                 $author = 1;
                 $category = $_POST['category'];
 
-                if ($page->existsWithTitle($title)) {
+                if ($page->existsWith($title)) {
                     echo 'Une page avec ce titre existe déjà';
                 } else {
                     $page->setTitle($title);
