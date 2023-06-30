@@ -14,16 +14,13 @@
                 <nav id="site-nav">
                     <ul class="nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="./">ACCUEIL</a>
+                            <a class="nav-link" href="./accueil">ACCUEIL</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="">UTILISATEURS</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="./page">PAGES</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./register">Se connecter</a>
                         </li>
                     </ul>
                 </nav>
