@@ -14,7 +14,7 @@ class Security
     public function login(): void
     {
         $form = new ConnectionUser();
-        $view = new View("Auth/connection", "front");
+        $view = new View("Auth/connection", "connection");
         $view->assign('form', $form->getConfig());
         if ($form->isSubmit()) {
             // $errors = Verificator::formConnection($form->getConfig(), $_POST);
@@ -29,7 +29,7 @@ class Security
     public function register(): void
     {
         $form = new AddUser();
-        $view = new View("Auth/register", "connection");
+        $view = new View("Auth/register", "inscription");
         $date = new \DateTime();
         $formattedDate = $date->format('Y-m-d');
         $view->assign('form', $form->getConfig());
@@ -47,6 +47,9 @@ class Security
         }
     }
 
+    /**
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
     public function page(): void
     {
         $page = new Article();
