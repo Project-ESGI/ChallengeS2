@@ -78,6 +78,22 @@ abstract class Sql
         return $queryPrepared->fetchColumn() > 0;
     }
 
+    public function existsWithF(string $firstname, int $id = null): bool
+    {
+        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE firstname = :firstname";
+        $parameters = [':firstname' => $firstname];
+
+        if ($id !== null) {
+            $query .= " AND id <> :id";
+            $parameters[':id'] = $id;
+        }
+
+        $queryPrepared = $this->pdo->prepare($query);
+        $queryPrepared->execute($parameters);
+
+        return $queryPrepared->fetchColumn() > 0;
+    }
+
 
     /**
      * Vérifie si un enregistrement avec le même titre existe déjà dans la base de données.

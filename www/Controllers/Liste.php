@@ -12,7 +12,7 @@ class Liste
     {
         $view = new View("Auth/page", "dashboard");
     }
-<<<<<<< HEAD
+
 
     public function listPages(): array
     {
@@ -54,6 +54,5 @@ class Liste
 
         return $table;
     }
-=======
->>>>>>> 49c78ceabcf1a1104ea0a5b2646f81d462aa750a
+
 }

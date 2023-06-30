@@ -63,6 +63,11 @@ class AddUser extends AForm
                     "confirm" => "user_password",
                     "error" => "Le champ saisie comporte un mot de passe différent du précédent."
                 ],
+                "country"=>[
+                    "type"=>"select",
+                    "options"=>["","FR", "PL"],
+                    "error"=>"Pays incorrect"
+                ]
             ]
         ];
     }
