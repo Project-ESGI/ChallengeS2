@@ -17,7 +17,7 @@
                             <a class="nav-link" href="./accueil">ACCUEIL</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">UTILISATEURS</a>
+                            <a class="nav-link" href="./user">UTILISATEURS</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="./page">PAGES</a>
