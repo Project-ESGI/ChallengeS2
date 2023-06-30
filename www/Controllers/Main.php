@@ -11,6 +11,11 @@ class Main
 {
     public function index()
     {
-        $view = new View("Auth/page", "dashboard");
+        $view = new View("Auth/accueil", "dashboard");
+    }
+
+    public function installer()
+    {
+        $view = new View("Auth/installer", "installer");
     }
 }
