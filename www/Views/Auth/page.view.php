@@ -13,7 +13,7 @@
 
     </tr>
     </thead>
-    <tbody>
+    <body>
 
     <?php foreach ($table as $page) : ?>
         <tr>
@@ -29,5 +29,5 @@
             </td>
         </tr>
     <?php endforeach; ?>
-    </tbody>
+    </body>
 </table>

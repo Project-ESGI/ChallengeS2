@@ -31,6 +31,10 @@
   security: true
   role: [ADMIN, EDITOR]
 
+/adduser:
+  controller: Add
+  action: addUser
+
 /modifypage:
   controller: Update
   action: modifyPage
@@ -42,6 +46,11 @@
   action: deletePage
   security: true
   role: [ADMIN, EDITOR]
+
+/user:
+  controller: Security
+  action: user
+
 
 /admin:
   controller: Admin

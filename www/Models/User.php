@@ -1,19 +1,51 @@
 <?php
 namespace App\Models;
 use App\Core\Sql;
-use Cassandra\Date;
 
-class User extends Sql {
 
-    protected Int $id = 0;
-    protected String $firstname;
-    protected String $lastname;
-    protected String $country;
-    protected String $email;
-    protected String $password;
-    protected Int $status = 0;
+
+class User extends Sql
+{
+
+    protected int $id = 0;
+    protected string $firstname;
+    protected string $lastname;
+    protected string $country;
+    protected string $email;
+    protected string $password;
+    protected string $role;
+    protected bool $banned;
     protected $date_inserted;
     protected $date_updated;
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param String $role
+     */
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBanned(): bool
+    {
+        return $this->banned;
+    }
+
+    /**
+     * @param bool $banned
+     */
+    public function setBanned(bool $banned): void
+    {
+        $this->banned = $banned;
+    }
 
     /**
      * @return int
@@ -112,23 +144,6 @@ class User extends Sql {
     }
 
     /**
-     * @return int
-     */
-    public function getStatus(): int
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param int $status
-     */
-    public function setStatus(int $status): String
-    {
-        $this->status = $status;
-        return $status;
-    }
-
-    /**
      * @return mixed
      */
     public function getDateInserted()
@@ -137,29 +152,27 @@ class User extends Sql {
     }
 
     /**
-     * @return mixed
+     * @param mixed $date_inserted
      */
+    public function setDateInserted($date_inserted): void
+    {
+        $this->date_inserted = $date_inserted;
+    }
+
     public function getDateUpdated()
     {
         return $this->date_updated;
     }
 
     /**
-     * @param mixed $date_inserted
-     */
-    public function setDateInserted($date_inserted): Date
-    {
-        $this->date_inserted = $date_inserted;
-        return $date_inserted;
-    }
-
-    /**
      * @param mixed $date_updated
      */
-    public function setDateUpdated($date_updated): Date
+    public function setDateUpdated($date_updated): void
     {
         $this->date_updated = $date_updated;
-        return $date_updated;
     }
-
 }
+
+    /**
+     * @return String
+     */
