@@ -1,5 +1,9 @@
 /:
   controller: Main
+  action: installer
+
+/accueil:
+  controller: Main
   action: index
   security: true
 
