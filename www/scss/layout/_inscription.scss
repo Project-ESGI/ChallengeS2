@@ -1,0 +1,14 @@
+@import '../partials/color';
+@import '../partials/fonts';
+
+//Fond d'ecran pour l'inscription et la connexion
+.custom-background {
+   background-image: url('../../images/terrain.jpg');
+   background-size: cover;
+}
+
+html, body {
+   height: 100%;
+   margin: 0;
+   padding: 0;
+}

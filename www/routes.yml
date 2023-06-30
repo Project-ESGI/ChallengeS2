@@ -18,22 +18,29 @@
 /page:
   controller: Security
   action: page
+  security: true
+  role: [ADMIN]
 
 /addpage:
   controller: Add
   action: addPage
+  security: true
+  role: [ADMIN, EDITOR]
 
 /modifypage:
   controller: Update
   action: modifyPage
+  security: true
+  role: [ADMIN, EDITOR]
 
 /deletepage:
   controller: Delete
   action: deletePage
+  security: true
+  role: [ADMIN, EDITOR]
 
 /admin:
   controller: Admin
   action: dashboard
   security: true
-  role: [ ADMIN,EDITOR ]
-  
+  role: [ADMIN, EDITOR]

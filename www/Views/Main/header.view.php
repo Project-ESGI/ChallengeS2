@@ -1,23 +1,36 @@
 <script src="../../js/Main.js"></script>
-		<header>
-			<div class="container-header">
-				<button id="menu-button" onclick="changeSvg('-')"></button>
-				<div>
-					<a href="">
-						<img class="rotate-image"src="./images/soccerBall.svg" width="200px"alt="MC">
-					</a>
-				</div>
-				<div>
-					<nav id="site-nav">
-						<ul class="d-flex">
-							<div class="lien-nav">
-							<li><a href="./">ACCUEIL</a></li>
-							<li><a href="">UTILISATEURS</a></li>
-							<li><a href="./page">PAGES</a></li>
-							<li><a href="./register">Se connecter</a></li>
-							</div>
-						</ul>
-					</nav>
-				</div>
-			</div>
-		</header>
+<header>
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-2">
+                <button id="menu-button" onclick="changeSvg('-')"></button>
+            </div>
+            <div class="col-4">
+                <a href="">
+                    <img class="rotate-image" src="./images/soccerBall.svg" width="200px" alt="MC">
+                </a>
+            </div>
+            <div class="col-6">
+                <nav id="site-nav">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./">ACCUEIL</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">UTILISATEURS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./page">PAGES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./register">Se connecter</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div id="sidebar" class="bg-light">
+</div>
