@@ -1,4 +1,4 @@
-<a href="addpage" class="openModalBtn btn btn-primary">Ajouter une page</a>
+<a href="addarticle" class="openModalBtn btn btn-primary">Ajouter un article</a>
 
 <table class="table table-striped table-bordered">
     <thead class="thead-dark">
@@ -24,8 +24,8 @@
             <td><?php echo $page['date_inserted']; ?></td>
             <td><?php echo $page['date_updated']; ?></td>
             <td>
-                <a href="modifypage?id=<?php echo $page['id']; ?>" class="btn btn-primary">Modifier</a>
-                <a href="deletepage?id=<?php echo $page['id']; ?>" class="btn btn-danger">Supprimer</a>
+                <a href="modifyarticle?id=<?php echo $page['id']; ?>" class="btn btn-primary">Modifier</a>
+                <a href="deletearticle?id=<?php echo $page['id']; ?>" class="btn btn-danger">Supprimer</a>
             </td>
         </tr>
     <?php endforeach; ?>

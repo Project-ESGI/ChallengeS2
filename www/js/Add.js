@@ -1,20 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const action = urlParams.get("action");
+    const pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
+    let location;
 
     switch (action) {
         case "created":
-            alert("Article créée avec succès");
-            window.location.href = "page";
+            alert(`${pageName} créé avec succès`);
+            location = pageName;
             break;
         case "updated":
-            alert("Article modifiée avec succès");
-            window.location.href = "page";
+            alert(`${pageName} modifié avec succès`);
+            location = pageName;
             break;
         case "deleted":
-            alert("Article supprimée avec succès");
-            window.location.href = "page";
+            alert(`${pageName} supprimé avec succès`);
+            location = pageName;
             break;
     }
 
+    if (location) {
+        window.location.href = location;
+    }
 });
