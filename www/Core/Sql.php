@@ -32,7 +32,6 @@ abstract class Sql
         unset($columns["id"]);
 
         if ($this->getId() !== 0) {
-            // Mise à jour des données
             $columnsUpdate = [];
             foreach ($columns as $key => $value) {
                 $columnsUpdate[] = $key . "=:" . $key;
@@ -47,6 +46,23 @@ abstract class Sql
 
         $queryPrepared->execute($columns);
     }
+
+    // Fonction existUser
+    public function existUser($email, $password): bool
+    {
+        $queryPrepared = $this->pdo->prepare("SELECT password FROM " . $this->table . " WHERE email = :email");
+        $queryPrepared->bindValue(':email', $email, \PDO::PARAM_STR);
+        $queryPrepared->execute();
+
+        $hash = $queryPrepared->fetchColumn();
+
+        if (!$hash) {
+            return false;
+        }
+
+        return password_verify($password, $hash);
+    }
+
 
     public function delete(): void
     {
@@ -78,31 +94,14 @@ abstract class Sql
         return $queryPrepared->fetchColumn() > 0;
     }
 
-    public function existsWithF(string $firstname, int $id = null): bool
-    {
-        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE firstname = :firstname";
-        $parameters = [':firstname' => $firstname];
-
-        if ($id !== null) {
-            $query .= " AND id <> :id";
-            $parameters[':id'] = $id;
-        }
-
-        $queryPrepared = $this->pdo->prepare($query);
-        $queryPrepared->execute($parameters);
-
-        return $queryPrepared->fetchColumn() > 0;
-    }
-
-
     /**
      * Vérifie si un enregistrement avec le même titre existe déjà dans la base de données.
      *
-     * @param string $title Le titre à vérifier.
+     * @param string $firstname Le titre à vérifier.
      * @param int|null $id L'ID de l'enregistrement actuel (facultatif).
      * @return bool True si un enregistrement avec le même titre existe déjà, sinon False.
      */
-    public function existsWithFirstname(string $firstname, int $id = null): bool
+    public function existsWithF(string $firstname, int $id = null): bool
     {
         $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE firstname = :firstname";
         $parameters = [':firstname' => $firstname];
@@ -149,7 +148,26 @@ abstract class Sql
     }
 
     /**
+     * Récupère les données d'un utilisateur par son adresse e-mail.
+     *
+     * @param string $email L'adresse e-mail de l'utilisateur à récupérer.
+     * @return array|null Les données de l'utilisateur, ou null si l'adresse e-mail n'existe pas.
+     */
+    public function getByEmail($email): ?array
+    {
+        $queryPrepared = $this->pdo->prepare("SELECT * FROM " . $this->table . " WHERE email = :email");
+        $queryPrepared->bindValue(':email', $email, \PDO::PARAM_STR);
+        $queryPrepared->execute();
+
+        $userData = $queryPrepared->fetch(\PDO::FETCH_ASSOC);
+
+        return $userData ?: null;
+    }
+
+
+    /**
      * @param int $id
+     * @return array
      */
     public function setIdValue(int $id): array //Mettre à jour les valeurs pour l'id
     {

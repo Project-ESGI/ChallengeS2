@@ -4,47 +4,61 @@ namespace App\Controllers;
 
 use App\Core\Menu;
 use App\Core\View;
-use App\Forms\AddPage;
+use App\Forms\AddArticle;
 use App\Models\Article;
-use App\Models\Page;
 use App\Models\User;
 use App\Forms\AddUser;
+
 class Add
 {
-    public function addPage(): void
+    public function addArticle(): void
     {
-        $form = new AddPage();
-        $view = new View("Auth/addPage", "page");
-        $date = new \DateTime();
-        $formattedDate = $date->format('Y-m-d H:i:s');
-        $view->assign('form', $form->getConfig());
-        if ($form->isSubmit()) {
-            $page = new Article();
+        session_start();
+        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            if (empty($_POST['title'])) {
-                echo 'La page doit avoir un titre';
-            } else if (empty($_POST['content'])) {
-                echo 'La page doit avoir un contenu';
-            } else {
-                $title = $_POST['title'];
-                $content = $_POST['content'];
-                $author = 1;
-                $category = $_POST['category'];
+            $userData = $user->getByEmail($_SESSION['user_email']);
+            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_role = $userData['role'];
 
-                if ($page->existsWith($title)) {
-                    echo 'Une page avec ce titre existe déjà';
+            $form = new AddArticle();
+            $view = new View("Auth/addArticle", "article");
+            $date = new \DateTime();
+            $formattedDate = $date->format('Y-m-d H:i:s');
+            $view->assign('form', $form->getConfig());
+            $view->assign('user_pseudo', $user_pseudo);
+            $view->assign('user_role', $user_role);
+            if ($form->isSubmit()) {
+                $page = new Article();
+                $user = new User();
+                if (empty($_POST['title'])) {
+                    echo 'L\'article doit avoir un titre';
+                } else if (empty($_POST['content'])) {
+                    echo 'L\'article doit avoir un contenu';
                 } else {
-                    $page->setTitle($title);
-                    $page->setContent($content);
-                    $page->setAuthorId($author); // Définir l'ID de l'auteur
-                    $page->setCategory($category);
-                    $page->setDateInserted($formattedDate);
-                    $page->setDateUpdated($formattedDate);
-                    $page->save();
-                    header('Location: page?action=created');
-                    exit;
+                    $title = $_POST['title'];
+                    $content = $_POST['content'];
+                    $author = 1;
+                    $category = $_POST['category'];
+
+                    if ($page->existsWith($title)) {
+                        echo 'Une page avec ce titre existe déjà';
+                    } else {
+                        $page->setTitle($title);
+                        $page->setContent($content);
+                        $page->setAuthorId($author); // Définir l'ID de l'auteur
+                        $page->setCategory($category);
+                        $page->setDateInserted($formattedDate);
+                        $page->setDateUpdated($formattedDate);
+                        $page->save();
+                        header('Location: article?action=created');
+                        exit;
+                    }
                 }
             }
+        } else {
+            http_response_code(404);
+            include('./Views/Error/404.view.php');
+            exit;
         }
     }
 
@@ -57,7 +71,6 @@ class Add
         $view->assign('form', $form->getConfig());
         if ($form->isSubmit()) {
             $user = new User();
-            var_dump($_POST);
             if (empty($_POST['user_firstname'])) {
                 echo 'Le user doit avoir un prénom';
             } else if (empty($_POST['user_lastname'])) {

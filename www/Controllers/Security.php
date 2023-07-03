@@ -13,18 +13,26 @@ class Security
 
     public function login(): void
     {
+        session_start();
         $form = new ConnectionUser();
         $view = new View("Auth/connection", "connection");
         $view->assign('form', $form->getConfig());
+
         if ($form->isSubmit()) {
-            // $errors = Verificator::formConnection($form->getConfig(), $_POST);
             $user = new User();
             $user->setEmail($_POST['user_email']);
             $user->setPassword($_POST['user_password']);
-            $user->save();
-            echo "Connecter";
+            $userExists = $user->existUser($user->getEmail(), $_POST['user_password']);
+            if ($userExists) {
+                $_SESSION['user_email'] = $user->getEmail();
+                header('Location: accueil');
+                exit;
+            } else {
+                echo "Email ou mot de passe incorrect!";
+            }
         }
     }
+
 
     public function register(): void
     {
@@ -50,31 +58,43 @@ class Security
     /**
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function page(): void
+    public function article(): void
     {
-        $page = new Article();
-        $pages = $page->getAllValue();
-        $table = [];
-        $user = new User();
+        session_start();
+        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+            $user = new User();
+            $userData = $user->getByEmail($_SESSION['user_email']);
+            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_role = $userData['role'];
 
+            $page = new Article();
+            $pages = $page->getAllValue();
+            $table = [];
 
-        foreach ($pages as $page) {
-            $userId = $page['author'];
-            $userData = $user->getById($userId);
+            foreach ($pages as $page) {
+                $userId = $page['author'];
+                $userData = $user->getById($userId);
 
-            $table[] = [
-                'id' => $page['id'],
-                'title' => $page['title'],
-                'content' => $page['content'],
-                'author' => $userData['lastname'].' '.$userData['firstname'],
-                'category' => $page['category'],
-                'date_inserted' => $page['date_inserted'],
-                'date_updated' => $page['date_updated']
-            ];
+                $table[] = [
+                    'id' => $page['id'],
+                    'title' => $page['title'],
+                    'content' => $page['content'],
+                    'author' => $userData['lastname'] . ' ' . $userData['firstname'],
+                    'category' => $page['category'],
+                    'date_inserted' => $page['date_inserted'],
+                    'date_updated' => $page['date_updated']
+                ];
+            }
+
+            $view = new View("Auth/article", "article");
+            $view->assign('table', $table);
+            $view->assign('user_pseudo', $user_pseudo);
+            $view->assign('user_role', $user_role);
+        } else {
+            http_response_code(404);
+            include('./Views/Error/404.view.php');
+            exit;
         }
-
-        $view = new View("Auth/page", "page");
-        $view->assign('table', $table);
     }
 
     public function user(): void
@@ -105,6 +125,10 @@ class Security
 
     public function logout(): void
     {
-        echo "Logout";
+        session_start();
+        session_unset(); // Supprime toutes les variables de session
+        session_destroy(); // Détruit la session
+        header('Location: /login');
+        exit;
     }
 }

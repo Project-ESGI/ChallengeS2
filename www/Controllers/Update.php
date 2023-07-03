@@ -4,59 +4,74 @@ namespace App\Controllers;
 
 use App\Core\Menu;
 use App\Core\View;
-use App\Forms\AddPage;
+use App\Forms\AddArticle;
 use App\Models\Article;
+use App\Models\User;
 
 class Update
 {
     public function index()
     {
-        $view = new View("Auth/page", "dashboard");
+        $view = new View("Auth/article", "dashboard");
     }
 
-    public function modifyPage()
+    public function modifyArticle()
     {
-        $id = $_GET['id'];
-        $page = new Article();
-        $page->setIdValue($id);
-        $date = new \DateTime();
-        $result = $page->getById($id);
+        session_start();
+        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+            $user = new User();
+            $userData = $user->getByEmail($_SESSION['user_email']);
+            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_role = $userData['role'];
 
-        $formattedDate = $date->format('Y-m-d H:i:s');
-        $view = new View("Auth/addPage", "page");
-        $form = new addPage();
-        $view->assign('form', $form->getConfig($result));
+            $id = $_GET['id'];
+            $page = new Article();
+            $page->setIdValue($id);
+            $date = new \DateTime();
+            $result = $page->getById($id);
 
-        // Vérifier si la page existe
-        if ($page !== null) {
-            if ($form->isSubmit()) {
-                if (empty($_POST['title'])) {
-                    echo 'La page doit avoir un titre';
-                } else if (empty($_POST['content'])) {
-                    echo 'L\'article doit avoir un contenu';
-                } else if (empty($_POST['category'])) {
-                    echo 'L\'article doit avoir une category';
-                } else {
-                    $title = $_POST['title'];
-                    $content = $_POST['content'];
-                    $category = $_POST['category'];
+            $formattedDate = $date->format('Y-m-d H:i:s');
+            $view = new View("Auth/addArticle", "article");
+            $form = new AddArticle();
+            $view->assign('form', $form->getConfig($result));
+            $view->assign('user_pseudo', $user_pseudo);
+            $view->assign('user_role', $user_role);
 
-                    if ($page->existsWith($title, $page->getId())) {
-                        echo 'Une page avec ce titre existe déjà';
+            // Vérifier si l'article existe
+            if ($page !== null) {
+                if ($form->isSubmit()) {
+                    if (empty($_POST['title'])) {
+                        echo 'L\'article doit avoir un titre';
+                    } else if (empty($_POST['content'])) {
+                        echo 'L\'article doit avoir un contenu';
+                    } else if (empty($_POST['category'])) {
+                        echo 'L\'article doit avoir une category';
                     } else {
-                        $page->setTitle($title);
-                        $page->setContent($content);
-                        $page->setCategory($category);
-                        $page->setDateUpdated($formattedDate);
-                        header('Location: page?action=updated');
-                        $page->save();
-                        exit;
+                        $title = $_POST['title'];
+                        $content = $_POST['content'];
+                        $category = $_POST['category'];
 
+                        if ($page->existsWith($title, $page->getId())) {
+                            echo 'Un article avec ce titre existe déjà';
+                        } else {
+                            $page->setTitle($title);
+                            $page->setContent($content);
+                            $page->setCategory($category);
+                            $page->setDateUpdated($formattedDate);
+                            header('Location: article?action=updated');
+                            $page->save();
+                            exit;
+
+                        }
                     }
                 }
+            } else {
+                echo "L'article à modifier n'existe pas.";
             }
         } else {
-            echo "La page à modifier n'existe pas.";
+            http_response_code(404);
+            include('./Views/Error/404.view.php');
+            exit;
         }
     }
 
@@ -90,7 +105,7 @@ class Update
                         $user->setDateUpdated($formattedDate);
 
                         $user->save();
-                        header('Location: page?action=updated');
+                        header('Location: article?action=updated');
                         exit;
 
                     }

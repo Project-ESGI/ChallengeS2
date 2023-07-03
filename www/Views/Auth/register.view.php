@@ -23,7 +23,6 @@
                     <?= ucfirst($name); ?>:
                 </label>
 
-                <!-- Ajoutez ici les éléments de formulaire correspondants -->
             </div>
         <?php endforeach; ?>
     <?php endif; ?>

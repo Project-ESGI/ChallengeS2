@@ -12,7 +12,7 @@
     <title>Inscription</title>
 </head>
 <body>
-<div class="container-fluid vh-100 custom-background">
+<div class="container-fluid custom-background">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <?php include $this->view; ?>
