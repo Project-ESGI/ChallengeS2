@@ -16,8 +16,10 @@ class Main
             $userData = $user->getByEmail($_SESSION['user_email']);
             $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
             $user_role = $userData['role'];
+            $user_id = $userData['id'];
             $_SESSION['pseudo'] = $user_pseudo;
             $_SESSION['role'] = $user_role;
+            $_SESSION['id'] = $user_id;
 
             $view = new View("Main/header", "dashboard");
             $view->assign('user_pseudo', $user_pseudo);

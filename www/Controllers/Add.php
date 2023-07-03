@@ -37,7 +37,6 @@ class Add
                 } else {
                     $title = $_POST['title'];
                     $content = $_POST['content'];
-                    $author = 1;
                     $category = $_POST['category'];
 
                     if ($page->existsWith($title)) {
@@ -45,7 +44,7 @@ class Add
                     } else {
                         $page->setTitle($title);
                         $page->setContent($content);
-                        $page->setAuthorId($author); // Définir l'ID de l'auteur
+                        $page->setAuthorId($_SESSION['id']); // Définir l'ID de l'auteur sur la session
                         $page->setCategory($category);
                         $page->setDateInserted($formattedDate);
                         $page->setDateUpdated($formattedDate);
@@ -80,7 +79,7 @@ class Add
                 $lastname = $_POST['user_lastname'];
                 $email = $_POST['user_email'];
                 $password = $_POST['user_password'];
-                $country = $_POST['country'];
+                $country = $_POST['user_country'];
 
                 if ($user->existsWithF($firstname)) {
                     echo 'Un user existe deja avec ce prénom';

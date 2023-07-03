@@ -36,6 +36,7 @@ class Security
 
     public function register(): void
     {
+        session_start();
         $form = new AddUser();
         $view = new View("Auth/register", "inscription");
         $date = new \DateTime();
@@ -48,10 +49,14 @@ class Security
             $user->setLastname($_POST['user_lastname']);
             $user->setEmail($_POST['user_email']);
             $user->setPassword($_POST['user_password']);
+            $user->setCountry($_POST['user_country']);
+            $user->setRole('user');
             $user->setDateInserted($formattedDate);
             $user->setDateUpdated($formattedDate);
             $user->save();
-            echo "Insertion en BDD";
+            $_SESSION['user_email'] = $user->getEmail();
+            header('Location: accueil');
+            exit;
         }
     }
 
