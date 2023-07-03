@@ -19,15 +19,15 @@
   controller: Security
   action: register
 
-/page:
+/article:
   controller: Security
-  action: page
+  action: article
   security: true
   role: [ADMIN]
 
-/addpage:
+/addarticle:
   controller: Add
-  action: addPage
+  action: addArticle
   security: true
   role: [ADMIN, EDITOR]
 
@@ -35,15 +35,15 @@
   controller: Add
   action: addUser
 
-/modifypage:
+/modifyarticle:
   controller: Update
-  action: modifyPage
+  action: modifyArticle
   security: true
   role: [ADMIN, EDITOR]
 
-/deletepage:
+/deletearticle:
   controller: Delete
-  action: deletePage
+  action: deleteArticle
   security: true
   role: [ADMIN, EDITOR]
 
