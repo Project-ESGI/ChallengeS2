@@ -7,10 +7,11 @@ use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
 use App\Models\Article;
 use App\Models\User;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class Security
 {
-
     public function login(): void
     {
         session_start();
@@ -23,8 +24,21 @@ class Security
             $user->setEmail($_POST['user_email']);
             $user->setPassword($_POST['user_password']);
             $userExists = $user->existUser($user->getEmail(), $_POST['user_password']);
+
             if ($userExists) {
                 $_SESSION['user_email'] = $user->getEmail();
+
+                // Envoi de la notification par e-mail au propriétaire du compte
+                $to = $user->getEmail();
+                $subject = "Connexion à votre compte";
+                $message = "Bonjour,\n\nUne connexion à votre compte a été effectuée avec l'adresse IP : ".$_SERVER['REMOTE_ADDR'];
+                $headers = 'From: melvin.pierre.mp@gmail.com' . "\r\n" .
+                    'Reply-To: webmaster@example.com' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+
+                // Utilisez la fonction mail() pour envoyer l'e-mail
+                mail($to, $subject, $message, $headers);
+
                 header('Location: accueil');
                 exit;
             } else {
@@ -32,7 +46,6 @@ class Security
             }
         }
     }
-
 
     public function register(): void
     {
@@ -42,8 +55,8 @@ class Security
         $date = new \DateTime();
         $formattedDate = $date->format('Y-m-d');
         $view->assign('form', $form->getConfig());
+
         if ($form->isSubmit()) {
-            // $errors = Verificator::formRegister($form->getConfig(), $_POST);
             $user = new User();
             $user->setFirstname($_POST['user_firstname']);
             $user->setLastname($_POST['user_lastname']);
@@ -55,6 +68,17 @@ class Security
             $user->setDateUpdated($formattedDate);
             $user->save();
             $_SESSION['user_email'] = $user->getEmail();
+
+            $to = $user->getEmail();
+            $subject = "Bienvenue sur notre site";
+            $message = "Bonjour " . $user->getFirstname() . ",\n\nMerci de vous être inscrit sur notre site ! Nous vous souhaitons la bienvenue.";
+            $headers = 'From: melvin.pierre.mp@gmail.com' . "\r\n" .
+                'Reply-To: webmaster@example.com' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+
+            // Utilisez la fonction mail() pour envoyer l'e-mail
+            mail($to, $subject, $message, $headers);
+
             header('Location: accueil');
             exit;
         }
