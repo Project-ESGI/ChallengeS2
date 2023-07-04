@@ -9,7 +9,7 @@
                     <button id="menu-button" onclick="changeSvg('-')"></button>
                 </div>
                 <div class="col-4">
-                    <a href="">
+                    <a href="./accueil">
                         <img class="rotate-image" src="./images/soccerBall.svg" width="200px" alt="MC">
                     </a>
                 </div>
