@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="icon" type="image/png" href="./images/soccerBallBlack.svg">
-    <script src="./js/main.js"></script>
     <script src="./js/JQuery 3.5.1.js"></script>
+    <script src="./js/main.js"></script>
     <title>Inscription</title>
 </head>
 <body>

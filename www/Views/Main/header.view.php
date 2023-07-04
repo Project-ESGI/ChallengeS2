@@ -1,4 +1,5 @@
 <?php if ($user_pseudo !== null) : ?>
+    <script src="./js/JQuery 3.5.1.js"></script>
     <script src="../../js/Main.js"></script>
     <header>
         <div class="container-fluid">
