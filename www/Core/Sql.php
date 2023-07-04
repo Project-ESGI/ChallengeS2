@@ -63,13 +63,11 @@ abstract class Sql
         return password_verify($password, $hash);
     }
 
-
     public function delete(): void
     {
         $queryPrepared = $this->pdo->prepare("DELETE FROM " . $this->table . " WHERE id=:id");
         $queryPrepared->execute(['id' => $this->getId()]);
     }
-
 
     /**
      * Vérifie si un enregistrement avec le même titre existe déjà dans la base de données.
@@ -164,12 +162,12 @@ abstract class Sql
         return $userData ?: null;
     }
 
-
     /**
+     * Mettre a jour les données de l'utilisateur par l'id
      * @param int $id
      * @return array
      */
-    public function setIdValue(int $id): array //Mettre à jour les valeurs pour l'id
+    public function setIdValue(int $id): array
     {
         $data = $this->getById($id);
         foreach ($data as $key => $value) {
@@ -177,4 +175,60 @@ abstract class Sql
         }
         return $data;
     }
+
+    /**
+     * Enregistre un nouvel utilisateur dans la base de données.
+     *
+     * @param string $firstname Le prénom de l'utilisateur.
+     * @param string $lastname Le nom de famille de l'utilisateur.
+     * @param string $email L'adresse e-mail de l'utilisateur.
+     * @param string $password Le mot de passe de l'utilisateur.
+     * @param string $country Le pays de l'utilisateur.
+     * @param string $role Le rôle de l'utilisateur.
+     * @param string $dateInserted La date d'inscription de l'utilisateur.
+     * @param string $dateUpdated La date de mise à jour de l'utilisateur.
+     * @return bool True si l'utilisateur est enregistré avec succès, sinon False.
+     */
+    public function registerUser($firstname, $lastname, $email, $password, $country, $role, $dateInserted, $dateUpdated)
+    {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $query = "INSERT INTO " . $this->table . " (firstname, lastname, email, password, country, role, date_inserted, date_updated)
+              VALUES (:firstname, :lastname, :email, :password, :country, :role, :date_inserted, :date_updated)";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+        $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+        $statement->bindValue(':email', $email, \PDO::PARAM_STR);
+        $statement->bindValue(':password', $hashedPassword, \PDO::PARAM_STR); // Utilisation du mot de passe haché
+        $statement->bindValue(':country', $country, \PDO::PARAM_STR);
+        $statement->bindValue(':role', $role, \PDO::PARAM_STR);
+        $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+        $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+
+        return $statement->execute();
+    }
+
+    /**
+     * Enregistre un nouvel article dans la base de données.
+     *
+     * @param string $title Le titre de l'article.
+     * @param string $content Le contenu de l'article.
+     * @param string $category La catégorie de l'article.
+     * @param string $dateInserted La date d'insertion de l'article.
+     * @param string $dateUpdated La date de mise à jour de l'article.
+     * @return bool True si l'article est enregistré avec succès, sinon False.
+     */
+    public function createArticle($title, $content, $category, $dateInserted, $dateUpdated)
+    {
+        $query = "INSERT INTO " . $this->table . " (title, content, category, date_inserted, date_updated)
+              VALUES (:title, :content, :category, :date_inserted, :date_updated)";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':title', $title, \PDO::PARAM_STR);
+        $statement->bindValue(':content', $content, \PDO::PARAM_STR);
+        $statement->bindValue(':category', $category, \PDO::PARAM_STR);
+        $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+        $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+
+        return $statement->execute();
+    }
+
 }
