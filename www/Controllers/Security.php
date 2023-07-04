@@ -7,10 +7,12 @@ use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
 use App\Models\Article;
 use App\Models\User;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 class Security
 {
-
     public function login(): void
     {
         session_start();
@@ -24,6 +26,24 @@ class Security
             $user->setPassword($_POST['user_password']);
             $userExists = $user->existUser($user->getEmail(), $_POST['user_password']);
             if ($userExists) {
+//                $mail = new PHPMailer(true);
+//                $mail->isSMTP();
+//                $mail->Host = 'smtp.gmail.com';  // Remplacez par le serveur SMTP de votre choix
+//                $mail->SMTPAuth = true;
+//                $mail->Username = 'melvinpierre283@gmail.com';  // Votre adresse e-mail
+//                $mail->Password = 'votre_mot_de_passe';  // Votre mot de passe
+//                $mail->SMTPSecure = 'tls';
+//                $mail->Port = 587;
+//                $mail->setFrom('melvinpierre283@gmail.com', 'Melvin');  // Adresse d'envoi et nom de l'expéditeur
+//
+//                $to = $user->getEmail();
+//                $subject = 'Connexion à votre compte';
+//                $message = "Bonjour,\n\nUne connexion à votre compte a été effectuée avec l'adresse IP : " . $_SERVER['REMOTE_ADDR'];
+//                $mail->addAddress($to);
+//                $mail->Subject = $subject;
+//                $mail->Body = $message;
+//                $mail->send();
+
                 $_SESSION['user_email'] = $user->getEmail();
                 header('Location: accueil');
                 exit;
@@ -32,7 +52,6 @@ class Security
             }
         }
     }
-
 
     public function register(): void
     {
@@ -53,14 +72,42 @@ class Security
             $user->setRole('user');
             $user->setDateInserted($formattedDate);
             $user->setDateUpdated($formattedDate);
-            $user->save();
-            $_SESSION['user_email'] = $user->getEmail();
-            header('Location: accueil');
+            if (
+                !empty($_POST['user_firstname']) &&
+                !empty($_POST['user_lastname']) &&
+                !empty($_POST['user_email']) &&
+                !empty($_POST['user_password']) &&
+                !empty($_POST['user_country'])
+            ) {
+                $user->save();
+                $_SESSION['user_email'] = $user->getEmail();
+                header('Location: accueil');
+//                $mail = new PHPMailer();
+//            $mail->isSMTP();
+//            $mail->Host = 'smtp.gmail.com';  // Remplacez par le serveur SMTP de votre choix
+//            $mail->SMTPAuth = true;
+//            $mail->Username = 'melvinpierre283@gmail.com';  // Votre adresse e-mail
+//            $mail->Password = 'votre_mot_de_passe';  // Votre mot de passe
+//            $mail->SMTPSecure = 'tls';
+//            $mail->Port = 587;
+//            $mail->setFrom('melvinpierre283@gmail.com', 'Melvin Pierre');  // Adresse d'envoi et nom de l'expéditeur
+//
+//            $to = $user->getEmail();
+//            $subject = 'Bienvenue sur notre site';
+//            $message = "Bonjour " . $user->getFirstname() . ",\n\nBienvenue sur notre site !";
+//            $mail->addAddress($to);
+//            $mail->Subject = $subject;
+//            $mail->Body = $message;
+//            $mail->send();
+            } else {
+                echo "Informations manquantes";
+            }
             exit;
         }
     }
 
     /**
+     * @Route("/article", name="article")
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function article(): void
@@ -122,11 +169,9 @@ class Security
                 'role' => $user['role']
             ];
         }
-
         $view = new View("Auth/user", "user");
         $view->assign('table', $table);
     }
-
 
     public function logout(): void
     {

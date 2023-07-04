@@ -49,6 +49,7 @@ class Add
                         $page->setDateInserted($formattedDate);
                         $page->setDateUpdated($formattedDate);
                         $page->save();
+
                         header('Location: article?action=created');
                         exit;
                     }
