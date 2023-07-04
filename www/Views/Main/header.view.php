@@ -1,6 +1,7 @@
 <?php if ($user_pseudo !== null) : ?>
     <script src="./js/JQuery 3.5.1.js"></script>
     <script src="../../js/Main.js"></script>
+    <script src="../../js/Menu.js"></script>
     <header>
         <div class="container-fluid">
             <div class="row align-items-center">
@@ -26,11 +27,13 @@
                                     <a class="nav-link" href="./article">PAGES</a>
                                 </li>
                             <?php endif ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href=""><?php echo $user_pseudo ?></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-outline-primary" href="/logout">Déconnexion</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <?php echo $user_pseudo ?>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
+                                </ul>
                             </li>
                         </ul>
                     </nav>
