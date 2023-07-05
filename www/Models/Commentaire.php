@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Core\Sql;
 
-class Article extends Sql
+class Commentaire extends Sql
 {
+
     protected int $id = 0;
-    protected string $title;
+    protected int $post_id = 0;
     protected string $content;
-    protected int $author; // ID de l'auteur au lieu d'un objet User
-    protected string $category;
+    protected string $answer;
+    protected int $author;
     protected $date_inserted;
     protected $date_updated;
 
@@ -28,22 +29,6 @@ class Article extends Sql
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
     }
 
     /**
@@ -116,20 +101,34 @@ class Article extends Sql
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getCategory(): string
+    public function getPostId(): int
     {
-        return $this->category;
+        return $this->post_id;
     }
 
     /**
-     * @param string $category
+     * @param int $post_id
      */
-    public function setCategory(string $category): void
+    public function setPostId(int $post_id): void
     {
-        $this->category = $category;
+        $this->post_id = $post_id;
     }
 
+    /**
+     * @return string
+     */
+    public function getAnswer(): string
+    {
+        return $this->answer;
+    }
 
+    /**
+     * @param string $answer
+     */
+    public function setAnswer(string $answer): void
+    {
+        $this->answer = $answer;
+    }
 }

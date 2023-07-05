@@ -13,7 +13,7 @@
 <?php include "Main/header.view.php"; ?>
 <div class="container">
 <h1>Bienvenue dans la nouvelle saison !</h1>
-<h2> Commentaires </h2>
+    <?php include $this->view; ?>
 </div>
 <?php include "Main/footer.view.php"; ?>
 </body>

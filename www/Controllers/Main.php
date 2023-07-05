@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Menu;
 use App\Core\View;
+use App\Models\Commentaire;
 use App\Models\User;
 
 class Main
@@ -21,7 +22,26 @@ class Main
             $_SESSION['role'] = $user_role;
             $_SESSION['id'] = $user_id;
 
-            $view = new View("Main/header", "dashboard");
+            $commentaire = new Commentaire();
+            $commentaires = $commentaire->getAllValue();
+            $table = [];
+
+            foreach ($commentaires as $com) {
+                $userId = $com['author'];
+                $userData = $user->getById($userId);
+
+                $table[] = [
+                    'id' => $com['id'],
+                    'content' => $com['content'],
+                    'author' => $userData['lastname'] . ' ' . $userData['firstname'],
+                    'answer' => $com['answer'],
+                    'date_inserted' => $com['date_inserted'],
+                    'date_updated' => $com['date_updated']
+                ];
+            }
+
+            $view = new View("Auth/accueil", "dashboard");
+            $view->assign('table', $table);
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
         } else {
