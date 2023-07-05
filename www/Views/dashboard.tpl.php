@@ -11,10 +11,6 @@
 </head>
 <body>
 <?php include "Main/header.view.php"; ?>
-<div class="container">
-<h1>Bienvenue dans la nouvelle saison !</h1>
-    <?php include $this->view; ?>
-</div>
-<?php include "Main/footer.view.php"; ?>
+    <?php include $this->view; ?><?php include "Main/footer.view.php"; ?>
 </body>
 </html>
