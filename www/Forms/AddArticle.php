@@ -36,6 +36,7 @@ class AddArticle extends AForm
         ];
 
         $submit = $row ? "Modifier" : "Créer";
+        $typeArticle = $row ? "Modifier" : "Créer";
 
         return [
             "config" => [
@@ -43,6 +44,7 @@ class AddArticle extends AForm
                 "action" => "",
                 "enctype" => "",
                 "submit" => $submit,
+                "typeArticle" => $typeArticle
             ],
             "inputs" => $inputs
         ];

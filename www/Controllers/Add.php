@@ -29,7 +29,6 @@ class Add
             $view->assign('user_role', $user_role);
             if ($form->isSubmit()) {
                 $page = new Article();
-                $user = new User();
                 if (empty($_POST['title'])) {
                     echo 'L\'article doit avoir un titre';
                 } else if (empty($_POST['content'])) {
