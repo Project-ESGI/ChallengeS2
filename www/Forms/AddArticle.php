@@ -21,6 +21,7 @@ class AddArticle extends AForm
             ],
             "content" => [
                 "type" => "textarea",
+                "className"=>"form-control",
                 "placeholder" => "Contenu de l'article",
                 "min" => 10,
                 "max" => 500,

@@ -19,6 +19,10 @@ form-container border d-flex align-items-center justify-content-center">
                             </option>
                         <?php endforeach; ?>
                     </select>
+                <?php elseif ($input["type"] == "textarea"): ?>
+                    <textarea class="form-control" name="<?= $name; ?>" type="<?= $input["type"] ?>"
+                              placeholder="<?= $input["placeholder"] ?>"
+                              rows="5"><?= isset($input["value"]) ? $input["value"] : '' ?></textarea>
                 <?php else: ?>
                     <input class="form-control" name="<?= $name; ?>" type="<?= $input["type"] ?>"
                            placeholder="<?= $input["placeholder"] ?>"
