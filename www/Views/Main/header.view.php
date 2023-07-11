@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-6">
                     <nav id="site-nav">
-                        <ul class="nav">
+                        <ul class="nav flex-nowrap">
                             <li class="nav-item">
                                 <a class="nav-link" href="./accueil">ACCUEIL</a>
                             </li>
@@ -28,7 +28,8 @@
                                 </li>
                             <?php endif ?>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
                                     <?php echo $user_pseudo ?>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
