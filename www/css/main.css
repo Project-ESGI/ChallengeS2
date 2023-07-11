@@ -21,6 +21,9 @@ header {
   width: 100%;
   z-index: 10;
 }
+header .col-2 {
+  z-index: 11;
+}
 header img {
   width: 50px;
 }
@@ -60,14 +63,15 @@ img {
     justify-content: center;
   }
   header nav {
-    position: absolute;
+    position: fixed;
     left: 0;
-    top: -750px;
+    top: -100vh;
     width: 100vw;
     height: 100vh;
-    background-color: #73ed4a;
+    background-color: #17c3ee;
     color: #FFFFFF;
-    transition: top 1s;
+    transition: top 0.5s;
+    z-index: 10;
   }
   header nav ul {
     flex-direction: column;
@@ -117,13 +121,6 @@ footer {
   padding: 1rem 0;
 }
 
-nav div a img {
-  transition: 0.5s all ease-in-out;
-}
-nav div a img:hover {
-  transform: translateY(-5px);
-}
-
 .container {
   margin: 20px;
 }
@@ -138,6 +135,29 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+.form-container {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 73vh;
+}
+
+.form-ajouter-article {
+  background-image: url("../../images/ajouterPage.jpeg");
+}
+
+.form-modifier-article {
+  background-image: url("../../images/modifierPage.jpg");
+}
+
+.form-ajouter-user {
+  background-image: url("../../images/ajouterUser.jpg");
+}
+
+.form-modifier-user {
+  background-image: url("../../images/modifierUser.jpg");
 }
 
 /*# sourceMappingURL=main.css.map */

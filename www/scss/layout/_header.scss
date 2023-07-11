@@ -1,20 +1,22 @@
 @import '../partials/color';
 @import '../partials/fonts';
 
-.container-header{
-    justify-content: space-between;
-    max-width: 1200px;
-    display: flex;
-    margin: auto;
+.container-header {
+	justify-content: space-between;
+	max-width: 1200px;
+	display: flex;
+	margin: auto;
 	align-items: center;
 }
-.lien-nav{
-    display: flex;
-    width: 450px;
-    justify-content: space-between;
-    align-items: center;
+
+.lien-nav {
+	display: flex;
+	width: 450px;
+	justify-content: space-between;
+	align-items: center;
 }
-header{
+
+header {
 	background-color: $background-secondary;
 	padding: 1rem 0;
 	position: sticky;
@@ -22,98 +24,114 @@ header{
 	width: 100%;
 	z-index: 10;
 
-	& img{
+	& .col-2{
+		z-index: 11;
+	}
+
+	& img {
 		width: 50px;
-		&.rotate-image{
-		transition: transform 0.5s;
-		animation: rotate 5s infinite linear;
+
+		&.rotate-image {
+			transition: transform 0.5s;
+			animation: rotate 5s infinite linear;
 		}
 	}
-	& nav ul{
+
+	& nav ul {
 		list-style: none;
 	}
-	& nav li a{
+
+	& nav li a {
 		padding: 0.5em;
 		color: $primary;
 		text-decoration: none;
 
-		&:hover{
+		&:hover {
 			color: $primary-hover;
 		}
 	}
 }
-img{
+
+img {
 	max-width: 100%;
 }
 
-@media screen and (min-width: 1000px){
-	#menu-button{
+@media screen and (min-width: 1000px) {
+	#menu-button {
 		display: none;
 	}
 }
-@media screen and (max-width: 999px){
 
-	.lien-nav{
+@media screen and (max-width: 999px) {
+	.lien-nav {
 		flex-direction: column;
 		height: 300px;
 	}
 
-	#site-nav{
+	#site-nav {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
-header{
-	& nav{
-		position: absolute;
-		left: 0;
-		top: -750px;
-		width: 100vw;
-		height: 100vh;
-		background-color: $background-primary;
-        color:$primary;
-		transition: top 1s;
-		& ul{
-			flex-direction: column;
-			height: 100%;
-			justify-content: center;
-			align-items: center;
-		}
-		&.open{
-			top: 0;
-		}
-		& li a{
+	header {
+		& nav {
+			position: fixed;
+			left: 0;
+			top: -100vh;
+			width: 100vw;
+			height: 100vh;
+			background-color: $background-secondary;
 			color: $primary;
+			transition: top 0.5s;
+			z-index: 10;
+
+			& ul {
+				flex-direction: column;
+				height: 100%;
+				justify-content: center;
+				align-items: center;
+			}
+
+			&.open {
+				top: 0;
+			}
+
+			& li a {
+				color: $primary;
+			}
+		}
+
+		& .container {
+			justify-content: space-between;
+		}
+
+		& div button {
+			z-index: 10;
+			width: 2rem;
+			height: 2rem;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: contain;
+
+			&#menu-button {
+				background-image: url('../../images/menu.svg');
+				margin-left: 15px;
+			}
+
+			&#cancel-button {
+				background-image: url('../../images/cancel.svg');
+				margin-left: 15px;
+			}
 		}
 	}
-	& .container{
-		justify-content: space-between;
-	}	
-	& div button{
-		z-index: 10;
-		width: 2rem;
-		height: 2rem;
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: contain;
-		&#menu-button{
-			background-image: url('../../images/menu.svg');
-			margin-left: 15px;
-	}
-		&#cancel-button{
-			background-image: url('../../images/cancel.svg');
-			margin-left: 15px;
-		}
-}
-}
 }
 
 @keyframes rotate {
 	0% {
-	  transform: rotateZ(0deg);
+		transform: rotateZ(0deg);
 	}
 	100% {
-	  transform: rotateZ(360deg);
+		transform: rotateZ(360deg);
 	}
-  }
+}

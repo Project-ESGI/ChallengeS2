@@ -1,0 +1,25 @@
+@import '../partials/color';
+@import '../partials/fonts';
+
+.form-container {
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   min-height: 73vh;
+}
+
+.form-ajouter-article{
+   background-image: url('../../images/ajouterPage.jpeg');
+}
+
+.form-modifier-article{
+   background-image: url('../../images/modifierPage.jpg');
+}
+
+.form-ajouter-user{
+   background-image: url('../../images/ajouterUser.jpg');
+}
+
+.form-modifier-user{
+   background-image: url('../../images/modifierUser.jpg');
+}
