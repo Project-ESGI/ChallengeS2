@@ -37,18 +37,12 @@ class Add
                     $title = $_POST['title'];
                     $content = $_POST['content'];
                     $category = $_POST['category'];
+                    $author = $_SESSION['id']; // Définir l'ID de l'auteur de la session actuelle
 
                     if ($page->existsWith($title)) {
                         echo 'Une page avec ce titre existe déjà';
                     } else {
-                        $page->setTitle($title);
-                        $page->setContent($content);
-                        $page->setAuthorId($_SESSION['id']); // Définir l'ID de l'auteur de la session actuelle
-                        $page->setCategory($category);
-                        $page->setDateInserted($formattedDate);
-                        $page->setDateUpdated($formattedDate);
-                        $page->save();
-
+                        $page->actionArticle($title, $content, $category, $author, $formattedDate, $formattedDate);
                         header('Location: article?action=created');
                         exit;
                     }

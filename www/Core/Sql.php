@@ -227,21 +227,64 @@ abstract class Sql
      * @param string $title Le titre de l'article.
      * @param string $content Le contenu de l'article.
      * @param string $category La catégorie de l'article.
+     * @param int $authorId L'ID de l'auteur de l'article.
      * @param string $dateInserted La date d'insertion de l'article.
      * @param string $dateUpdated La date de mise à jour de l'article.
      * @return bool True si l'article est enregistré avec succès, sinon False.
      */
-    public function createArticle($title, $content, $category, $dateInserted, $dateUpdated)
+    public function actionArticle($title, $content, $category, $author = null, $dateInserted = null, $dateUpdated)
     {
-        $query = "INSERT INTO " . $this->table . " (title, content, category, date_inserted, date_updated)
-              VALUES (:title, :content, :category, :date_inserted, :date_updated)";
-        $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':title', $title, \PDO::PARAM_STR);
-        $statement->bindValue(':content', $content, \PDO::PARAM_STR);
-        $statement->bindValue(':category', $category, \PDO::PARAM_STR);
-        $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
-        $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE title = :title";
+        $parameters = [':title' => $title];
 
-        return $statement->execute();
+        $statement = $this->pdo->prepare($query);
+        $statement->execute($parameters);
+        $count = $statement->fetchColumn();
+
+        if ($count > 0) {
+            // L'article existe déjà, effectuer une mise à jour
+            $query = "UPDATE " . $this->table . " SET content = :content, category = :category, date_updated = :date_updated";
+
+            if ($author !== null) {
+                $query .= ", author = :author";
+            }
+
+            if ($dateInserted !== null) {
+                $query .= ", date_inserted = :date_inserted";
+            }
+
+            $query .= " WHERE title = :title";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':content', $content, \PDO::PARAM_STR);
+            $statement->bindValue(':category', $category, \PDO::PARAM_STR);
+            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+
+            if ($author !== null) {
+                $statement->bindValue(':author', $author, \PDO::PARAM_INT);
+            }
+
+            if ($dateInserted !== null) {
+                $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+            }
+
+            $statement->bindValue(':title', $title, \PDO::PARAM_STR);
+
+            return $statement->execute();
+        } else {
+            // L'article n'existe pas, effectuer une insertion
+            $query = "INSERT INTO " . $this->table . " (title, content, category, author, date_inserted, date_updated)
+        VALUES (:title, :content, :category, :author, :date_inserted, :date_updated)";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':title', $title, \PDO::PARAM_STR);
+            $statement->bindValue(':content', $content, \PDO::PARAM_STR);
+            $statement->bindValue(':category', $category, \PDO::PARAM_STR);
+            $statement->bindValue(':author', $author, \PDO::PARAM_INT);
+            $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+
+            return $statement->execute();
+        }
     }
 }

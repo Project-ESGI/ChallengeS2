@@ -54,14 +54,9 @@ class Update
                         if ($page->existsWith($title, $page->getId())) {
                             echo 'Un article avec ce titre existe déjà';
                         } else {
-                            $page->setTitle($title);
-                            $page->setContent($content);
-                            $page->setCategory($category);
-                            $page->setDateUpdated($formattedDate);
+                            $page->actionArticle($title, $content, $category, null, null, $formattedDate);
                             header('Location: article?action=updated');
-                            $page->save();
                             exit;
-
                         }
                     }
                 }
