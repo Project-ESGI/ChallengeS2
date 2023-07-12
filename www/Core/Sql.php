@@ -227,8 +227,8 @@ abstract class Sql
      * @param string $title Le titre de l'article.
      * @param string $content Le contenu de l'article.
      * @param string $category La catégorie de l'article.
-     * @param int $authorId L'ID de l'auteur de l'article.
-     * @param string $dateInserted La date d'insertion de l'article.
+     * @param null $author L'id de l'autheur de l'article
+     * @param null $dateInserted La date d'insertion de l'article.
      * @param string $dateUpdated La date de mise à jour de l'article.
      * @return bool True si l'article est enregistré avec succès, sinon False.
      */

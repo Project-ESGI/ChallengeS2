@@ -26,7 +26,6 @@ class Add
             $view = new View("Auth/addArticle", "article");
             $date = new \DateTime();
             $formattedDate = $date->format('Y-m-d H:i:s');
-           var_dump($formattedDate);
 
             $view->assign('form', $form->getConfig());
             $view->assign('user_pseudo', $user_pseudo);

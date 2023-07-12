@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="./images/soccerBallBlack.svg">
     <script src="./js/add.js"></script>
+    <script src="./js/confirmationAction.js"></script>
 
     <title>User</title>
 </head>
