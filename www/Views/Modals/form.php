@@ -1,10 +1,12 @@
+<?php if (isset($config["config"]["typeArticle"]) || isset($config["config"]["typeUser"])): ?>
 <div class="<?php if ($config["config"]["typeArticle"] === "Créer") : ?>form-ajouter-article
-<?php elseif ($config["config"]["typeArticle"] === "Modifier") : ?>form-modifier-article
-<?php elseif ($config["config"]["typeUser"] === "Créer") : ?>form-ajouter-user
-<?php elseif ($config["config"]["typeUser"] === "Modifier") : ?>form-modifier-user
-<?php endif; ?>
+    <?php elseif ($config["config"]["typeArticle"] === "Modifier") : ?>form-modifier-article
+    <?php elseif ($config["config"]["typeUser"] === "Créer") : ?>form-ajouter-user
+    <?php elseif ($config["config"]["typeUser"] === "Modifier") : ?>form-modifier-user
+    <?php endif; ?>
 
 form-container border d-flex align-items-center justify-content-center">
+    <?php endif; ?>
     <form class="d-flex flex-column align-items-center justify-content-center mt-4"
           method="<?= $config["config"]["method"] ?? "GET" ?>" action="<?= $config["config"]["action"] ?>">
         <?php foreach ($config["inputs"] as $name => $input): ?>
@@ -34,4 +36,6 @@ form-container border d-flex align-items-center justify-content-center">
         <input class="btn btn-primary btn-custom mt-3" type="submit" name="submit"
                value="<?= $config["config"]["submit"] ?>">
     </form>
+    <?php if (isset($config["config"]["typeArticle"]) || isset($config["config"]["typeUser"])): ?>
 </div>
+<?php endif; ?>
