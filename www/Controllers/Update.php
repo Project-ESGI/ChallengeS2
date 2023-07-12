@@ -7,6 +7,8 @@ use App\Core\View;
 use App\Forms\AddArticle;
 use App\Models\Article;
 use App\Models\User;
+date_default_timezone_set('Europe/Paris');
+
 
 class Update
 {

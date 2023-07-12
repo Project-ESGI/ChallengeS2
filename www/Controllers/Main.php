@@ -6,6 +6,7 @@ use App\Core\Menu;
 use App\Core\View;
 use App\Models\Commentaire;
 use App\Models\User;
+date_default_timezone_set('Europe/Paris');
 
 class Main
 {
