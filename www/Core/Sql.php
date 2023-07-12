@@ -325,4 +325,12 @@ abstract class Sql
 
         return $count > 0;
     }
+
+    public function deleteByCommentId($commentId) {
+        $query = "DELETE FROM esgi_signalement WHERE comment_id = :comment_id";
+        $params = array(':comment_id' => $commentId);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute($params);
+    }
+
 }

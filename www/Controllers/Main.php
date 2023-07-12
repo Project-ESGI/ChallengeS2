@@ -83,6 +83,7 @@ class Main
                     exit;
                 }
                 if ($comment->reportTrue($comment->getContent()) || $comment->getReport() >= 4) {
+                    $signalement->deleteByCommentId($comment->getId());
                     $comment->delete();
                 }
                 header('Location: accueil?action=reported');
