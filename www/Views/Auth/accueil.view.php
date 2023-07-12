@@ -31,23 +31,9 @@
                         <label for="message">Message</label>
                         <textarea name="msg" cols="30" rows="5" class="form-control"></textarea>
                     </div>
+                    <br>
                     <div class="form-group">
-                        <label for="name">Nom</label>
-                        <input type="text" name="name" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" name="email" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <p class="text-secondary">Si vous avez un compte <a href="#" class="alert-link">gravatar</a>, votre adresse sera utilisée pour afficher votre photo de profil.</p>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="check" id="subscribe">
-                        <label class="form-check-label" for="subscribe">M'abonner à la newsletter</label>
-                    </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-primary">Publier le commentaire</button>
+                        <a href="addcommentaire?id=<?php echo $commentaire['id']; ?>" class="btn btn-primary">Publier le commentaire</a>
                     </div>
                 </form>
             </div>
