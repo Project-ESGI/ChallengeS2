@@ -43,7 +43,7 @@ class Add
                     } else {
                         $page->setTitle($title);
                         $page->setContent($content);
-                        $page->setAuthorId($_SESSION['id']); // Définir l'ID de l'auteur sur la session
+                        $page->setAuthorId($_SESSION['id']); // Définir l'ID de l'auteur de la session actuelle
                         $page->setCategory($category);
                         $page->setDateInserted($formattedDate);
                         $page->setDateUpdated($formattedDate);

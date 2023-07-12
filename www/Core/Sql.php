@@ -22,7 +22,9 @@ abstract class Sql
     }
 
     /**
-     * Sauvegarde l'objet en base de données.
+     * Enregistre l'objet dans la base de données.
+     *
+     * @return void
      */
     public function save(): void
     {
@@ -47,7 +49,13 @@ abstract class Sql
         $queryPrepared->execute($columns);
     }
 
-    // Fonction existUser
+    /**
+     * Vérifie si un utilisateur existe dans la base de données avec l'email et le mot de passe donnés.
+     *
+     * @param string $email L'email de l'utilisateur à vérifier.
+     * @param string $password Le mot de passe de l'utilisateur à vérifier.
+     * @return bool True si l'utilisateur existe avec les identifiants donnés, sinon False.
+     */
     public function existUser($email, $password): bool
     {
         $queryPrepared = $this->pdo->prepare("SELECT password FROM " . $this->table . " WHERE email = :email");
@@ -63,6 +71,12 @@ abstract class Sql
         return password_verify($password, $hash);
     }
 
+
+    /**
+     * Supprime l'enregistrement de la base de données.
+     *
+     * @return void
+     */
     public function delete(): void
     {
         $queryPrepared = $this->pdo->prepare("DELETE FROM " . $this->table . " WHERE id=:id");
