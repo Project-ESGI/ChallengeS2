@@ -17,8 +17,7 @@ CREATE TABLE "public"."esgi_article" (
 
 INSERT INTO "esgi_article" ("id", "title", "content", "author", "category", "date_inserted", "date_updated") VALUES
 (26,	'Test',	'Contenu de mon article ! ',	4,	'Match entrainement',	'2023-07-12 10:16:46',	'2023-07-12 12:43:35'),
-(40,	'Test2',	'Contenu de mon article ! ',	4,	'Match entrainement',	'2023-07-12 10:16:46',	'2023-07-12 12:43:35'),
-(49,	'Test8',	'dskvjreirgt',	4,	'Match entrainement',	'2023-07-12 14:01:23',	'2023-07-12 14:04:20');
+(40,	'Test2',	'Contenu de mon article ! ',	4,	'Match entrainement',	'2023-07-12 10:16:46',	'2023-07-12 12:43:35');
 
 DROP TABLE IF EXISTS "esgi_commentaire";
 DROP SEQUENCE IF EXISTS esgi_commentaire_id_seq;
@@ -53,13 +52,9 @@ CREATE TABLE "public"."esgi_signalement" (
 ) WITH (oids = false);
 
 INSERT INTO "esgi_signalement" ("id", "comment_id", "user_id", "date_inserted") VALUES
-(1,	8,	4,	'16:50:15'),
 (2,	9,	4,	'16:50:39'),
-(4,	10,	4,	'17:02:35'),
-(9,	15,	4,	'17:13:39'),
 (10,	14,	4,	'17:13:42'),
 (11,	12,	4,	'17:14:26'),
-(12,	14,	12,	'17:15:36'),
 (13,	12,	12,	'17:15:51');
 
 DROP TABLE IF EXISTS "esgi_user";
@@ -91,4 +86,7 @@ ALTER TABLE ONLY "public"."esgi_article" ADD CONSTRAINT "esgi_article_author_fke
 
 ALTER TABLE ONLY "public"."esgi_commentaire" ADD CONSTRAINT "esgi_commentaire_author_fkey" FOREIGN KEY (author) REFERENCES esgi_user(id) NOT DEFERRABLE;
 
--- 2023-07-12 15:26:08.43738+00
+ALTER TABLE ONLY "public"."esgi_signalement" ADD CONSTRAINT "esgi_signalement_comment_id_fkey" FOREIGN KEY (comment_id) REFERENCES esgi_commentaire(id) NOT DEFERRABLE;
+ALTER TABLE ONLY "public"."esgi_signalement" ADD CONSTRAINT "esgi_signalement_user_id_fkey" FOREIGN KEY (user_id) REFERENCES esgi_user(id) NOT DEFERRABLE;
+
+-- 2023-07-12 16:00:07.779178+00
