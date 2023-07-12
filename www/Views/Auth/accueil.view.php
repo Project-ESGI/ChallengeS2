@@ -18,7 +18,7 @@
                         <br>
                         <p><?php echo $commentaire['content']; ?></p>
                         <div class="comment-details">
-                            <a href="signalercommentaire?id=<?php echo $commentaire['id']; ?>" class="btn btn-link">Signaler le commentaire</a>
+                            <a href="report?id=<?php echo $commentaire['id']; ?>" class="btn btn-link">Signaler le commentaire</a>
                             <a href="repondrecommentaire?id=<?php echo $commentaire['id']; ?>" class="btn btn-link">Répondre</a>
                         </div>
                     </div>

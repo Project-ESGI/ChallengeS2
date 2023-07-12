@@ -5,7 +5,9 @@ namespace App\Controllers;
 use App\Core\Menu;
 use App\Core\View;
 use App\Models\Commentaire;
+use App\Models\Signalement;
 use App\Models\User;
+
 date_default_timezone_set('Europe/Paris');
 
 class Main
@@ -56,4 +58,42 @@ class Main
     {
         $view = new View("Auth/installer", "installer");
     }
+
+    public function report()
+    {
+        session_start();
+        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+            $id = $_GET['id'];
+            $comment = new Commentaire();
+            $comment->setIdValue($id);
+            $report = $comment->getReport() + 1;
+
+            if ($comment->getId()) {
+                $signalement = new Signalement();
+                $signalement->setCommentId($comment->getId());
+                $signalement->setUserId($_SESSION['id']);
+
+                if (!$signalement->existeSignalement()) {
+                    $signalement->setDateInserted(date('Y-m-d H:i:s'));
+                    $signalement->save();
+                    $comment->setReport($report);
+                    $comment->save();
+                } else {
+                    header('Location: accueil?action=existreported');
+                    exit;
+                }
+                if ($comment->reportTrue($comment->getContent()) || $comment->getReport() >= 4) {
+                    $comment->delete();
+                }
+                header('Location: accueil?action=reported');
+                exit;
+
+            } else {
+                http_response_code(404);
+                include('./Views/Error/404.view.php');
+                exit;
+            }
+        }
+    }
+
 }

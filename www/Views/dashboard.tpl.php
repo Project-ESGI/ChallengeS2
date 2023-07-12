@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="./images/soccerBallBlack.svg">
-        <title>Accueil</title>
+    <script src="./js/ActionCrud.js"></script>
+
+    <title>Accueil</title>
 </head>
 <body>
 <?php include "Main/header.view.php"; ?>

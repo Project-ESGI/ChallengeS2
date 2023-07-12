@@ -8,12 +8,12 @@ class Commentaire extends Sql
 {
 
     protected int $id = 0;
-    protected int $post_id = 0;
     protected string $content;
     protected string $answer;
     protected int $author;
     protected $date_inserted;
     protected $date_updated;
+    protected int $report = 0;
 
     /**
      * @return int
@@ -101,22 +101,6 @@ class Commentaire extends Sql
     }
 
     /**
-     * @return int
-     */
-    public function getPostId(): int
-    {
-        return $this->post_id;
-    }
-
-    /**
-     * @param int $post_id
-     */
-    public function setPostId(int $post_id): void
-    {
-        $this->post_id = $post_id;
-    }
-
-    /**
      * @return string
      */
     public function getAnswer(): string
@@ -130,5 +114,21 @@ class Commentaire extends Sql
     public function setAnswer(string $answer): void
     {
         $this->answer = $answer;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReport(): int
+    {
+        return $this->report;
+    }
+
+    /**
+     * @param int $report
+     */
+    public function setReport(int $report): void
+    {
+        $this->report = $report;
     }
 }

@@ -287,4 +287,42 @@ abstract class Sql
             return $statement->execute();
         }
     }
+
+    /**
+     * Vérifie si le texte contient des mots vulgaires.
+     *
+     * @param string $texte Le texte à vérifier.
+     * @return bool True si des mots vulgaires sont présents, sinon False.
+     */
+    function reportTrue($texte)
+    {
+        $motsVulgaires = array("mot1", "mot2", "mot3");
+
+        $texte = strtolower($texte);
+
+        foreach ($motsVulgaires as $mot) {
+            if (strpos($texte, $mot) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Vérifie si un signalement existe déjà pour le commentaire et l'utilisateur actuels.
+     *
+     * @return bool True si un signalement existe, sinon False.
+     */
+    public function existeSignalement()
+    {
+        $query = "SELECT COUNT(*) FROM esgi_signalement WHERE comment_id = :commentId AND user_id = :userId";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':commentId', $this->comment_id, \PDO::PARAM_INT);
+        $statement->bindValue(':userId', $this->user_id, \PDO::PARAM_INT);
+        $statement->execute();
+        $count = $statement->fetchColumn();
+
+        return $count > 0;
+    }
 }

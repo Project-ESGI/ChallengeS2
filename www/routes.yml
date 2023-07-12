@@ -9,7 +9,7 @@
 
 /report:
   controller: Main
-  action: index
+  action: report
   security: true
 
 /login:

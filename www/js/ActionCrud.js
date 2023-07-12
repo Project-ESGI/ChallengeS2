@@ -17,6 +17,14 @@ document.addEventListener("DOMContentLoaded", function () {
             alert(`${pageName} supprimé avec succès !`);
             location = pageName;
             break;
+        case "reported":
+            alert(`Commentaire signalé avec succès !`);
+            location = pageName;
+            break;
+        case "existreported":
+            alert(`Commentaire déjà signalé !`);
+            location = pageName;
+            break;
     }
 
     if (location) {
