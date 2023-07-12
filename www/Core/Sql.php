@@ -222,8 +222,7 @@ abstract class Sql
     }
 
     /**
-     * Enregistre un nouvel article dans la base de données.
-     *
+     *Effectue la création d'un nouvel article ou met à jour un article existant dans la base de données.     *
      * @param string $title Le titre de l'article.
      * @param string $content Le contenu de l'article.
      * @param string $category La catégorie de l'article.
