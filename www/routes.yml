@@ -7,6 +7,11 @@
   action: index
   security: true
 
+/report:
+  controller: Main
+  action: index
+  security: true
+
 /login:
   controller: Security
   action: login
@@ -23,37 +28,34 @@
   controller: Security
   action: article
   security: true
-  role: [ADMIN]
+  role: [ ADMIN ]
 
 /addarticle:
   controller: Add
   action: addArticle
   security: true
-  role: [ADMIN, EDITOR]
+  role: [ ADMIN ]
 
 /adduser:
   controller: Add
   action: addUser
+  security: true
+  role: [ ADMIN ]
 
 /modifyarticle:
   controller: Update
   action: modifyArticle
   security: true
-  role: [ADMIN, EDITOR]
+  role: [ ADMIN ]
 
 /deletearticle:
   controller: Delete
   action: deleteArticle
   security: true
-  role: [ADMIN, EDITOR]
+  role: [ ADMIN ]
 
 /user:
   controller: Security
   action: user
-
-
-/admin:
-  controller: Admin
-  action: dashboard
   security: true
-  role: [ADMIN, EDITOR]
+  role: [ ADMIN ]
