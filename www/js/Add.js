@@ -6,15 +6,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (action) {
         case "created":
-            alert(`${pageName} créé avec succès`);
+            alert(`${pageName} créé avec succès !`);
             location = pageName;
             break;
         case "updated":
-            alert(`${pageName} modifié avec succès`);
+            alert(`${pageName} modifié avec succès !`);
             location = pageName;
             break;
         case "deleted":
-            alert(`${pageName} supprimé avec succès`);
+            alert(`${pageName} supprimé avec succès !`);
             location = pageName;
             break;
     }
