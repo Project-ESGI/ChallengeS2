@@ -1,3 +1,5 @@
+-- Adminer 4.8.1 PostgreSQL 15.2 (Debian 15.2-1.pgdg110+1) dump
+
 DROP TABLE IF EXISTS "esgi_article";
 DROP SEQUENCE IF EXISTS esgi_article_id_seq;
 CREATE SEQUENCE esgi_article_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
@@ -14,8 +16,9 @@ CREATE TABLE "public"."esgi_article" (
 ) WITH (oids = false);
 
 INSERT INTO "esgi_article" ("id", "title", "content", "author", "category", "date_inserted", "date_updated") VALUES
-(12,	't',	'u',	1,	'Match entrainement',	'2023-06-29 10:55:36',	'2023-06-30 08:01:37'),
-(23,	'iehit',	'do',	4,	'Exercice',	'2023-07-04 15:58:25',	'2023-07-04 18:19:16');
+(26,	'Test',	'Contenu de mon article ! ',	4,	'Match entrainement',	'2023-07-12 10:16:46',	'2023-07-12 12:43:35'),
+(40,	'Test2',	'Contenu de mon article ! ',	4,	'Match entrainement',	'2023-07-12 10:16:46',	'2023-07-12 12:43:35'),
+(49,	'Test8',	'dskvjreirgt',	4,	'Match entrainement',	'2023-07-12 14:01:23',	'2023-07-12 14:04:20');
 
 DROP TABLE IF EXISTS "esgi_commentaire";
 DROP SEQUENCE IF EXISTS esgi_commentaire_id_seq;
@@ -28,26 +31,36 @@ CREATE TABLE "public"."esgi_commentaire" (
     "date_inserted" timestamp NOT NULL,
     "date_updated" timestamp NOT NULL,
     "author" integer NOT NULL,
+    "report" integer,
     CONSTRAINT "esgi_commentaire_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 
-INSERT INTO "esgi_commentaire" ("id", "content", "answer", "date_inserted", "date_updated", "author") VALUES
-(1,	'J''ai vu le match de mbappé !',	'',	'2023-07-05 16:56:26.414152',	'2023-07-05 16:56:26.414152',	4);
+INSERT INTO "esgi_commentaire" ("id", "content", "answer", "date_inserted", "date_updated", "author", "report") VALUES
+(9,	'J''ai vu le match de mbappé !',	'',	'2023-07-05 16:56:26.414152',	'2023-07-05 16:56:26.414152',	4,	3),
+(14,	'J''ai vu le match de mbappé !',	'',	'2023-07-05 16:56:26.414152',	'2023-07-05 16:56:26.414152',	4,	3),
+(12,	'new comment',	'',	'2023-07-05 16:56:26.414152',	'2023-07-05 16:56:26.414152',	4,	3);
 
-DROP TABLE IF EXISTS "esgi_page";
-DROP SEQUENCE IF EXISTS "Page_id_seq";
-CREATE SEQUENCE "Page_id_seq" INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
+DROP TABLE IF EXISTS "esgi_signalement";
+DROP SEQUENCE IF EXISTS esgi_signalement_id_seq;
+CREATE SEQUENCE esgi_signalement_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
-CREATE TABLE "public"."esgi_page" (
-    "id" integer DEFAULT nextval('"Page_id_seq"') NOT NULL,
-    "title" character varying(48) NOT NULL,
-    "date_inserted" date,
-    "date_updated" date,
-    CONSTRAINT "Page_pkey" PRIMARY KEY ("id")
+CREATE TABLE "public"."esgi_signalement" (
+    "id" integer DEFAULT nextval('esgi_signalement_id_seq') NOT NULL,
+    "comment_id" integer NOT NULL,
+    "user_id" integer NOT NULL,
+    "date_inserted" time without time zone NOT NULL,
+    CONSTRAINT "esgi_signalement_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 
-INSERT INTO "esgi_page" ("id", "title", "date_inserted", "date_updated") VALUES
-(1,	'h',	'2023-06-29',	'2023-06-29');
+INSERT INTO "esgi_signalement" ("id", "comment_id", "user_id", "date_inserted") VALUES
+(1,	8,	4,	'16:50:15'),
+(2,	9,	4,	'16:50:39'),
+(4,	10,	4,	'17:02:35'),
+(9,	15,	4,	'17:13:39'),
+(10,	14,	4,	'17:13:42'),
+(11,	12,	4,	'17:14:26'),
+(12,	14,	12,	'17:15:36'),
+(13,	12,	12,	'17:15:51');
 
 DROP TABLE IF EXISTS "esgi_user";
 DROP SEQUENCE IF EXISTS esgi_users_idfrf_seq;
@@ -71,8 +84,11 @@ INSERT INTO "esgi_user" ("id", "firstname", "lastname", "email", "date_inserted"
 (1,	'Test',	'Test',	'Test@email.com',	'2023-06-29 08:54:35.26107',	'2023-06-29 08:54:35.26107',	'Fr',	'f',	'knvijerberh',	'admin'),
 (3,	'Mpfvjibhi',	'NVIOEHFBOIFE',	'dzneiohei@gmail',	'2023-06-30 12:46:12',	'2023-06-30 12:46:12',	'FR',	NULL,	'$2y$10$Uv0Y3fJ2V0wM62Xh4dYOZe2SarJBsMX.qfA7wmgCXSiB2j.ibmIuy',	NULL),
 (5,	'Seoh',	'NBTBROI',	'bitijt@gmail',	'2023-07-03 00:00:00',	'2023-07-03 00:00:00',	'PL',	NULL,	'$2y$10$rwa8G69gU.gxN3N1DEl4pujFD95xDxhwJnjZuLHAwWz2aAYqDp2Vq',	NULL),
-(4,	'Prénom',	'NomFamille',	'melvinpierre283@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	NULL,	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin');
+(4,	'Prénom',	'NomFamille',	'melvinpierre283@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	NULL,	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin'),
+(12,	'Prénom',	'NomFamille',	'melvinpierre@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	NULL,	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin');
 
 ALTER TABLE ONLY "public"."esgi_article" ADD CONSTRAINT "esgi_article_author_fkey" FOREIGN KEY (author) REFERENCES esgi_user(id) NOT DEFERRABLE;
 
 ALTER TABLE ONLY "public"."esgi_commentaire" ADD CONSTRAINT "esgi_commentaire_author_fkey" FOREIGN KEY (author) REFERENCES esgi_user(id) NOT DEFERRABLE;
+
+-- 2023-07-12 15:26:08.43738+00
