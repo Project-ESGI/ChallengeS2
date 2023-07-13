@@ -26,23 +26,30 @@ class Main
             $_SESSION['id'] = $user_id;
 
             $commentaire = new Commentaire();
+            $signalement = new Signalement();
             $commentaires = $commentaire->getAllValue();
             $table = [];
 
             foreach ($commentaires as $com) {
                 $userId = $com['author'];
                 $userData = $user->getById($userId);
-
+                $signalement->setCommentId($com['id']);
+                $signalement->setUserId($user_id);
+                if ($signalement->existeSignalement()) {
+                    $commentaireSignale = true;
+                } else {
+                    $commentaireSignale = false;
+                }
                 $table[] = [
                     'id' => $com['id'],
                     'content' => $com['content'],
                     'author' => $userData['lastname'] . ' ' . $userData['firstname'],
                     'answer' => $com['answer'],
                     'date_inserted' => $com['date_inserted'],
-                    'date_updated' => $com['date_updated']
+                    'date_updated' => $com['date_updated'],
+                    'is_reported' => $commentaireSignale
                 ];
             }
-
             $view = new View("Auth/accueil", "dashboard");
             $view->assign('table', $table);
             $view->assign('user_pseudo', $user_pseudo);
@@ -96,5 +103,4 @@ class Main
             }
         }
     }
-
 }

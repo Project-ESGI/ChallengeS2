@@ -310,7 +310,7 @@ abstract class Sql
     }
 
     /**
-     * Vérifie si un signalement existe déjà pour le commentaire et l'utilisateur actuels.
+     * Vérifie si un signalement existe déjà pour le commentaire et l'utilisateur actuel.
      *
      * @return bool True si un signalement existe, sinon False.
      */
