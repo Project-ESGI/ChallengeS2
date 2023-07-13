@@ -24,8 +24,6 @@ class Delete
                 $page->delete();
                 header('Location: article?action=deleted');
                 exit;
-            } else {
-                echo "L'article à supprimer n'existe pas.";
             }
         } else {
             http_response_code(404);
