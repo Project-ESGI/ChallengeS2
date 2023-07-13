@@ -7,7 +7,7 @@
         <th scope="col">Réponse</th>
         <th scope="col">Date d'insertion</th>
         <th scope="col">Date de mise à jour</th>
-        <th scope="col">Signalement</th>
+        <th scope="col">Signalement(s)</th>
         <th scope="col">Actions</th>
     </tr>
     </thead>
@@ -22,7 +22,7 @@
             <td><?php echo $commentaire['date_updated']; ?></td>
             <td><?php echo $commentaire['is_reported'] ?></td>
             <td>
-                <a href="modifycomment?id=<?php echo $commentaire['id']; ?>" class="btn btn-primary">Modifier</a>
+<!--                <a href="modifycomment?id=--><?php //echo $commentaire['id']; ?><!--" class="btn btn-primary">Modifier</a>-->
                 <a href="deletecomment?id=<?php echo $commentaire['id']; ?>" class="btn btn-danger">Supprimer</a>
             </td>
         </tr>
