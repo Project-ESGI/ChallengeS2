@@ -3,6 +3,7 @@
 <table class="table table-striped table-bordered">
     <thead class="thead-dark">
     <tr>
+        <th scope="col">Id</th>
         <th scope="col">firstname</th>
         <th scope="col">lastname</th>
         <th scope="col">email</th>
@@ -16,6 +17,7 @@
     <tbody>
     <?php foreach ($table as $user) : ?>
         <tr>
+            <td><?php echo $user['id']; ?></td>
             <td><?php echo $user['firstname']; ?></td>
             <td><?php echo $user['lastname']; ?></td>
             <td><?php echo $user['email']; ?></td>

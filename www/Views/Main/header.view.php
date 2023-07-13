@@ -21,10 +21,13 @@
                             </li>
                             <?php if ($user_role === 'admin') : ?>
                                 <li class="nav-item">
+                                    <a class="nav-link" href="./comment">COMMENTAIRES</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="./user">UTILISATEURS</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="./article">PAGES</a>
+                                    <a class="nav-link" href="./article">ARTICLES</a>
                                 </li>
                             <?php endif ?>
                             <li class="nav-item dropdown">

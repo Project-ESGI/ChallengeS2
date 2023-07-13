@@ -9,11 +9,11 @@
     <link rel="icon" type="image/png" href="./images/soccerBallBlack.svg">
     <script src="./js/ActionCrud.js"></script>
 
-    <title>Utilisateur</title>
+    <title>Commentaire</title>
 </head>
 <body>
 <?php include "Main/header.view.php"; ?>
-<?php include $this->view; ?>
+    <?php include $this->view; ?>
 <?php include "Main/footer.view.php"; ?>
 </body>
 </html>

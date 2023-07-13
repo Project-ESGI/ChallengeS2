@@ -3,6 +3,7 @@
 <table class="table table-striped table-bordered">
     <thead class="thead-dark">
     <tr>
+        <th scope="col">Id</th>
         <th scope="col">Titre</th>
         <th scope="col">Auteur</th>
         <th scope="col">Contenu</th>
@@ -10,13 +11,13 @@
         <th scope="col">Date d'insertion</th>
         <th scope="col">Date de mise à jour</th>
         <th scope="col">Actions</th>
-
     </tr>
     </thead>
     <body>
 
     <?php foreach ($table as $page) : ?>
         <tr>
+            <td><?php echo $page['id']; ?></td>
             <td><?php echo $page['title']; ?></td>
             <td><?php echo $page['author']; ?></td>
             <td><?php echo $page['content']; ?></td>

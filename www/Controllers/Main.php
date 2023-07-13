@@ -24,7 +24,6 @@ class Main
             $_SESSION['pseudo'] = $user_pseudo;
             $_SESSION['role'] = $user_role;
             $_SESSION['id'] = $user_id;
-
             $commentaire = new Commentaire();
             $signalement = new Signalement();
             $commentaires = $commentaire->getAllValue();
