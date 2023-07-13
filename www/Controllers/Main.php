@@ -45,8 +45,8 @@ class Main
                     'content' => $com['content'],
                     'author' => $userData['lastname'] . ' ' . $userData['firstname'],
                     'answer' => $com['answer'],
-                    'date_inserted' => $com['date_inserted'],
-                    'date_updated' => $com['date_updated'],
+                    'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
+                    'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
                     'is_reported' => $commentaireSignale
                 ];
             }
