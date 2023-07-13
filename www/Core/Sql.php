@@ -326,11 +326,16 @@ abstract class Sql
         return $count > 0;
     }
 
+    /**
+     * Supprime les signalements par ID de commentaire.
+     *
+     * @param int $commentId L'ID du commentaire.
+     * @return void
+     */
     public function deleteByCommentId($commentId) {
         $query = "DELETE FROM esgi_signalement WHERE comment_id = :comment_id";
         $params = array(':comment_id' => $commentId);
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);
     }
-
 }
