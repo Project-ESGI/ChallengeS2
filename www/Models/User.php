@@ -14,7 +14,6 @@ class User extends Sql
     protected string $email;
     protected string $password;
     protected string $role;
-    protected bool $banned;
     protected $date_inserted;
     protected $date_updated;
 
@@ -29,22 +28,6 @@ class User extends Sql
     public function setRole(string $role): void
     {
         $this->role = $role;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isBanned(): bool
-    {
-        return $this->banned;
-    }
-
-    /**
-     * @param bool $banned
-     */
-    public function setBanned(bool $banned): void
-    {
-        $this->banned = $banned;
     }
 
     /**

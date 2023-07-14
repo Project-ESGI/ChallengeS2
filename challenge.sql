@@ -69,18 +69,14 @@ CREATE TABLE "public"."esgi_user" (
     "date_inserted" timestamp NOT NULL,
     "date_updated" timestamp NOT NULL,
     "country" character(2) NOT NULL,
-    "banned" boolean,
     "password" character varying NOT NULL,
     "role" character varying,
     CONSTRAINT "esgi_users_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 
-INSERT INTO "esgi_user" ("id", "firstname", "lastname", "email", "date_inserted", "date_updated", "country", "banned", "password", "role") VALUES
-(1,	'Test',	'Test',	'Test@email.com',	'2023-06-29 08:54:35.26107',	'2023-06-29 08:54:35.26107',	'Fr',	'f',	'knvijerberh',	'admin'),
-(3,	'Mpfvjibhi',	'NVIOEHFBOIFE',	'dzneiohei@gmail',	'2023-06-30 12:46:12',	'2023-06-30 12:46:12',	'FR',	NULL,	'$2y$10$Uv0Y3fJ2V0wM62Xh4dYOZe2SarJBsMX.qfA7wmgCXSiB2j.ibmIuy',	NULL),
-(5,	'Seoh',	'NBTBROI',	'bitijt@gmail',	'2023-07-03 00:00:00',	'2023-07-03 00:00:00',	'PL',	NULL,	'$2y$10$rwa8G69gU.gxN3N1DEl4pujFD95xDxhwJnjZuLHAwWz2aAYqDp2Vq',	NULL),
-(4,	'Prénom',	'NomFamille',	'melvinpierre283@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	NULL,	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin'),
-(12,	'Prénom',	'NomFamille',	'melvinpierre@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	NULL,	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin');
+INSERT INTO "esgi_user" ("id", "firstname", "lastname", "email", "date_inserted", "date_updated", "country", "password", "role") VALUES
+(4,	'Prénom',	'NomFamille',	'melvinpierre283@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin'),
+(12,	'Prénom',	'NomFamille',	'melvinpierre@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin');
 
 ALTER TABLE ONLY "public"."esgi_article" ADD CONSTRAINT "esgi_article_author_fkey" FOREIGN KEY (author) REFERENCES esgi_user(id) NOT DEFERRABLE;
 

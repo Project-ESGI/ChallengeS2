@@ -20,14 +20,14 @@ class ConnectionUser extends AForm
                 "cancel" => "Annuler"
             ],
             "inputs" => [
-                "user_email" => [
+                "email" => [
                     "type" => "email",
                     "min" => 13,
                     "max" => 320,
                     "placeholder" => "email",
                     "error" => "L'email ou le mot de passe est incorrect!"
                 ],
-                "user_password" => [
+                "password" => [
                     "type" => "password",
                     "min" => 9,
                     "max" => 50,

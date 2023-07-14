@@ -109,14 +109,14 @@ abstract class Sql
     /**
      * Vérifie si un enregistrement avec le même titre existe déjà dans la base de données.
      *
-     * @param string $firstname Le titre à vérifier.
+     * @param string $email Le titre à vérifier.
      * @param int|null $id L'ID de l'enregistrement actuel (facultatif).
      * @return bool True si un enregistrement avec le même titre existe déjà, sinon False.
      */
-    public function existsWithF(string $firstname, int $id = null): bool
+    public function existsWithEmail(string $email, int $id = null): bool
     {
-        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE firstname = :firstname";
-        $parameters = [':firstname' => $firstname];
+        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE email = :email";
+        $parameters = [':email' => $email];
 
         if ($id !== null) {
             $query .= " AND id <> :id";
@@ -195,22 +195,28 @@ abstract class Sql
      *
      * @param string $firstname Le prénom de l'utilisateur.
      * @param string $lastname Le nom de famille de l'utilisateur.
+     * @param string $pseudo Le pseudo de l'utilisateur.
      * @param string $email L'adresse e-mail de l'utilisateur.
-     * @param string $password Le mot de passe de l'utilisateur.
+     * @param string|null $password Le mot de passe de l'utilisateur (facultatif).
      * @param string $country Le pays de l'utilisateur.
      * @param string $role Le rôle de l'utilisateur.
-     * @param string $dateInserted La date d'inscription de l'utilisateur.
+     * @param string|null $dateInserted La date d'inscription de l'utilisateur (facultatif).
      * @param string $dateUpdated La date de mise à jour de l'utilisateur.
      * @return bool True si l'utilisateur est enregistré avec succès, sinon False.
      */
-    public function registerUser($firstname, $lastname, $email, $password, $country, $role, $dateInserted, $dateUpdated)
+    public function registerUser($firstname, $lastname, $pseudo, $email, $password = null, $country, $role, $dateInserted = null, $dateUpdated)
     {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO " . $this->table . " (firstname, lastname, email, password, country, role, date_inserted, date_updated)
-              VALUES (:firstname, :lastname, :email, :password, :country, :role, :date_inserted, :date_updated)";
+        $hashedPassword = null;
+        if ($password !== null) {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        }
+
+        $query = "INSERT INTO " . $this->table . " (firstname, lastname, pseudo, email, password, country, role, date_inserted, date_updated)
+      VALUES (:firstname, :lastname, :pseudo, :email, :password, :country, :role, :date_inserted, :date_updated)";
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
         $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+        $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
         $statement->bindValue(':email', $email, \PDO::PARAM_STR);
         $statement->bindValue(':password', $hashedPassword, \PDO::PARAM_STR); // Utilisation du mot de passe haché
         $statement->bindValue(':country', $country, \PDO::PARAM_STR);
@@ -220,6 +226,7 @@ abstract class Sql
 
         return $statement->execute();
     }
+
 
     /**
      * Effectue la création d'un nouvel article ou met à jour un article existant dans la base de données.
@@ -332,9 +339,52 @@ abstract class Sql
      * @param int $commentId L'ID du commentaire.
      * @return void
      */
-    public function deleteByCommentId($commentId) {
+    public function deleteByCommentId($commentId)
+    {
         $query = "DELETE FROM esgi_signalement WHERE comment_id = :comment_id";
         $params = array(':comment_id' => $commentId);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute($params);
+    }
+
+    /**
+     * Supprime les enregistrements associés à un auteur par son ID.
+     *
+     * @param int $authorId L'ID de l'auteur.
+     * @return void
+     */
+    public function deleteByAuthor($authorId)
+    {
+        $query = "DELETE FROM " . $this->table . " WHERE author = :author";
+        $params = array(':author' => $authorId);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute($params);
+    }
+
+    /**
+     * Supprime les signalements associés aux commentaires d'un auteur par son ID.
+     *
+     * @param int $author L'ID de l'auteur.
+     * @return void
+     */
+    public function deleteByCommentAuthor($author)
+    {
+        $query = "DELETE FROM esgi_signalement WHERE comment_id IN (SELECT id FROM esgi_commentaire WHERE author = :author)";
+        $params = array(':author' => $author);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute($params);
+    }
+
+    /**
+     * Supprime les signalements associés à un utilisateur par son ID.
+     *
+     * @param int $userId L'ID de l'utilisateur.
+     * @return void
+     */
+    public function deleteByUserId($userId)
+    {
+        $query = "DELETE FROM esgi_signalement WHERE user_id = :user_id";
+        $params = array(':user_id' => $userId);
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);
     }

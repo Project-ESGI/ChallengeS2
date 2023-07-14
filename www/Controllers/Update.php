@@ -73,7 +73,6 @@ class Update
     }
 
 
-
     public function modifyUser()
     {
         session_start();
@@ -107,30 +106,35 @@ class Update
                         echo 'L\'article doit avoir une email';
                     } else if (empty($_POST['country'])) {
                         echo 'L\'article doit avoir un pays';
-                    } else if (empty($_POST['password'])) {
-                        echo 'L\'article doit avoir un mot de passe';
                     } else if (empty($_POST['role'])) {
                         echo 'L\'article doit avoir un role';
                     } else {
-
                         $firstname = $_POST['firstname'];
                         $lastname = $_POST['lastname'];
+                        $pseudo = $_POST['pseudo'];
                         $email = $_POST['email'];
                         $country = $_POST['country'];
-                        $password = $_POST['password'];
                         $role = $_POST['role'];
 
-                        if ($user->existsWith($firstname, $user->getId())) {
-                            echo 'Un user avec ce prénom existe déja';
+                        if ($user->existsWithEmail($email, $user->getId())) {
+                            header('Location: modifyuser?action=doublon&type=email&entity=utilisateur');
                         } else {
-                            $user->actionArticle($firstname, $lastname, $email, $country, $role, $password, $formattedDate);
+                            $user->registerUser(
+                                $firstname,
+                                $lastname,
+                                $pseudo,
+                                $email,
+                                null,
+                                $country,
+                                $role,
+                                null,
+                                $formattedDate
+                            );
                             header('Location: user?action=updated');
                             exit;
                         }
                     }
                 }
-            } else {
-                echo "Le user a modifier n'existe pas pas.";
             }
         } else {
             http_response_code(404);

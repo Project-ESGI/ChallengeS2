@@ -5,12 +5,14 @@ namespace App\Controllers;
 use App\Core\View;
 use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
+use App\Forms\Registration;
 use App\Models\Article;
 use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
+
 //use PHPMailer\PHPMailer\Exception;
 date_default_timezone_set('Europe/Paris');
 
@@ -60,7 +62,7 @@ class Security
     public function register(): void
     {
         session_start();
-        $form = new AddUser();
+        $form = new Registration();
         $view = new View("Auth/register", "inscription");
         $date = new \DateTime();
         $formattedDate = $date->format('Y-m-d');
@@ -113,7 +115,7 @@ class Security
     public function commentaire()
     {
         session_start();
-        if (isset($_SESSION['user_email'])) {
+        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['user_email']);
             $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
@@ -169,7 +171,7 @@ class Security
         if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['user_email']);
-            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
             $page = new Article();
@@ -204,27 +206,39 @@ class Security
 
     public function user(): void
     {
+        session_start();
+        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+            $user = new User();
+            $userData = $user->getByEmail($_SESSION['user_email']);
+            $user_pseudo = $userData['pseudo'];
+            $user_role = $userData['role'];
+            $user = new User();
+            $users = $user->getAllValue();
+            $table = [];
 
-        $user = new User();
-        $users = $user->getAllValue();
-        $table = [];
-
-        foreach ($users as $user) {
-            $table[] = [
-                'id' => $user['id'],
-                'firstname' => $user['firstname'],
-                'lastname' => $user['lastname'],
-                'email' => $user['email'],
-                'date_inserted' => $user['date_inserted'],
-                'date_updated' => $user['date_updated'],
-                'country' => $user['country'],
-                'banned' => $user['banned'],
-                'password' => $user['password'],
-                'role' => $user['role']
-            ];
+            foreach ($users as $user) {
+                $table[] = [
+                    'id' => $user['id'],
+                    'firstname' => $user['firstname'],
+                    'lastname' => $user['lastname'],
+                    'email' => $user['email'],
+                    'date_inserted' => $user['date_inserted'],
+                    'date_updated' => $user['date_updated'],
+                    'country' => $user['country'],
+                    'password' => $user['password'],
+                    'role' => $user['role'],
+                    'pseudo' => $user['pseudo']
+                ];
+            }
+            $view = new View("Auth/user", "user");
+            $view->assign('table', $table);
+            $view->assign('user_pseudo', $user_pseudo);
+            $view->assign('user_role', $user_role);
+        } else {
+            http_response_code(404);
+            include('./Views/Error/404.view.php');
+            exit;
         }
-        $view = new View("Auth/user", "user");
-        $view->assign('table', $table);
     }
 
     public function logout(): void

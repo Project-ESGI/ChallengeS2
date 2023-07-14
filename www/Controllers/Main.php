@@ -18,7 +18,8 @@ class Main
         if (isset($_SESSION['user_email'])) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['user_email']);
-            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_name = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
             $user_id = $userData['id'];
             $_SESSION['pseudo'] = $user_pseudo;
@@ -42,7 +43,7 @@ class Main
                 $table[] = [
                     'id' => $com['id'],
                     'content' => $com['content'],
-                    'author' => $userData['lastname'] . ' ' . $userData['firstname'],
+                    'author' => $userData['pseudo'],
                     'answer' => $com['answer'],
                     'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
                     'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
@@ -52,6 +53,7 @@ class Main
             $view = new View("Auth/accueil", "dashboard");
             $view->assign('table', $table);
             $view->assign('user_pseudo', $user_pseudo);
+            $view->assign('user_name', $user_name);
             $view->assign('user_role', $user_role);
         } else {
             http_response_code(404);
@@ -68,7 +70,7 @@ class Main
     public function report()
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['user_email'])) {
             $id = $_GET['id'];
             $comment = new Commentaire();
             $comment->setIdValue($id);

@@ -1,5 +1,5 @@
 <section>
-    <h1 class="text-center">Bienvenue <span class="small"><?php echo $user_pseudo ?></span></h1>
+    <h1 class="text-center">Bienvenue <span class="small"><?php echo $user_name ?></span></h1>
     <div class="container">
         <div class="row">
             <div class="col-sm-5 col-md-6 col-12 pb-4">

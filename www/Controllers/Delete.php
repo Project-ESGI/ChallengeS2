@@ -6,11 +6,18 @@ use App\Core\Menu;
 use App\Core\View;
 use App\Forms\AddArticle;
 use App\Models\Article;
+use App\Models\Commentaire;
+use App\Models\Signalement;
 use App\Models\User;
 use App\Forms\AddUser;
 
-   session_start();
-    if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+class Delete
+{
+
+    function deleteArticle()
+    {
+        session_start();
+        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
             $id = $_GET['id'];
             $page = new Article();
             $page->setId($id);
@@ -18,14 +25,15 @@ use App\Forms\AddUser;
 
             if ($page->getId()) {
                 $page->delete();
-                header('Location: article?action=deleted&entity=article'
+                header('Location: article?action=deleted&entity=article');
                 exit;
             }
         } else {
-    http_response_code(404);
-    include('./Views/Error/404.view.php');
-    exit;
+            http_response_code(404);
+            include('./Views/Error/404.view.php');
+            exit;
 
+        }
     }
 
     function deleteComment()
@@ -62,19 +70,26 @@ use App\Forms\AddUser;
             $user->setId($id);
             $user->getById($id);
 
-            if ($user->getId()) {
-                $user->delete();
-                header('Location: user?action=deleted');
-                exit;
-            } else {
-                echo "Le user supprimé n'existe pas.";
-            }
+            $commentaire = new Commentaire();
+            $commentaire->setAuthorId($user->getId());
 
-        }  else {
+            $signalement = new Signalement();
+            $signalement->deleteByCommentAuthor($user->getId());
+            $signalement->deleteByUserId($user->getId()); // Supprime les signalements associés à l'utilisateur
+
+            $article = new Article();
+            $article->deleteByAuthor($user->getId());
+
+            if ($user->getId()) {
+                $commentaire->deleteByAuthor($user->getId()); // Supprime les commentaires associés à l'auteur
+                $user->delete(); // Supprime l'utilisateur
+                header('Location: user?action=deleted&entity=utilisateur');
+                exit;
+            }
+        } else {
             http_response_code(404);
             include('./Views/Error/404.view.php');
             exit;
         }
-
-
+    }
 }

@@ -8,6 +8,7 @@ use App\Forms\AddArticle;
 use App\Models\Article;
 use App\Models\User;
 use App\Forms\AddUser;
+
 date_default_timezone_set('Europe/Paris');
 
 
@@ -72,31 +73,28 @@ class Add
             $date = new \DateTime();
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view->assign('form', $form->getConfig());
+            $view->assign('user_pseudo', $user_pseudo);
+            $view->assign('user_role', $user_role);
+
             if ($form->isSubmit()) {
                 $user = new User();
                 if (empty($_POST['user_firstname'])) {
-                    echo 'Le user doit avoir un prénom';
+                    header('Location: adduser?action=empty&type=prenom&entity=utilisateur');
                 } else if (empty($_POST['user_lastname'])) {
-                    echo 'Le user doit avoir un nom';
+                    header('Location: adduser?action=empty&type=nom&entity=utilisateur');
                 } else {
                     $firstname = $_POST['user_firstname'];
                     $lastname = $_POST['user_lastname'];
                     $email = $_POST['user_email'];
                     $password = $_POST['user_password'];
                     $country = $_POST['user_country'];
+                    $role = $_POST['user_role'];
 
-                    if ($user->existsWithF($firstname)) {
-                        echo 'Un user existe deja avec ce prénom';
+                    if ($user->existsWithEmail($email)) {
+                        header('Location: adduser?action=doublon&type=email&entity=utilisateur');
                     } else {
-                        $user->setFirstname($firstname);
-                        $user->setLastname($lastname);
-                        $user->setEmail($email);
-                        $user->setPassword($password);
-                        $user->setDateInserted($formattedDate);
-                        $user->setDateUpdated($formattedDate);
-                        $user->setCountry($country);
-                        $user->save();
-                        header('Location: user?action=created');
+                        $user->registerUser($firstname, $lastname, $email, $password, $country, $role, $formattedDate, $formattedDate);
+                        header('Location: user?action=created&entity=utilisateur');
                         exit;
                     }
                 }
