@@ -60,39 +60,51 @@ class Add
 
     public function addUser(): void
     {
-        $form = new AddUser();
-        $view = new View("Auth/addUser", "user");
-        $date = new \DateTime();
-        $formattedDate = $date->format('Y-m-d H:i:s');
-        $view->assign('form', $form->getConfig());
-        if ($form->isSubmit()) {
+        session_start();
+        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            if (empty($_POST['user_firstname'])) {
-                echo 'Le user doit avoir un prénom';
-            } else if (empty($_POST['user_lastname'])) {
-                echo 'Le user doit avoir un nom';
-            } else {
-                $firstname = $_POST['user_firstname'];
-                $lastname = $_POST['user_lastname'];
-                $email = $_POST['user_email'];
-                $password = $_POST['user_password'];
-                $country = $_POST['user_country'];
+            $userData = $user->getByEmail($_SESSION['user_email']);
+            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_role = $userData['role'];
 
-                if ($user->existsWithF($firstname)) {
-                    echo 'Un user existe deja avec ce prénom';
+            $form = new AddUser();
+            $view = new View("Auth/addUser", "user");
+            $date = new \DateTime();
+            $formattedDate = $date->format('Y-m-d H:i:s');
+            $view->assign('form', $form->getConfig());
+            if ($form->isSubmit()) {
+                $user = new User();
+                if (empty($_POST['user_firstname'])) {
+                    echo 'Le user doit avoir un prénom';
+                } else if (empty($_POST['user_lastname'])) {
+                    echo 'Le user doit avoir un nom';
                 } else {
-                    $user->setFirstname($firstname);
-                    $user->setLastname($lastname);
-                    $user->setEmail($email);
-                    $user->setPassword($password);
-                    $user->setDateInserted($formattedDate);
-                    $user->setDateUpdated($formattedDate);
-                    $user->setCountry($country);
-                    $user->save();
-                    header('Location: user?action=created');
-                    exit;
+                    $firstname = $_POST['user_firstname'];
+                    $lastname = $_POST['user_lastname'];
+                    $email = $_POST['user_email'];
+                    $password = $_POST['user_password'];
+                    $country = $_POST['user_country'];
+
+                    if ($user->existsWithF($firstname)) {
+                        echo 'Un user existe deja avec ce prénom';
+                    } else {
+                        $user->setFirstname($firstname);
+                        $user->setLastname($lastname);
+                        $user->setEmail($email);
+                        $user->setPassword($password);
+                        $user->setDateInserted($formattedDate);
+                        $user->setDateUpdated($formattedDate);
+                        $user->setCountry($country);
+                        $user->save();
+                        header('Location: user?action=created');
+                        exit;
+                    }
                 }
             }
+        } else {
+            http_response_code(404);
+            include('./Views/Error/404.view.php');
+            exit;
         }
     }
 }

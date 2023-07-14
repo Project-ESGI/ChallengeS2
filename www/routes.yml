@@ -48,11 +48,23 @@
   security: true
   role: [ ADMIN ]
 
+/modifyuser:
+  controller: Update
+  action: modifyUser
+  security: true
+  role: [ADMIN, EDITOR]
+
 /deletearticle:
   controller: Delete
   action: deleteArticle
   security: true
   role: [ ADMIN ]
+
+/deleteuser:
+  controller: Delete
+  action: deleteUser
+  security: true
+  role: [ADMIN, EDITOR]
 
 /user:
   controller: Security

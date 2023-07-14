@@ -153,6 +153,7 @@ class Security
 
     public function user(): void
     {
+
         $user = new User();
         $users = $user->getAllValue();
         $table = [];
