@@ -7,6 +7,18 @@
   action: index
   security: true
 
+/comment:
+  controller: Security
+  action: commentaire
+  security: true
+  role: [ ADMIN ]
+
+/deletecomment:
+  controller: Delete
+  action: deleteComment
+  security: true
+  role: [ ADMIN ]
+
 /report:
   controller: Main
   action: report

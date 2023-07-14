@@ -6,10 +6,12 @@ use App\Core\View;
 use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
 use App\Models\Article;
+use App\Models\Commentaire;
+use App\Models\Signalement;
 use App\Models\User;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+//use PHPMailer\PHPMailer\Exception;
 date_default_timezone_set('Europe/Paris');
 
 
@@ -104,6 +106,55 @@ class Security
             } else {
                 echo "Informations manquantes";
             }
+            exit;
+        }
+    }
+
+    public function commentaire()
+    {
+        session_start();
+        if (isset($_SESSION['user_email'])) {
+            $user = new User();
+            $userData = $user->getByEmail($_SESSION['user_email']);
+            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_role = $userData['role'];
+            $user_id = $userData['id'];
+            $_SESSION['pseudo'] = $user_pseudo;
+            $_SESSION['role'] = $user_role;
+            $_SESSION['id'] = $user_id;
+
+            $commentaire = new Commentaire();
+            $signalement = new Signalement();
+            $commentaires = $commentaire->getAllValue();
+            $table = [];
+
+            foreach ($commentaires as $com) {
+                $userId = $com['author'];
+                $userData = $user->getById($userId);
+                $signalement->setCommentId($com['id']);
+                $signalement->setUserId($user_id);
+                if ($signalement->existeSignalement()) {
+                    $commentaireSignale = true;
+                } else {
+                    $commentaireSignale = false;
+                }
+                $table[] = [
+                    'id' => $com['id'],
+                    'content' => $com['content'],
+                    'author' => $userData['lastname'] . ' ' . $userData['firstname'],
+                    'answer' => $com['answer'],
+                    'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
+                    'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
+                    'is_reported' => $com['report']
+                ];
+            }
+            $view = new View("Auth/comment", "comment");
+            $view->assign('table', $table);
+            $view->assign('user_pseudo', $user_pseudo);
+            $view->assign('user_role', $user_role);
+        } else {
+            http_response_code(404);
+            include('./Views/Error/404.view.php');
             exit;
         }
     }

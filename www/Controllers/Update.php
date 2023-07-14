@@ -8,6 +8,7 @@ use App\Forms\AddArticle;
 use App\Forms\AddUser;
 use App\Models\Article;
 use App\Models\User;
+
 date_default_timezone_set('Europe/Paris');
 
 
@@ -44,18 +45,18 @@ class Update
             if ($page !== null) {
                 if ($form->isSubmit()) {
                     if (empty($_POST['title'])) {
-                        echo 'L\'article doit avoir un titre';
+                        header('Location: modifyarticle?action=empty&type=titre&entity=article');
                     } else if (empty($_POST['content'])) {
-                        echo 'L\'article doit avoir un contenu';
+                        header('Location: modifyarticle?action=empty&type=contenu&entity=article');
                     } else if (empty($_POST['category'])) {
-                        echo 'L\'article doit avoir une category';
+                        header('Location: modifyarticle?action=empty&type=categorie&entity=article');
                     } else {
                         $title = $_POST['title'];
                         $content = $_POST['content'];
                         $category = $_POST['category'];
 
                         if ($page->existsWith($title, $page->getId())) {
-                            echo 'Un article avec ce titre existe déjà';
+                            header('Location: modifyarticle?action=doublon&type=titre&entity=article');
                         } else {
                             $page->actionArticle($title, $content, $category, null, null, $formattedDate);
                             header('Location: article?action=updated');
@@ -63,8 +64,6 @@ class Update
                         }
                     }
                 }
-            } else {
-                echo "L'article à modifier n'existe pas.";
             }
         } else {
             http_response_code(404);

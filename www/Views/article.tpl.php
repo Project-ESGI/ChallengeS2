@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="./images/soccerBallBlack.svg">
     <script src="./js/ActionCrud.js"></script>
 
-    <title>Page</title>
+    <title>Article</title>
 </head>
 <body>
 <?php include "Main/header.view.php"; ?>

@@ -33,9 +33,9 @@ class Add
             if ($form->isSubmit()) {
                 $page = new Article();
                 if (empty($_POST['title'])) {
-                    echo 'L\'article doit avoir un titre';
+                    header('Location: addarticle?action=empty&type=titre&entity=article');
                 } else if (empty($_POST['content'])) {
-                    echo 'L\'article doit avoir un contenu';
+                    header('Location: addarticle?action=empty&type=contenu&entity=article');
                 } else {
                     $title = $_POST['title'];
                     $content = $_POST['content'];
@@ -43,7 +43,7 @@ class Add
                     $author = $_SESSION['id']; // Définir l'ID de l'auteur de la session actuelle
 
                     if ($page->existsWith($title)) {
-                        echo 'Une page avec ce titre existe déjà';
+                        header('Location: addarticle?action=doublon&type=titre&entity=article');
                     } else {
                         $page->actionArticle($title, $content, $category, $author, $formattedDate, $formattedDate);
                         header('Location: article?action=created');

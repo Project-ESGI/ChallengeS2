@@ -7,7 +7,8 @@
                 <?php foreach ($table as $commentaire) : ?>
                     <div class="comment mt-4">
                         <div class="d-flex align-items-center">
-                            <img src="https://i.imgur.com/CFpa3nK.jpg" width="20" height="20" class="d-inline-block align-top rounded-circle mr-2" alt="">
+                            <img src="https://i.imgur.com/CFpa3nK.jpg" width="20" height="20"
+                                 class="d-inline-block align-top rounded-circle mr-2" alt="">
                             <h4><?php echo $commentaire['author']; ?></h4>
                         </div>
                         <span>- <?php echo $commentaire['date_inserted']; ?></span>
@@ -17,8 +18,14 @@
                         <?php endif; ?>
                         <br>
                         <p><?php echo $commentaire['content']; ?></p>
-                        <div class="comment-details">
-                            <a href="report?id=<?php echo $commentaire['id']; ?>" class="btn btn-link">Signaler le commentaire</a>
+                        <div class="comment-details d-flex align-items-center">
+                            <?php if ($commentaire['is_reported']): ?>
+                                <p class="text-danger font-weight-bold mb-0">Signalé</p>
+                            <?php else : ?>
+                                <div class="mr-3">
+                                    <a href="report?id=<?php echo $commentaire['id']; ?>" class="btn btn-link p-0">Signaler le commentaire</a>
+                                </div>
+                            <?php endif; ?>
                             <a href="repondrecommentaire?id=<?php echo $commentaire['id']; ?>" class="btn btn-link">Répondre</a>
                         </div>
                     </div>
@@ -33,7 +40,8 @@
                     </div>
                     <br>
                     <div class="form-group">
-                        <a href="addcommentaire?id=<?php echo $commentaire['id']; ?>" class="btn btn-primary">Publier le commentaire</a>
+                        <a href="addcommentaire?id=<?php echo $commentaire['id']; ?>" class="btn btn-primary">Publier le
+                            commentaire</a>
                     </div>
                 </form>
             </div>
