@@ -6,6 +6,8 @@ use App\Core\Menu;
 use App\Core\View;
 use App\Forms\AddArticle;
 use App\Models\Article;
+use App\Models\User;
+use App\Forms\AddUser;
 
    session_start();
     if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
