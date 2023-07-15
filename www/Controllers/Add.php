@@ -47,7 +47,7 @@ class Add
                         header('Location: addarticle?action=doublon&type=titre&entity=article');
                     } else {
                         $page->actionArticle($title, $content, $category, $author, $formattedDate, $formattedDate);
-                        header('Location: article?action=created');
+                        header('Location: article?action=created&entity=article');
                         exit;
                     }
                 }

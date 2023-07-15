@@ -56,10 +56,10 @@ class Update
                         $category = $_POST['category'];
 
                         if ($page->existsWith($title, $page->getId())) {
-                            header('Location: modifyarticle?action=doublon&type=titre&entity=article');
+                            header('Location: modifyarticle?id='.$id.'&action=doublon&type=titre&entity=article');
                         } else {
                             $page->actionArticle($title, $content, $category, null, null, $formattedDate);
-                            header('Location: article?action=updated');
+                            header('Location: article?action=updated&entity=article');
                             exit;
                         }
                     }
