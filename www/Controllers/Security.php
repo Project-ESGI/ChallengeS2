@@ -28,9 +28,9 @@ class Security
 
         if ($form->isSubmit()) {
             $user = new User();
-            $user->setEmail($_POST['user_email']);
-            $user->setPassword($_POST['user_password']);
-            $userExists = $user->existUser($user->getEmail(), $_POST['user_password']);
+            $user->setEmail($_POST['email']);
+            $user->setPassword($_POST['password']);
+            $userExists = $user->existUser($user->getEmail(), $_POST['password']);
             if ($userExists) {
 //                $mail = new PHPMailer(true);
 //                $mail->isSMTP();
