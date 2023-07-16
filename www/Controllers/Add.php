@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Menu;
 use App\Core\View;
 use App\Forms\AddArticle;
+use App\Forms\AddUser;
 use App\Models\Article;
 use App\Models\User;
 use App\Forms\AddComment;
