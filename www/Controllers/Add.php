@@ -7,7 +7,7 @@ use App\Core\View;
 use App\Forms\AddArticle;
 use App\Models\Article;
 use App\Models\User;
-use App\Forms\AddUser;
+use App\Forms\AddComment;
 use App\Models\Commentaire;
 
 date_default_timezone_set('Europe/Paris');
@@ -69,6 +69,9 @@ class Add
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
+            $commentaire = new Commentaire();
+            //ICI MODIFIER
+
             $id = $_GET['id'];
             $user = new User();
             $user->setIdValue($id);
@@ -77,7 +80,7 @@ class Add
 
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addUser", "user");
-            $form = new AddUser();
+            $form = new AddComment();
             $view->assign('form', $form->getConfig($result));
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
@@ -85,14 +88,9 @@ class Add
             if ($user !== null) {
                 if ($form->isSubmit()) {
                     if (empty($_POST['content'])) {
-                        header('Location: modifycomment?id=' . $id . '&action=empty&type=content&entity=commentaire');
+                        header('Location: addcomment?action=empty&type=content&entity=commentaire');
                     } else {
-                        $firstname = $_POST['firstname'];
-                        $lastname = $_POST['lastname'];
-                        $pseudo = $_POST['pseudo'];
-                        $email = $_POST['email'];
-                        $country = $_POST['country'];
-                        $role = $_POST['role'];
+                        $content = $_POST['content'];
 
                         //fonction modifier commentaire meme que ajouter
                         header('Location: accueil?action=updated&entity=commentaire');

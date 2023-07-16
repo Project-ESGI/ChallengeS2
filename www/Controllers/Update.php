@@ -5,8 +5,10 @@ namespace App\Controllers;
 use App\Core\Menu;
 use App\Core\View;
 use App\Forms\AddArticle;
+use App\Forms\AddComment;
 use App\Forms\AddUser;
 use App\Models\Article;
+use App\Models\Commentaire;
 use App\Models\User;
 
 date_default_timezone_set('Europe/Paris');
@@ -141,7 +143,7 @@ class Update
         }
     }
 
-    public function modifyContent()
+    public function modifyComment()
     {
         session_start();
         if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
@@ -150,6 +152,9 @@ class Update
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
+            $commentaire = new Commentaire();
+            //ICI MODIFIER
+
             $id = $_GET['id'];
             $user = new User();
             $user->setIdValue($id);
@@ -157,8 +162,8 @@ class Update
             $result = $user->getById($id);
 
             $formattedDate = $date->format('Y-m-d H:i:s');
-            $view = new View("Auth/addUser", "user");
-            $form = new AddUser();
+            $view = new View("Auth/addComment", "comment");
+            $form = new AddComment();
             $view->assign('form', $form->getConfig($result));
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
@@ -168,12 +173,7 @@ class Update
                     if (empty($_POST['content'])) {
                         header('Location: modifycomment?id=' . $id . '&action=empty&type=content&entity=commentaire');
                     } else {
-                        $firstname = $_POST['firstname'];
-                        $lastname = $_POST['lastname'];
-                        $pseudo = $_POST['pseudo'];
-                        $email = $_POST['email'];
-                        $country = $_POST['country'];
-                        $role = $_POST['role'];
+                        $content = $_POST['content'];
 
                         //fonction modifier commentaire meme que ajouter
                         header('Location: accueil?action=updated&entity=commentaire');

@@ -42,7 +42,7 @@
                     </div>
                     <br>
                     <div class="form-group">
-                        <a href="addcommentaire?id=<?php echo $commentaire['id']; ?>" class="btn btn-primary">Publier le
+                        <a href="addcomment" class="btn btn-primary">Publier le
                             commentaire</a>
                     </div>
                 </form>
