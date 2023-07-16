@@ -28,9 +28,9 @@ class Security
 
         if ($form->isSubmit()) {
             $user = new User();
-            $user->setEmail($_POST['user_email']);
-            $user->setPassword($_POST['user_password']);
-            $userExists = $user->existUser($user->getEmail(), $_POST['user_password']);
+            $user->setEmail($_POST['email']);
+            $user->setPassword($_POST['password']);
+            $userExists = $user->existUser($user->getEmail(), $_POST['password']);
             if ($userExists) {
 //                $mail = new PHPMailer(true);
 //                $mail->isSMTP();
@@ -50,7 +50,7 @@ class Security
 //                $mail->Body = $message;
 //                $mail->send();
 
-                $_SESSION['user_email'] = $user->getEmail();
+                $_SESSION['email'] = $user->getEmail();
                 header('Location: accueil');
                 exit;
             } else {
@@ -72,8 +72,8 @@ class Security
             $user = new User();
             $user->setFirstname($_POST['user_firstname']);
             $user->setLastname($_POST['user_lastname']);
-            $user->setEmail($_POST['user_email']);
-            $user->setPassword($_POST['user_password']);
+            $user->setEmail($_POST['email']);
+            $user->setPassword($_POST['password']);
             $user->setCountry($_POST['user_country']);
             $user->setRole('user');
             $user->setDateInserted($formattedDate);
@@ -81,12 +81,12 @@ class Security
             if (
                 !empty($_POST['user_firstname']) &&
                 !empty($_POST['user_lastname']) &&
-                !empty($_POST['user_email']) &&
-                !empty($_POST['user_password']) &&
+                !empty($_POST['email']) &&
+                !empty($_POST['password']) &&
                 !empty($_POST['user_country'])
             ) {
                 $user->save();
-                $_SESSION['user_email'] = $user->getEmail();
+                $_SESSION['email'] = $user->getEmail();
                 header('Location: accueil');
 //                $mail = new PHPMailer();
 //            $mail->isSMTP();
@@ -115,9 +115,9 @@ class Security
     public function commentaire()
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
+            $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
             $user_role = $userData['role'];
             $user_id = $userData['id'];
@@ -168,9 +168,9 @@ class Security
     public function article(): void
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
+            $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
@@ -207,9 +207,9 @@ class Security
     public function user(): void
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
+            $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
             $user = new User();

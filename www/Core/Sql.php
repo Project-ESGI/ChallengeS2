@@ -212,7 +212,7 @@ abstract class Sql
         }
 
         $query = "INSERT INTO " . $this->table . " (firstname, lastname, pseudo, email, password, country, role, date_inserted, date_updated)
-      VALUES (:firstname, :lastname, :pseudo, :email, :password, :country, :role, :date_inserted, :date_updated)";
+          VALUES (:firstname, :lastname, :pseudo, :email, COALESCE(:password, ''), :country, :role, COALESCE(:date_inserted, NOW()), :date_updated)";
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
         $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);

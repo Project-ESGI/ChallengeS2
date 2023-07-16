@@ -15,9 +15,9 @@ class Main
     public function index()
     {
         session_start();
-        if (isset($_SESSION['user_email'])) {
+        if (isset($_SESSION['email'])) {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
+            $userData = $user->getByEmail($_SESSION['email']);
             $user_name = $userData['firstname'] . ' ' . $userData['lastname'];
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
@@ -70,7 +70,7 @@ class Main
     public function report()
     {
         session_start();
-        if (isset($_SESSION['user_email'])) {
+        if (isset($_SESSION['email'])) {
             $id = $_GET['id'];
             $comment = new Commentaire();
             $comment->setIdValue($id);
