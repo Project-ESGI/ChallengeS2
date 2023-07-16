@@ -13,6 +13,12 @@
   security: true
   role: [ ADMIN ]
 
+/modifycomment:
+  controller: Update
+  action: modifyComment
+  security: true
+  role: [ ADMIN ]
+
 /deletecomment:
   controller: Delete
   action: deleteComment
@@ -70,7 +76,7 @@
   controller: Update
   action: modifyUser
   security: true
-  role: [ADMIN, EDITOR]
+  role: [ ADMIN, EDITOR ]
 
 /deletearticle:
   controller: Delete
@@ -82,7 +88,7 @@
   controller: Delete
   action: deleteUser
   security: true
-  role: [ADMIN, EDITOR]
+  role: [ ADMIN, EDITOR ]
 
 /user:
   controller: Security

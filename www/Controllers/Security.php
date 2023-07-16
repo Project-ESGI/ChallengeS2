@@ -51,7 +51,6 @@ class Security
         $formattedDate = $date->format('Y-m-d');
         $view->assign('form', $form->getConfig());
         if ($form->isSubmit()) {
-            var_dump($_POST);
 
             // $errors = Verificator::formRegister($form->getConfig(), $_POST);
             $user = new User();
