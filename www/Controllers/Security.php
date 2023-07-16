@@ -118,7 +118,7 @@ class Security
         if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['user_email']);
-            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
             $user_id = $userData['id'];
             $_SESSION['pseudo'] = $user_pseudo;
