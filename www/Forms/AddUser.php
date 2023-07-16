@@ -44,13 +44,6 @@ class AddUser extends AForm
                 "error" => "email incorrect!",
                 "value" => $row ? trim($row['email']) : ''
             ],
-            "password" => [
-                "type" => "password",
-                "min" => 8,
-                "max" => 45,
-                "placeholder" => "mot de passe",
-                "error" => "Mot de passe trop faible."
-            ],
             "country" => [
                 "type" => "select",
                 "options" => ["FR", "PL"],
@@ -64,6 +57,17 @@ class AddUser extends AForm
                 "error" => "rôle incorrect!"
             ],
         ];
+
+        // Exclure le champ du mot de passe si $row est défini
+        if (!$row) {
+            $inputs["password"] = [
+                "type" => "password",
+                "min" => 8,
+                "max" => 45,
+                "placeholder" => "mot de passe",
+                "error" => "Mot de passe trop faible."
+            ];
+        }
 
         $submit = $row ? "Modifier" : "Créer";
         $typeUser = $row ? "Modifier" : "Créer";

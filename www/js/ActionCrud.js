@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
         case "empty":
             alert(`L\'${entity} doit avoir un ${type} !`);
-            location = pageName;
+            location = pageName + "?id=" + id;
             break;
         case "doublon":
             alert(`Un ${entity} avec ce ${type} existe déjà !`);

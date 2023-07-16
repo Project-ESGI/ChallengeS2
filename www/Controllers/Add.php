@@ -107,7 +107,7 @@ class Add
                     if ($user->existsWithEmail($email)) {
                         header('Location: adduser?action=doublon&type=email&entity=utilisateur');
                     } else {
-                        $user->registerUser($firstname, $lastname, $pseudo, $email, $password, $country, $role, $formattedDate, $formattedDate);
+                        $user->saveUser($firstname, $lastname, $pseudo, $email, $password, $country, $role, $formattedDate, $formattedDate);
                         header('Location: user?action=created&entity=utilisateur');
                         exit;
                     }

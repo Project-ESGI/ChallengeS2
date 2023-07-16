@@ -33,6 +33,13 @@ class Registration extends AForm
                     "max" => 45,
                     "error" => "Nom incorrect!"
                 ],
+                "pseudo" => [
+                    "type" => "text",
+                    "min" => 4,
+                    "max" => 255,
+                    "placeholder" => "pseudo",
+                    "error" => "pseudo incorrect!",
+                ],
                 "email" => [
                     "type" => "email",
                     "min" => 5,
@@ -63,10 +70,10 @@ class Registration extends AForm
                     "confirm" => "password",
                     "error" => "Le champ saisie comporte un mot de passe différent du précédent."
                 ],
-                "country"=>[
-                    "type"=>"select",
-                    "options"=>["","FR", "PL"],
-                    "error"=>"Pays incorrect"
+                "country" => [
+                    "type" => "select",
+                    "options" => ["FR", "PL"],
+                    "error" => "Pays incorrect"
                 ]
             ]
         ];

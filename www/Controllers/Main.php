@@ -7,6 +7,7 @@ use App\Core\View;
 use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
+use Cassandra\Varint;
 
 date_default_timezone_set('Europe/Paris');
 
@@ -18,6 +19,7 @@ class Main
         if (isset($_SESSION['email'])) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
+
             $user_name = $userData['firstname'] . ' ' . $userData['lastname'];
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];

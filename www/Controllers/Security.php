@@ -51,29 +51,37 @@ class Security
         $formattedDate = $date->format('Y-m-d');
         $view->assign('form', $form->getConfig());
         if ($form->isSubmit()) {
+            var_dump($_POST);
+
             // $errors = Verificator::formRegister($form->getConfig(), $_POST);
             $user = new User();
-            $user->setFirstname($_POST['firstname']);
-            $user->setLastname($_POST['lastname']);
-            $user->setEmail($_POST['email']);
-            $user->setPassword($_POST['password']);
-            $user->setCountry($_POST['country']);
-            $user->setRole('user');
-            $user->setDateInserted($formattedDate);
-            $user->setDateUpdated($formattedDate);
-            if (
-                !empty($_POST['user_firstname']) &&
-                !empty($_POST['user_lastname']) &&
-                !empty($_POST['email']) &&
-                !empty($_POST['password']) &&
-                !empty($_POST['user_country'])
-            ) {
-                $user->save();
-                $_SESSION['email'] = $user->getEmail();
-                header('Location: accueil');
-//                $mail = new PHPMailer();
+            if (empty($_POST['firstname'])) {
+                header('Location: register?action=empty&type=prenom&entity=utilisateur');
+            } else if (empty($_POST['lastname'])) {
+                header('Location: register?action=empty&type=nom&entity=utilisateur');
+            } else if (empty($_POST['email'])) {
+                header('Location: register?action=empty&type=email&entity=utilisateur');
+            } else if (empty($_POST['password'])) {
+                header('Location: register?action=empty&type=motdepasse&entity=utilisateur');
+            } else if (empty($_POST['country'])) {
+                header('Location: register?action=empty&type=pays&entity=utilisateur');
             } else {
-                echo "Informations manquantes";
+                $firstname = $_POST['firstname'];
+                $lastname = $_POST['lastname'];
+                $email = $_POST['email'];
+                $pseudo = $_POST['pseudo'];
+                $password = $_POST['password'];
+                $country = $_POST['country'];
+                $role = 'user';
+
+                if ($user->existsWithEmail($email)) {
+                    header('Location: register?action=doublon&type=email&entity=utilisateur');
+                } else {
+                    $user->saveUser($firstname, $lastname, $pseudo, $email, $password, $country, $role, $formattedDate, $formattedDate);
+                    $_SESSION['email'] = $email;
+                    header('Location: accueil');
+//                $mail = new PHPMailer();
+                }
             }
             exit;
         }
@@ -110,7 +118,7 @@ class Security
                 $table[] = [
                     'id' => $com['id'],
                     'content' => $com['content'],
-                    'author' => $userData['lastname'] . ' ' . $userData['firstname'].' ('.$userData['pseudo'].')',
+                    'author' => $userData['lastname'] . ' ' . $userData['firstname'] . ' (' . $userData['pseudo'] . ')',
                     'answer' => $com['answer'],
                     'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
                     'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
@@ -153,7 +161,7 @@ class Security
                     'id' => $page['id'],
                     'title' => $page['title'],
                     'content' => $page['content'],
-                    'author' => $userData['lastname'] . ' ' . $userData['firstname'].' ('.$userData['pseudo'].')',
+                    'author' => $userData['lastname'] . ' ' . $userData['firstname'] . ' (' . $userData['pseudo'] . ')',
                     'category' => $page['category'],
                     'date_inserted' => $page['date_inserted'],
                     'date_updated' => $page['date_updated']

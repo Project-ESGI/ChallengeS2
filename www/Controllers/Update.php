@@ -45,18 +45,18 @@ class Update
             if ($page !== null) {
                 if ($form->isSubmit()) {
                     if (empty($_POST['title'])) {
-                        header('Location: modifyarticle?action=empty&type=titre&entity=article');
+                        header('Location: modifyarticle?id=' . $id . '&action=empty&type=titre&entity=article');
                     } else if (empty($_POST['content'])) {
-                        header('Location: modifyarticle?action=empty&type=contenu&entity=article');
+                        header('Location: modifyarticle?id=' . $id . '&action=empty&type=contenu&entity=article');
                     } else if (empty($_POST['category'])) {
-                        header('Location: modifyarticle?action=empty&type=categorie&entity=article');
+                        header('Location: modifyarticle?id=' . $id . '&action=empty&type=categorie&entity=article');
                     } else {
                         $title = $_POST['title'];
                         $content = $_POST['content'];
                         $category = $_POST['category'];
 
                         if ($page->existsWith($title, $page->getId())) {
-                            header('Location: modifyarticle?id='.$id.'&action=doublon&type=titre&entity=article');
+                            header('Location: modifyarticle?id=' . $id . '&action=doublon&type=titre&entity=article');
                         } else {
                             $page->actionArticle($title, $content, $category, null, null, $formattedDate);
                             header('Location: article?action=updated&entity=article');
@@ -99,16 +99,15 @@ class Update
             if ($user !== null) {
                 if ($form->isSubmit()) {
                     if (empty($_POST['firstname'])) {
-                        echo 'L\'user doit avoir un prénom';
+                        header('Location: modifyuser?id=' . $id . '&action=empty&type=prenom&entity=utilisateur');
                     } else if (empty($_POST['lastname'])) {
-                        echo 'L\'user doit avoir un nom';
+                        header('Location: modifyuser?id=' . $id . '&action=empty&type=nom&entity=utilisateur');
                     } else if (empty($_POST['email'])) {
-                        echo 'L\'user doit avoir une email';
+                        header('Location: modifyuser?id=' . $id . '&action=empty&type=email&entity=utilisateur');
                     } else if (empty($_POST['country'])) {
-                        echo 'L\'user doit avoir un pays';
-                    } else if (empty($_POST['role'])) {
-                        echo 'L\'user doit avoir un role';
-                    } else {
+                        header('Location: modifyuser?id=' . $id . '&action=empty&type=pays&entity=utilisateur');
+                    }
+                    else {
                         $firstname = $_POST['firstname'];
                         $lastname = $_POST['lastname'];
                         $pseudo = $_POST['pseudo'];
@@ -117,9 +116,9 @@ class Update
                         $role = $_POST['role'];
 
                         if ($user->existsWithEmail($email, $user->getId())) {
-                            header('Location: modifyuser?action=doublon&type=email&entity=utilisateur');
+                            header('Location: modifyuser?id=' . $id . '&action=doublon&type=email&entity=utilisateur');
                         } else {
-                            $user->registerUser(
+                            $user->saveUser(
                                 $firstname,
                                 $lastname,
                                 $pseudo,
@@ -130,7 +129,7 @@ class Update
                                 null,
                                 $formattedDate
                             );
-                            header('Location: user?action=updated');
+                            header('Location: user?action=updated&entity=utilisateur');
                             exit;
                         }
                     }

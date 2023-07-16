@@ -11,7 +11,7 @@ class User extends Sql
     protected string $firstname;
     protected string $lastname;
     protected string $country;
-    protected string $email;
+    protected string $email = "";
     protected string $password;
     protected string $role;
     protected $date_inserted;
