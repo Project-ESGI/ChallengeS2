@@ -22,10 +22,10 @@ class Update
     public function modifyArticle()
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
-            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $userData = $user->getByEmail($_SESSION['email']);
+            $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
             $id = $_GET['id'];
@@ -76,10 +76,10 @@ class Update
     public function modifyUser()
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
-            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $userData = $user->getByEmail($_SESSION['email']);
+            $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
             $id = $_GET['id'];
@@ -99,15 +99,15 @@ class Update
             if ($user !== null) {
                 if ($form->isSubmit()) {
                     if (empty($_POST['firstname'])) {
-                        echo 'L\'article doit avoir un prénom';
+                        echo 'L\'user doit avoir un prénom';
                     } else if (empty($_POST['lastname'])) {
-                        echo 'L\'article doit avoir un nom';
+                        echo 'L\'user doit avoir un nom';
                     } else if (empty($_POST['email'])) {
-                        echo 'L\'article doit avoir une email';
+                        echo 'L\'user doit avoir une email';
                     } else if (empty($_POST['country'])) {
-                        echo 'L\'article doit avoir un pays';
+                        echo 'L\'user doit avoir un pays';
                     } else if (empty($_POST['role'])) {
-                        echo 'L\'article doit avoir un role';
+                        echo 'L\'user doit avoir un role';
                     } else {
                         $firstname = $_POST['firstname'];
                         $lastname = $_POST['lastname'];

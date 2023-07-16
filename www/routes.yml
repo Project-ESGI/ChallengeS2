@@ -19,6 +19,12 @@
   security: true
   role: [ ADMIN ]
 
+/addcomment:
+  controller: Add
+  action: addComment
+  security: true
+  role: [ ADMIN ]
+
 /report:
   controller: Main
   action: report

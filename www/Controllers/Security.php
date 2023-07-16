@@ -33,24 +33,7 @@ class Security
             $userExists = $user->existUser($user->getEmail(), $_POST['password']);
             if ($userExists) {
 //                $mail = new PHPMailer(true);
-//                $mail->isSMTP();
-//                $mail->Host = 'smtp.gmail.com';  // Remplacez par le serveur SMTP de votre choix
-//                $mail->SMTPAuth = true;
-//                $mail->Username = 'melvinpierre283@gmail.com';  // Votre adresse e-mail
-//                $mail->Password = 'votre_mot_de_passe';  // Votre mot de passe
-//                $mail->SMTPSecure = 'tls';
-//                $mail->Port = 587;
-//                $mail->setFrom('melvinpierre283@gmail.com', 'Melvin');  // Adresse d'envoi et nom de l'expéditeur
-//
-//                $to = $user->getEmail();
-//                $subject = 'Connexion à votre compte';
-//                $message = "Bonjour,\n\nUne connexion à votre compte a été effectuée avec l'adresse IP : " . $_SERVER['REMOTE_ADDR'];
-//                $mail->addAddress($to);
-//                $mail->Subject = $subject;
-//                $mail->Body = $message;
-//                $mail->send();
-
-                $_SESSION['user_email'] = $user->getEmail();
+                $_SESSION['email'] = $user->getEmail();
                 header('Location: accueil');
                 exit;
             } else {
@@ -70,41 +53,25 @@ class Security
         if ($form->isSubmit()) {
             // $errors = Verificator::formRegister($form->getConfig(), $_POST);
             $user = new User();
-            $user->setFirstname($_POST['user_firstname']);
-            $user->setLastname($_POST['user_lastname']);
-            $user->setEmail($_POST['user_email']);
-            $user->setPassword($_POST['user_password']);
-            $user->setCountry($_POST['user_country']);
+            $user->setFirstname($_POST['firstname']);
+            $user->setLastname($_POST['lastname']);
+            $user->setEmail($_POST['email']);
+            $user->setPassword($_POST['password']);
+            $user->setCountry($_POST['country']);
             $user->setRole('user');
             $user->setDateInserted($formattedDate);
             $user->setDateUpdated($formattedDate);
             if (
                 !empty($_POST['user_firstname']) &&
                 !empty($_POST['user_lastname']) &&
-                !empty($_POST['user_email']) &&
-                !empty($_POST['user_password']) &&
+                !empty($_POST['email']) &&
+                !empty($_POST['password']) &&
                 !empty($_POST['user_country'])
             ) {
                 $user->save();
-                $_SESSION['user_email'] = $user->getEmail();
+                $_SESSION['email'] = $user->getEmail();
                 header('Location: accueil');
 //                $mail = new PHPMailer();
-//            $mail->isSMTP();
-//            $mail->Host = 'smtp.gmail.com';  // Remplacez par le serveur SMTP de votre choix
-//            $mail->SMTPAuth = true;
-//            $mail->Username = 'melvinpierre283@gmail.com';  // Votre adresse e-mail
-//            $mail->Password = 'votre_mot_de_passe';  // Votre mot de passe
-//            $mail->SMTPSecure = 'tls';
-//            $mail->Port = 587;
-//            $mail->setFrom('melvinpierre283@gmail.com', 'Melvin Pierre');  // Adresse d'envoi et nom de l'expéditeur
-//
-//            $to = $user->getEmail();
-//            $subject = 'Bienvenue sur notre site';
-//            $message = "Bonjour " . $user->getFirstname() . ",\n\nBienvenue sur notre site !";
-//            $mail->addAddress($to);
-//            $mail->Subject = $subject;
-//            $mail->Body = $message;
-//            $mail->send();
             } else {
                 echo "Informations manquantes";
             }
@@ -115,9 +82,9 @@ class Security
     public function commentaire()
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
+            $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
             $user_id = $userData['id'];
@@ -168,9 +135,9 @@ class Security
     public function article(): void
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
+            $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
@@ -207,9 +174,9 @@ class Security
     public function user(): void
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
+            $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
             $user = new User();

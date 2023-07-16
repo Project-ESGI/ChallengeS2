@@ -32,7 +32,6 @@ class Delete
             http_response_code(404);
             include('./Views/Error/404.view.php');
             exit;
-
         }
     }
 

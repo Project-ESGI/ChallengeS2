@@ -8,6 +8,7 @@ use App\Forms\AddArticle;
 use App\Models\Article;
 use App\Models\User;
 use App\Forms\AddUser;
+use App\Models\Commentaire;
 
 date_default_timezone_set('Europe/Paris');
 
@@ -17,10 +18,10 @@ class Add
     public function addArticle(): void
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
-            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $userData = $user->getByEmail($_SESSION['email']);
+            $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
             $form = new AddArticle();
@@ -59,13 +60,25 @@ class Add
         }
     }
 
-    public function addUser(): void
+    function addComment()
     {
         session_start();
         if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+            // Récupérer les données du formulaire ou de la requête pour le nouveau commentaire
+            $content = $_POST['content'];
+            $userId = $_SESSION['id'];
+
+        }
+    }
+
+
+    public function addUser(): void
+    {
+        session_start();
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['user_email']);
-            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $userData = $user->getByEmail($_SESSION['email']);
+            $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
             $form = new AddUser();
@@ -78,22 +91,23 @@ class Add
 
             if ($form->isSubmit()) {
                 $user = new User();
-                if (empty($_POST['user_firstname'])) {
+                if (empty($_POST['firstname'])) {
                     header('Location: adduser?action=empty&type=prenom&entity=utilisateur');
-                } else if (empty($_POST['user_lastname'])) {
+                } else if (empty($_POST['lastname'])) {
                     header('Location: adduser?action=empty&type=nom&entity=utilisateur');
                 } else {
-                    $firstname = $_POST['user_firstname'];
-                    $lastname = $_POST['user_lastname'];
-                    $email = $_POST['user_email'];
-                    $password = $_POST['user_password'];
-                    $country = $_POST['user_country'];
-                    $role = $_POST['user_role'];
+                    $firstname = $_POST['firstname'];
+                    $lastname = $_POST['lastname'];
+                    $email = $_POST['email'];
+                    $password = $_POST['password'];
+                    $country = $_POST['country'];
+                    $role = $_POST['role'];
+                    $pseudo = $_POST['pseudo'];
 
                     if ($user->existsWithEmail($email)) {
                         header('Location: adduser?action=doublon&type=email&entity=utilisateur');
                     } else {
-                        $user->registerUser($firstname, $lastname, $email, $password, $country, $role, $formattedDate, $formattedDate);
+                        $user->registerUser($firstname, $lastname, $pseudo, $email, $password, $country, $role, $formattedDate, $formattedDate);
                         header('Location: user?action=created&entity=utilisateur');
                         exit;
                     }
