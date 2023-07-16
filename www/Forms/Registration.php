@@ -45,6 +45,7 @@ class Registration extends AForm
                     "min" => 5,
                     "max" => 255,
                     "placeholder" => "email",
+                    "confirm" => "email", // Assurez-vous que cette clé est présente et a la valeur correcte
                     "error" => "email incorrect!"
                 ],
                 "confirm_email" => [
@@ -52,7 +53,7 @@ class Registration extends AForm
                     "min" => 5,
                     "max" => 255,
                     "placeholder" => "Confirmation de l'email",
-                    "confirm" => "email",
+                    "confirm" => "email", // Assurez-vous que cette clé est présente et a la valeur correcte
                     "error" => "Les deux emails sont différents!"
                 ],
                 "password" => [
@@ -78,4 +79,36 @@ class Registration extends AForm
             ]
         ];
     }
+
+    public function addError(string $fieldName, string $errorMessage)
+    {
+        $this->errors[$fieldName] = $errorMessage;
+    }
+
+    public function hasErrors(): bool
+    {
+        return !empty($this->errors);
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
+    public function verifyEmailConfirmation(array $data): bool
+    {
+        $email = $data['email'];
+        $confirmEmail = $data['confirm_email'];
+
+        return $email === $confirmEmail;
+    }
+
+    public function verifyPasswordConfirmation(array $data): bool
+    {
+        $password = $data['password'];
+        $confirmPassword = $data['confirm_password'];
+
+        return $password === $confirmPassword;
+    }
+
 }

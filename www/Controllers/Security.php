@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\Verificator;
 use App\Core\View;
 use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
@@ -47,12 +48,10 @@ class Security
         session_start();
         $form = new Registration();
         $view = new View("Auth/register", "inscription");
+        $view->assign('form', $form->getConfig());
         $date = new \DateTime();
         $formattedDate = $date->format('Y-m-d');
-        $view->assign('form', $form->getConfig());
         if ($form->isSubmit()) {
-
-            // $errors = Verificator::formRegister($form->getConfig(), $_POST);
             $user = new User();
             if (empty($_POST['firstname'])) {
                 header('Location: register?action=empty&type=prenom&entity=utilisateur');
@@ -64,6 +63,10 @@ class Security
                 header('Location: register?action=empty&type=motdepasse&entity=utilisateur');
             } else if (empty($_POST['country'])) {
                 header('Location: register?action=empty&type=pays&entity=utilisateur');
+            } else if (!$form->verifyEmailConfirmation($_POST)) {
+                echo 'Les adresses e-mail ne correspondent pas.';
+            } else if (!$form->verifyPasswordConfirmation($_POST)) {
+                echo 'Les mots de passe ne correspondent pas.';
             } else {
                 $firstname = $_POST['firstname'];
                 $lastname = $_POST['lastname'];

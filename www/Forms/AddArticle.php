@@ -21,7 +21,7 @@ class AddArticle extends AForm
             ],
             "content" => [
                 "type" => "textarea",
-                "className"=>"form-control",
+                "className" => "form-control",
                 "placeholder" => "Contenu de l'article",
                 "min" => 10,
                 "max" => 500,
@@ -51,7 +51,7 @@ class AddArticle extends AForm
         ];
     }
 
-        public function addError(string $fieldName, string $errorMessage)
+    public function addError(string $fieldName, string $errorMessage)
     {
         $this->errors[$fieldName] = $errorMessage;
     }
