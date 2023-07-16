@@ -143,7 +143,7 @@ class Security
                 $table[] = [
                     'id' => $com['id'],
                     'content' => $com['content'],
-                    'author' => $userData['lastname'] . ' ' . $userData['firstname'],
+                    'author' => $userData['lastname'] . ' ' . $userData['firstname'].' ('.$userData['pseudo'].')',
                     'answer' => $com['answer'],
                     'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
                     'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
@@ -186,7 +186,7 @@ class Security
                     'id' => $page['id'],
                     'title' => $page['title'],
                     'content' => $page['content'],
-                    'author' => $userData['lastname'] . ' ' . $userData['firstname'],
+                    'author' => $userData['lastname'] . ' ' . $userData['firstname'].' ('.$userData['pseudo'].')',
                     'category' => $page['category'],
                     'date_inserted' => $page['date_inserted'],
                     'date_updated' => $page['date_updated']

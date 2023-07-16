@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const action = urlParams.get("action");
     const entity = urlParams.get("entity");
     const type = urlParams.get("type");
+    const id = urlParams.get("id");
     const pageName = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1);
     let location;
 
@@ -33,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
         case "doublon":
             alert(`Un ${entity} avec ce ${type} existe déjà !`);
-            location = pageName;
+            location = pageName + "?id=" + id;
             break;
     }
 
