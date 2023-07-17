@@ -191,7 +191,7 @@ abstract class Sql
     }
 
     /**
-     * Enregistre un nouvel utilisateur dans la base de données.
+     * Enregistre un nouvel utilisateur dans la base de données ou met à jour un utilisateur existant.
      *
      * @param string $firstname Le prénom de l'utilisateur.
      * @param string $lastname Le nom de famille de l'utilisateur.
@@ -202,31 +202,78 @@ abstract class Sql
      * @param string $role Le rôle de l'utilisateur.
      * @param string|null $dateInserted La date d'inscription de l'utilisateur (facultatif).
      * @param string $dateUpdated La date de mise à jour de l'utilisateur.
-     * @return bool True si l'utilisateur est enregistré avec succès, sinon False.
+     * @return bool True si l'utilisateur est enregistré ou mis à jour avec succès, sinon False.
      */
-    public function registerUser($firstname, $lastname, $pseudo, $email, $password = null, $country, $role, $dateInserted = null, $dateUpdated)
+    public function saveUser($firstname, $lastname, $pseudo, $email, $password = null, $country, $role, $dateInserted = null, $dateUpdated)
     {
         $hashedPassword = null;
+        $passwordParam = null;
         if ($password !== null) {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $passwordParam = ':password';
         }
 
-        $query = "INSERT INTO " . $this->table . " (firstname, lastname, pseudo, email, password, country, role, date_inserted, date_updated)
-          VALUES (:firstname, :lastname, :pseudo, :email, COALESCE(:password, ''), :country, :role, COALESCE(:date_inserted, NOW()), :date_updated)";
+        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE email = :email";
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
-        $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
-        $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
         $statement->bindValue(':email', $email, \PDO::PARAM_STR);
-        $statement->bindValue(':password', $hashedPassword, \PDO::PARAM_STR); // Utilisation du mot de passe haché
-        $statement->bindValue(':country', $country, \PDO::PARAM_STR);
-        $statement->bindValue(':role', $role, \PDO::PARAM_STR);
-        $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
-        $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+        $statement->execute();
+        $count = $statement->fetchColumn();
 
-        return $statement->execute();
+        if ($count > 0) {
+            // L'utilisateur existe déjà, effectuer une mise à jour
+            $query = "UPDATE " . $this->table . " SET firstname = :firstname, lastname = :lastname, pseudo = :pseudo";
+
+            if ($passwordParam !== null) {
+                $query .= ", password = CASE WHEN $passwordParam IS NOT NULL THEN $passwordParam ELSE password END";
+            }
+
+            $query .= ", country = :country, role = :role, date_updated = :date_updated";
+
+            if ($dateInserted !== null) {
+                $query .= ", date_inserted = :date_inserted";
+            }
+
+            $query .= " WHERE email = :email";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+            $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+            $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
+
+            if ($passwordParam !== null) {
+                $statement->bindValue(':password', $hashedPassword, \PDO::PARAM_STR);
+            }
+
+            $statement->bindValue(':country', $country, \PDO::PARAM_STR);
+            $statement->bindValue(':role', $role, \PDO::PARAM_STR);
+            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+
+            if ($dateInserted !== null) {
+                $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+            }
+
+            $statement->bindValue(':email', $email, \PDO::PARAM_STR);
+
+            return $statement->execute();
+        } else {
+            // L'utilisateur n'existe pas, effectuer une insertion
+            $query = "INSERT INTO " . $this->table . " (firstname, lastname, pseudo, email, password, country, role, date_inserted, date_updated)
+        VALUES (:firstname, :lastname, :pseudo, :email, :password, :country, :role, :date_inserted, :date_updated)";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+            $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+            $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
+            $statement->bindValue(':email', $email, \PDO::PARAM_STR);
+            $statement->bindValue(':password', $hashedPassword, \PDO::PARAM_STR);
+            $statement->bindValue(':country', $country, \PDO::PARAM_STR);
+            $statement->bindValue(':role', $role, \PDO::PARAM_STR);
+            $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+
+            return $statement->execute();
+        }
     }
-
 
     /**
      * Effectue la création d'un nouvel article ou met à jour un article existant dans la base de données.

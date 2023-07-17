@@ -17,7 +17,7 @@ class Delete
     function deleteArticle()
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $id = $_GET['id'];
             $page = new Article();
             $page->setId($id);
@@ -32,14 +32,13 @@ class Delete
             http_response_code(404);
             include('./Views/Error/404.view.php');
             exit;
-
         }
     }
 
     function deleteComment()
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $id = $_GET['id'];
             $commentaire = new Commentaire();
             $commentaire->setId($id);
@@ -64,7 +63,7 @@ class Delete
     function deleteUser()
     {
         session_start();
-        if (isset($_SESSION['user_email']) && $_SESSION['role'] === 'admin') {
+        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $id = $_GET['id'];
             $user = new User();
             $user->setId($id);

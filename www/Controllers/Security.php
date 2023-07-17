@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\Verificator;
 use App\Core\View;
 use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
@@ -33,23 +34,6 @@ class Security
             $userExists = $user->existUser($user->getEmail(), $_POST['password']);
             if ($userExists) {
 //                $mail = new PHPMailer(true);
-//                $mail->isSMTP();
-//                $mail->Host = 'smtp.gmail.com';  // Remplacez par le serveur SMTP de votre choix
-//                $mail->SMTPAuth = true;
-//                $mail->Username = 'melvinpierre283@gmail.com';  // Votre adresse e-mail
-//                $mail->Password = 'votre_mot_de_passe';  // Votre mot de passe
-//                $mail->SMTPSecure = 'tls';
-//                $mail->Port = 587;
-//                $mail->setFrom('melvinpierre283@gmail.com', 'Melvin');  // Adresse d'envoi et nom de l'expéditeur
-//
-//                $to = $user->getEmail();
-//                $subject = 'Connexion à votre compte';
-//                $message = "Bonjour,\n\nUne connexion à votre compte a été effectuée avec l'adresse IP : " . $_SERVER['REMOTE_ADDR'];
-//                $mail->addAddress($to);
-//                $mail->Subject = $subject;
-//                $mail->Body = $message;
-//                $mail->send();
-
                 $_SESSION['email'] = $user->getEmail();
                 header('Location: accueil');
                 exit;
@@ -64,49 +48,27 @@ class Security
         session_start();
         $form = new Registration();
         $view = new View("Auth/register", "inscription");
+        $view->assign('form', $form->getConfig());
         $date = new \DateTime();
         $formattedDate = $date->format('Y-m-d');
-        $view->assign('form', $form->getConfig());
         if ($form->isSubmit()) {
-            // $errors = Verificator::formRegister($form->getConfig(), $_POST);
             $user = new User();
-            $user->setFirstname($_POST['user_firstname']);
-            $user->setLastname($_POST['user_lastname']);
-            $user->setEmail($_POST['email']);
-            $user->setPassword($_POST['password']);
-            $user->setCountry($_POST['user_country']);
-            $user->setRole('user');
-            $user->setDateInserted($formattedDate);
-            $user->setDateUpdated($formattedDate);
-            if (
-                !empty($_POST['user_firstname']) &&
-                !empty($_POST['user_lastname']) &&
-                !empty($_POST['email']) &&
-                !empty($_POST['password']) &&
-                !empty($_POST['user_country'])
-            ) {
-                $user->save();
-                $_SESSION['email'] = $user->getEmail();
-                header('Location: accueil');
-//                $mail = new PHPMailer();
-//            $mail->isSMTP();
-//            $mail->Host = 'smtp.gmail.com';  // Remplacez par le serveur SMTP de votre choix
-//            $mail->SMTPAuth = true;
-//            $mail->Username = 'melvinpierre283@gmail.com';  // Votre adresse e-mail
-//            $mail->Password = 'votre_mot_de_passe';  // Votre mot de passe
-//            $mail->SMTPSecure = 'tls';
-//            $mail->Port = 587;
-//            $mail->setFrom('melvinpierre283@gmail.com', 'Melvin Pierre');  // Adresse d'envoi et nom de l'expéditeur
-//
-//            $to = $user->getEmail();
-//            $subject = 'Bienvenue sur notre site';
-//            $message = "Bonjour " . $user->getFirstname() . ",\n\nBienvenue sur notre site !";
-//            $mail->addAddress($to);
-//            $mail->Subject = $subject;
-//            $mail->Body = $message;
-//            $mail->send();
+            if (empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['country'])) {
+                exit;
+            } else if (!$form->verifyEmailConfirmation($_POST)) {
+                echo 'Les adresses e-mail ne correspondent pas.';
+            } else if (!$form->verifyPasswordConfirmation($_POST)) {
+                echo 'Les mots de passe ne correspondent pas.';
             } else {
-                echo "Informations manquantes";
+                $email = $_POST['email'];
+                if ($user->existsWithEmail($email)) {
+                    header('Location: register?action=doublon&type=email&entity=utilisateur');
+                } else {
+                    $user->saveUser($_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $email, $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
+                    $_SESSION['email'] = $email;
+                    header('Location: accueil');
+//                $mail = new PHPMailer();
+                }
             }
             exit;
         }
@@ -118,7 +80,7 @@ class Security
         if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
-            $user_pseudo = $userData['firstname'] . ' ' . $userData['lastname'];
+            $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
             $user_id = $userData['id'];
             $_SESSION['pseudo'] = $user_pseudo;
@@ -135,15 +97,11 @@ class Security
                 $userData = $user->getById($userId);
                 $signalement->setCommentId($com['id']);
                 $signalement->setUserId($user_id);
-                if ($signalement->existeSignalement()) {
-                    $commentaireSignale = true;
-                } else {
-                    $commentaireSignale = false;
-                }
+
                 $table[] = [
                     'id' => $com['id'],
                     'content' => $com['content'],
-                    'author' => $userData['lastname'] . ' ' . $userData['firstname'].' ('.$userData['pseudo'].')',
+                    'author' => $userData['lastname'] . ' ' . $userData['firstname'] . ' (' . $userData['pseudo'] . ')',
                     'answer' => $com['answer'],
                     'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
                     'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
@@ -186,7 +144,7 @@ class Security
                     'id' => $page['id'],
                     'title' => $page['title'],
                     'content' => $page['content'],
-                    'author' => $userData['lastname'] . ' ' . $userData['firstname'].' ('.$userData['pseudo'].')',
+                    'author' => $userData['lastname'] . ' ' . $userData['firstname'] . ' (' . $userData['pseudo'] . ')',
                     'category' => $page['category'],
                     'date_inserted' => $page['date_inserted'],
                     'date_updated' => $page['date_updated']

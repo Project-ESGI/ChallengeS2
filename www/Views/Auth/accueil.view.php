@@ -19,14 +19,16 @@
                         <br>
                         <p><?php echo $commentaire['content']; ?></p>
                         <div class="comment-details d-flex align-items-center">
-                            <?php if ($commentaire['is_reported']): ?>
+                            <?php if ($user_id === $commentaire['authorId']): ?>
+                                <a href="modifycomment?id=<?php echo $commentaire['id']; ?>" class="btn btn-link p-0">Modifier mon commentaire</a>
+                            <?php elseif ($commentaire['is_reported']): ?>
                                 <p class="text-danger font-weight-bold mb-0">Signalé</p>
                             <?php else : ?>
                                 <div class="mr-3">
                                     <a href="report?id=<?php echo $commentaire['id']; ?>" class="btn btn-link p-0">Signaler le commentaire</a>
                                 </div>
                             <?php endif; ?>
-                            <a href="repondrecommentaire?id=<?php echo $commentaire['id']; ?>" class="btn btn-link">Répondre</a>
+                            <a href="answer?id=<?php echo $commentaire['id']; ?>" class="btn btn-link">Répondre</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -40,7 +42,7 @@
                     </div>
                     <br>
                     <div class="form-group">
-                        <a href="addcommentaire?id=<?php echo $commentaire['id']; ?>" class="btn btn-primary">Publier le
+                        <a href="addcomment" class="btn btn-primary">Publier le
                             commentaire</a>
                     </div>
                 </form>

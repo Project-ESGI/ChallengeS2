@@ -18,6 +18,7 @@ class Main
         if (isset($_SESSION['email'])) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
+
             $user_name = $userData['firstname'] . ' ' . $userData['lastname'];
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
@@ -45,6 +46,7 @@ class Main
                     'content' => $com['content'],
                     'author' => $userData['pseudo'],
                     'answer' => $com['answer'],
+                    'authorId' => $com['author'],
                     'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
                     'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
                     'is_reported' => $commentaireSignale
@@ -55,6 +57,8 @@ class Main
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_name', $user_name);
             $view->assign('user_role', $user_role);
+            $view->assign('user_id', $user_id);
+
         } else {
             http_response_code(404);
             include('./Views/Error/404.view.php');

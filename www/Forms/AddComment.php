@@ -4,40 +4,36 @@ namespace App\Forms;
 
 use App\Forms\Abstract\AForm;
 
-class AddArticle extends AForm
+class AddComment extends AForm
 {
+
     protected $method = "POST";
 
     public function getConfig($row = []): array
     {
         $inputs = [
-            "title" => [
-                "type" => "text",
-                "placeholder" => "Titre",
-                "min" => 2,
-                "max" => 100,
-                "error" => "Titre incorrect!",
-                "value" => $row ? trim($row['title']) : ''
-            ],
             "content" => [
-                "type" => "textarea",
-                "className" => "form-control",
-                "placeholder" => "Contenu de l'article",
+                "type" => "text",
+                "placeholder" => "message",
                 "min" => 10,
-                "max" => 500,
-                "error" => "Contenu incorrect!",
+                "max" => 450,
                 "value" => $row ? trim($row['content']) : ''
             ],
-            "category" => [
-                "type" => "select",
-                "placeholder" => "Catégorie",
-                "options" => ["Match entrainement", "Exercice"],
-                "value" => $row ? trim($row['category']) : ''
-            ]
         ];
 
+        // Exclure le champ du mot de passe si $row est défini
+        if (!$row) {
+            $inputs["password"] = [
+                "type" => "password",
+                "min" => 8,
+                "max" => 45,
+                "placeholder" => "mot de passe",
+                "error" => "Mot de passe trop faible."
+            ];
+        }
+
         $submit = $row ? "Modifier" : "Créer";
-        $typeArticle = $row ? "Modifier" : "Créer";
+        $typeUser = $row ? "Modifier" : "Créer";
 
         return [
             "config" => [
@@ -45,7 +41,7 @@ class AddArticle extends AForm
                 "action" => "",
                 "enctype" => "",
                 "submit" => $submit,
-                "typeArticle" => $typeArticle
+                "typeUser" => $typeUser
             ],
             "inputs" => $inputs
         ];
