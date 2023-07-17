@@ -30,8 +30,8 @@
                                placeholder="<?= $input["placeholder"] ?>"
                                value="<?= isset($input["value"]) ? $input["value"] : '' ?>">
                     <?php endif; ?>
-                    <?php if (!empty($input["error"])): ?>
-                        <div class="error-message"><?= $input["error"] ?></div>
+                    <?php if (isset($config["config"]["errors"][$name])): ?>
+                        <div class="text-danger"><?= $config["config"]["errors"][$name] ?></div>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
@@ -43,3 +43,4 @@
         <?php if (isset($config["config"]["typeArticle"]) || isset($config["config"]["typeUser"])): ?>
     </div>
 <?php endif; ?>
+

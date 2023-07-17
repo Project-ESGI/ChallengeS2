@@ -7,6 +7,7 @@ use App\Forms\Abstract\AForm;
 class AddArticle extends AForm
 {
     protected $method = "POST";
+    protected $errors = [];
 
     public function getConfig($row = []): array
     {
@@ -16,7 +17,6 @@ class AddArticle extends AForm
                 "placeholder" => "Titre",
                 "min" => 2,
                 "max" => 100,
-                "error" => "Titre incorrect!",
                 "value" => $row ? trim($row['title']) : ''
             ],
             "content" => [
@@ -25,7 +25,6 @@ class AddArticle extends AForm
                 "placeholder" => "Contenu de l'article",
                 "min" => 10,
                 "max" => 500,
-                "error" => "Contenu incorrect!",
                 "value" => $row ? trim($row['content']) : ''
             ],
             "category" => [
@@ -44,6 +43,7 @@ class AddArticle extends AForm
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
+                "errors" => $this->getErrors(),
                 "submit" => $submit,
                 "typeArticle" => $typeArticle
             ],
@@ -63,6 +63,6 @@ class AddArticle extends AForm
 
     public function getErrors(): array
     {
-        return $this->errors;
+        return $this->errors ?? [];
     }
 }

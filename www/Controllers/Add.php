@@ -35,21 +35,30 @@ class Add
             $view->assign('user_role', $user_role);
             if ($form->isSubmit()) {
                 $page = new Article();
-                if (empty($_POST['title']) || empty($_POST['content'])) {
+                $error = false;
+                $title = $_POST['title'];
+                $content = $_POST['content'];
+
+                if (empty($title)) {
+                    $form->addError('title', 'Veuillez saisir un titre.');
+                    $error = true;
+                } elseif ($page->existsWith($title)) {
+                    $form->addError('title', 'Un article avec ce titre existe déjà.');
+                    $error = true;
+                }
+                if (empty($content)) {
+                    $form->addError('content', 'Veuillez saisir votre contenu.');
+                    $error = true;
+                }
+
+                $view->assign('form', $form->getConfig($_POST));
+
+                if (!$error) {
+                    $page->actionArticle($title, $content, $_POST['category'], $_SESSION['id'], $formattedDate, $formattedDate);
+                    header('Location: article?action=created&entity=article');
                     exit;
                 } else {
-                    $title = $_POST['title'];
-                    $content = $_POST['content'];
-                    $category = $_POST['category'];
-                    $author = $_SESSION['id']; // Définir l'ID de l'auteur de la session actuelle
-
-                    if ($page->existsWith($title)) {
-                        header('Location: addarticle?action=doublon&type=titre&entity=article');
-                    } else {
-                        $page->actionArticle($title, $content, $category, $author, $formattedDate, $formattedDate);
-                        header('Location: article?action=created&entity=article');
-                        exit;
-                    }
+                    exit;
                 }
             }
         } else {
@@ -124,24 +133,54 @@ class Add
 
             if ($form->isSubmit()) {
                 $user = new User();
-                if (empty($_POST['firstname']) || empty($_POST['lastname'])) {
-                    exit;
-                } else {
-                    $firstname = $_POST['firstname'];
-                    $lastname = $_POST['lastname'];
-                    $email = $_POST['email'];
-                    $password = $_POST['password'];
-                    $country = $_POST['country'];
-                    $role = $_POST['role'];
-                    $pseudo = $_POST['pseudo'];
+                $error = false;
+                $email = $_POST['email'];
 
-                    if ($user->existsWithEmail($email)) {
-                        header('Location: adduser?action=doublon&type=email&entity=utilisateur');
-                    } else {
-                        $user->saveUser($firstname, $lastname, $pseudo, $email, $password, $country, $role, $formattedDate, $formattedDate);
-                        header('Location: user?action=created&entity=utilisateur');
-                        exit;
-                    }
+                if (empty($_POST['firstname'])) {
+                    $form->addError('firstname', 'Veuillez saisir votre prénom.');
+                    $error = true;
+                }
+                if (empty($_POST['lastname'])) {
+                    $form->addError('lastname', 'Veuillez saisir votre nom.');
+                    $error = true;
+                }
+                if (empty($_POST['pseudo'])) {
+                    $form->addError('pseudo', 'Veuillez saisir votre pseudo.');
+                    $error = true;
+                }
+                if (empty($email)) {
+                    $form->addError('email', 'Veuillez saisir votre email.');
+                    $error = true;
+                } elseif ($user->existsWithEmail($email)) {
+                    $form->addError('email', 'Cet e-mail est déjà utilisé. Veuillez en choisir un autre.');
+                    $error = true;
+                }
+                if (empty($_POST['password'])) {
+                    $form->addError('password', 'Veuillez saisir votre mot de passe.');
+                    $error = true;
+                }
+
+                $fields = array(
+                    'firstname' => $_POST['firstname'],
+                    'lastname' => $_POST['lastname'],
+                    'pseudo' => $_POST['pseudo'],
+                    'email' => $_POST['email'],
+                    'country' => $_POST['country'],
+                    'role' => $_POST['role']
+                );
+
+                $invalidFields = $user->checkSpecialCharacters($fields);
+                foreach ($invalidFields as $field) {
+                    $form->addError($field, 'Le champ ' . $field . ' contient des caractères spéciaux non autorisés.');
+                    $error = true;
+                }
+
+                $view->assign('form', $form->getConfig($_POST));
+
+                if (!$error) {
+                    $user->saveUser($_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $email, $_POST['password'], $_POST['country'], $_POST['role'], $formattedDate, $formattedDate);
+                    header('Location: user?action=created&entity=utilisateur');
+                    exit;
                 }
             }
         } else {

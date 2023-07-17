@@ -98,7 +98,7 @@ class Main
                     $signalement->deleteByCommentId($comment->getId());
                     $comment->delete();
                 }
-                header('Location: accueil?action=reported');
+                header('Location: accueil');
                 exit;
 
             } else {
