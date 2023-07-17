@@ -16,8 +16,8 @@ CREATE TABLE "public"."esgi_article" (
 ) WITH (oids = false);
 
 INSERT INTO "esgi_article" ("id", "title", "content", "author", "category", "date_inserted", "date_updated") VALUES
-(26,	'Test',	'Contenu de mon article ! ',	4,	'Match entrainement',	'2023-07-12 10:16:46',	'2023-07-12 12:43:35'),
-(2,	'Test',	'Contenu de mon article ! ',	4,	'Match entrainement',	'2023-07-12 10:16:46',	'2023-07-12 12:43:35');
+(2,	'Test2',	'Contenu de mon article !',	4,	'Match entrainement',	'2023-07-12 10:16:46',	'2023-07-15 16:42:48'),
+(26,	'Test',	'Contenu de mon article !',	4,	'Match entrainement',	'2023-07-12 10:16:46',	'2023-07-17 16:41:13');
 
 DROP TABLE IF EXISTS "esgi_commentaire";
 DROP SEQUENCE IF EXISTS esgi_commentaire_id_seq;
@@ -36,7 +36,8 @@ CREATE TABLE "public"."esgi_commentaire" (
 
 INSERT INTO "esgi_commentaire" ("id", "content", "answer", "date_inserted", "date_updated", "author", "report") VALUES
 (9,	'J''ai vu le match de mbappé !',	'',	'2023-07-05 16:56:26.414152',	'2023-07-05 16:56:26.414152',	4,	3),
-(14,	'J''ai vu le match de mbappé !',	'',	'2023-07-05 16:56:26.414152',	'2023-07-05 16:56:26.414152',	4,	3);
+(14,	'J''ai vu le match de mbappé !',	'',	'2023-07-05 16:56:26.414152',	'2023-07-05 16:56:26.414152',	4,	3),
+(3,	'J''ai vu le match de mbappé !',	'',	'2023-07-05 16:56:26.414152',	'2023-07-05 16:56:26.414152',	12,	2);
 
 DROP TABLE IF EXISTS "esgi_signalement";
 DROP SEQUENCE IF EXISTS esgi_signalement_id_seq;
@@ -73,9 +74,8 @@ CREATE TABLE "public"."esgi_user" (
 ) WITH (oids = false);
 
 INSERT INTO "esgi_user" ("id", "firstname", "lastname", "email", "date_inserted", "date_updated", "country", "password", "role", "pseudo") VALUES
-(12,	'Prénom',	'NomFamille',	'melvinpierre@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin',	'mepierre'),
-(4,	'Prénom',	'NomFamille',	'melvinpierre283@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin',	'metest'),
-(5,	'Prénom',	'NomFamille',	'melvinpierre283@gmail.com',	'2023-06-30 12:49:49',	'2023-06-30 12:49:49',	'FR',	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin',	'metest');
+(12,	'Jack-sam',	'mbappé',	'jacksam@outlook.fr',	'2023-06-30 12:49:49',	'2023-07-17 21:18:35',	'FR',	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin',	'jambappe'),
+(4,	'Melvin',	'Pierre',	'melvin.pierre.mp@gmail.com',	'2023-06-30 12:49:49',	'2023-07-17 21:44:57',	'FR',	'$2y$10$BHlftqySaKME3R9vaI4m4u8Fez46votPazstT3a3uC09/x/.PrCEa',	'admin',	'maloss');
 
 ALTER TABLE ONLY "public"."esgi_article" ADD CONSTRAINT "esgi_article_author_fkey" FOREIGN KEY (author) REFERENCES esgi_user(id) NOT DEFERRABLE;
 
@@ -84,4 +84,4 @@ ALTER TABLE ONLY "public"."esgi_commentaire" ADD CONSTRAINT "esgi_commentaire_au
 ALTER TABLE ONLY "public"."esgi_signalement" ADD CONSTRAINT "esgi_signalement_comment_id_fkey" FOREIGN KEY (comment_id) REFERENCES esgi_commentaire(id) NOT DEFERRABLE;
 ALTER TABLE ONLY "public"."esgi_signalement" ADD CONSTRAINT "esgi_signalement_user_id_fkey" FOREIGN KEY (user_id) REFERENCES esgi_user(id) NOT DEFERRABLE;
 
--- 2023-07-14 17:18:40.946297+00
+-- 2023-07-17 19:49:31.22947+00
