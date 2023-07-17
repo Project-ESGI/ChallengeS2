@@ -7,7 +7,6 @@ use App\Core\View;
 use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
-use Cassandra\Varint;
 
 date_default_timezone_set('Europe/Paris');
 

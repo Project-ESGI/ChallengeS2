@@ -35,10 +35,8 @@ class Add
             $view->assign('user_role', $user_role);
             if ($form->isSubmit()) {
                 $page = new Article();
-                if (empty($_POST['title'])) {
-                    header('Location: addarticle?action=empty&type=titre&entity=article');
-                } else if (empty($_POST['content'])) {
-                    header('Location: addarticle?action=empty&type=contenu&entity=article');
+                if (empty($_POST['title']) || empty($_POST['content'])) {
+                    exit;
                 } else {
                     $title = $_POST['title'];
                     $content = $_POST['content'];
@@ -89,7 +87,7 @@ class Add
             if ($user !== null) {
                 if ($form->isSubmit()) {
                     if (empty($_POST['content'])) {
-                        header('Location: addcomment?action=empty&type=content&entity=commentaire');
+                        exit;
                     } else {
                         $content = $_POST['content'];
 
@@ -126,10 +124,8 @@ class Add
 
             if ($form->isSubmit()) {
                 $user = new User();
-                if (empty($_POST['firstname'])) {
-                    header('Location: adduser?action=empty&type=prenom&entity=utilisateur');
-                } else if (empty($_POST['lastname'])) {
-                    header('Location: adduser?action=empty&type=nom&entity=utilisateur');
+                if (empty($_POST['firstname']) || empty($_POST['lastname'])) {
+                    exit;
                 } else {
                     $firstname = $_POST['firstname'];
                     $lastname = $_POST['lastname'];

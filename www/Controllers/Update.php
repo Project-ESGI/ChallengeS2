@@ -46,21 +46,15 @@ class Update
             // Vérifier si l'article existe
             if ($page !== null) {
                 if ($form->isSubmit()) {
-                    if (empty($_POST['title'])) {
-                        header('Location: modifyarticle?id=' . $id . '&action=empty&type=titre&entity=article');
-                    } else if (empty($_POST['content'])) {
-                        header('Location: modifyarticle?id=' . $id . '&action=empty&type=contenu&entity=article');
-                    } else if (empty($_POST['category'])) {
-                        header('Location: modifyarticle?id=' . $id . '&action=empty&type=categorie&entity=article');
+                    if (empty($_POST['title']) || empty($_POST['content']) || empty($_POST['category'])) {
+                        exit;
                     } else {
                         $title = $_POST['title'];
-                        $content = $_POST['content'];
-                        $category = $_POST['category'];
 
                         if ($page->existsWith($title, $page->getId())) {
                             header('Location: modifyarticle?id=' . $id . '&action=doublon&type=titre&entity=article');
                         } else {
-                            $page->actionArticle($title, $content, $category, null, null, $formattedDate);
+                            $page->actionArticle($title, $_POST['content'], $_POST['category'], null, null, $formattedDate);
                             header('Location: article?action=updated&entity=article');
                             exit;
                         }
@@ -100,33 +94,22 @@ class Update
             // Vérifier si le user existe
             if ($user !== null) {
                 if ($form->isSubmit()) {
-                    if (empty($_POST['firstname'])) {
+                    if (empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['email']) || empty($_POST['country'])) {
                         header('Location: modifyuser?id=' . $id . '&action=empty&type=prenom&entity=utilisateur');
-                    } else if (empty($_POST['lastname'])) {
-                        header('Location: modifyuser?id=' . $id . '&action=empty&type=nom&entity=utilisateur');
-                    } else if (empty($_POST['email'])) {
-                        header('Location: modifyuser?id=' . $id . '&action=empty&type=email&entity=utilisateur');
-                    } else if (empty($_POST['country'])) {
-                        header('Location: modifyuser?id=' . $id . '&action=empty&type=pays&entity=utilisateur');
                     } else {
-                        $firstname = $_POST['firstname'];
-                        $lastname = $_POST['lastname'];
-                        $pseudo = $_POST['pseudo'];
                         $email = $_POST['email'];
-                        $country = $_POST['country'];
-                        $role = $_POST['role'];
 
                         if ($user->existsWithEmail($email, $user->getId())) {
                             header('Location: modifyuser?id=' . $id . '&action=doublon&type=email&entity=utilisateur');
                         } else {
                             $user->saveUser(
-                                $firstname,
-                                $lastname,
-                                $pseudo,
+                                $_POST['firstname'],
+                                $_POST['lastname'],
+                                $_POST['pseudo'],
                                 $email,
                                 null,
-                                $country,
-                                $role,
+                                $_POST['country'],
+                                $_POST['role'],
                                 null,
                                 $formattedDate
                             );
@@ -171,7 +154,7 @@ class Update
             if ($user !== null) {
                 if ($form->isSubmit()) {
                     if (empty($_POST['content'])) {
-                        header('Location: modifycomment?id=' . $id . '&action=empty&type=content&entity=commentaire');
+                        exit;
                     } else {
                         $content = $_POST['content'];
 

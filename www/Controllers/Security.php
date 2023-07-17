@@ -53,33 +53,18 @@ class Security
         $formattedDate = $date->format('Y-m-d');
         if ($form->isSubmit()) {
             $user = new User();
-            if (empty($_POST['firstname'])) {
-                header('Location: register?action=empty&type=prenom&entity=utilisateur');
-            } else if (empty($_POST['lastname'])) {
-                header('Location: register?action=empty&type=nom&entity=utilisateur');
-            } else if (empty($_POST['email'])) {
-                header('Location: register?action=empty&type=email&entity=utilisateur');
-            } else if (empty($_POST['password'])) {
-                header('Location: register?action=empty&type=motdepasse&entity=utilisateur');
-            } else if (empty($_POST['country'])) {
-                header('Location: register?action=empty&type=pays&entity=utilisateur');
+            if (empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['country'])) {
+                exit;
             } else if (!$form->verifyEmailConfirmation($_POST)) {
                 echo 'Les adresses e-mail ne correspondent pas.';
             } else if (!$form->verifyPasswordConfirmation($_POST)) {
                 echo 'Les mots de passe ne correspondent pas.';
             } else {
-                $firstname = $_POST['firstname'];
-                $lastname = $_POST['lastname'];
                 $email = $_POST['email'];
-                $pseudo = $_POST['pseudo'];
-                $password = $_POST['password'];
-                $country = $_POST['country'];
-                $role = 'user';
-
                 if ($user->existsWithEmail($email)) {
                     header('Location: register?action=doublon&type=email&entity=utilisateur');
                 } else {
-                    $user->saveUser($firstname, $lastname, $pseudo, $email, $password, $country, $role, $formattedDate, $formattedDate);
+                    $user->saveUser($_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $email, $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
                     $_SESSION['email'] = $email;
                     header('Location: accueil');
 //                $mail = new PHPMailer();
@@ -112,11 +97,7 @@ class Security
                 $userData = $user->getById($userId);
                 $signalement->setCommentId($com['id']);
                 $signalement->setUserId($user_id);
-                if ($signalement->existeSignalement()) {
-                    $commentaireSignale = true;
-                } else {
-                    $commentaireSignale = false;
-                }
+
                 $table[] = [
                     'id' => $com['id'],
                     'content' => $com['content'],
