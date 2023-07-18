@@ -15,8 +15,9 @@ class AddComment extends AForm
             "content" => [
                 "type" => "text",
                 "placeholder" => "message",
-                "min" => 10,
+                "min" => 3,
                 "max" => 450,
+                "error" => "Veuillez saisir un contenu valide.",
                 "value" => $row ? trim($row['content']) : ''
             ],
         ];

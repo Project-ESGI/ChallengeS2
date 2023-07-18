@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\Menu;
+use App\Core\Verificator;
 use App\Core\View;
 use App\Forms\AddArticle;
 use App\Forms\AddComment;
@@ -46,24 +47,16 @@ class Update
             // Vérifier si l'article existe
             if ($page !== null) {
                 if ($form->isSubmit()) {
-                    $error = false;
-                    $title = $_POST['title'];
+                    $error = Verificator::form($form->getConfig(), $_POST);
 
-                    if (empty($title)) {
-                        $form->addError('title', 'Veuillez saisir un titre.');
-                        $error = true;
-                    } elseif ($page->existsWith($title)) {
-                        $form->addError('title', 'Un article avec ce titre existe déjà.');
-                        $error = true;
+                    foreach ($error as $e => $data) {
+                        $form->addError($e, $data);
                     }
-                    if (empty($_POST['content'])) {
-                        $form->addError('content', 'Veuillez saisir votre contenu.');
-                        $error = true;
-                    }
+
                     $view->assign('form', $form->getConfig($_POST));
 
                     if (!$error) {
-                        $page->actionArticle($title, $_POST['content'], $_POST['category'], null, null, $formattedDate);
+                        $page->actionArticle($_POST['title'], $_POST['content'], $_POST['category'], null, null, $formattedDate);
                         header('Location: article?action=updated&entity=article');
                         exit;
                     } else {
@@ -97,60 +90,27 @@ class Update
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addUser", "user");
             $form = new AddUser();
-            $view->assign('form', $form->getConfig($result));
+            $view->assign('form', $form->getConfig($result, 1));
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
 
             // Vérifier si le user existe
             if ($user !== null) {
                 if ($form->isSubmit()) {
-                    $error = false;
-                    $email = $_POST['email'];
+                    $error = Verificator::form($form->getConfig(), $_POST);
 
-                    if (empty($_POST['firstname'])) {
-                        $form->addError('firstname', 'Veuillez saisir votre prénom.');
-                        $error = true;
-                    }
-                    if (empty($_POST['lastname'])) {
-                        $form->addError('lastname', 'Veuillez saisir votre nom.');
-                        $error = true;
-                    }
-                    if (empty($_POST['pseudo'])) {
-                        $form->addError('pseudo', 'Veuillez saisir votre pseudo.');
-                        $error = true;
-                    }
-                    if (empty($email)) {
-                        $form->addError('email', 'Veuillez saisir votre email.');
-                        $error = true;
-                    } elseif ($user->existsWithEmail($email, $user->getId())) {
-                        $form->addError('email', 'Cet e-mail est déjà utilisé. Veuillez en choisir un autre.');
-                        $error = true;
+                    foreach ($error as $e => $data) {
+                        $form->addError($e, $data);
                     }
 
-                    $fields = array(
-                        'firstname' => $_POST['firstname'],
-                        'lastname' => $_POST['lastname'],
-                        'pseudo' => $_POST['pseudo'],
-                        'email' => $_POST['email'],
-                        'country' => $_POST['country'],
-                        'role' => $_POST['role']
-                    );
-
-                    $invalidFields = $user->checkSpecialCharacters($fields);
-                    foreach ($invalidFields as $field) {
-                        $form->addError($field, 'Le champ ' . $field . ' contient des caractères spéciaux non autorisés.');
-                        $error = true;
-                    }
-
-
-                    $view->assign('form', $form->getConfig($_POST));
+                    $view->assign('form', $form->getConfig($_POST, 1));
 
                     if (!$error) {
                         $user->saveUser(
                             $_POST['firstname'],
                             $_POST['lastname'],
                             $_POST['pseudo'],
-                            $email,
+                            $_POST['email'],
                             null,
                             $_POST['country'],
                             $_POST['role'],
@@ -184,7 +144,7 @@ class Update
             $commentaire = new Commentaire();
             $id = $_GET['id'];
             $user = new User();
-            $user->setIdValue($id);
+            $user->setIdValueString($id);
             $date = new \DateTime();
             $result = $user->getById($id);
 
