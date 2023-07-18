@@ -184,7 +184,6 @@ abstract class Sql
     public function setIdValue(int $id): array
     {
         $data = $this->getById($id);
-        var_dump($data);
         foreach ($data as $key => $value) {
             $this->$key = $value;
         }

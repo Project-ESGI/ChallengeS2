@@ -19,8 +19,7 @@ class Add
 {
     public function addArticle(): void
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -53,16 +52,13 @@ class Add
                 }
             }
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 
     function addComment()
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -98,17 +94,14 @@ class Add
                 }
             }
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 
 
     public function addUser(): void
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -139,9 +132,7 @@ class Add
                 }
             }
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 }

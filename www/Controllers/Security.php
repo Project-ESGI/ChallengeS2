@@ -11,11 +11,13 @@ use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
 use PHPMailer\PHPMailer\PHPMailer;
+use App\Controllers\AuthorizationHelper;
 
 date_default_timezone_set('Europe/Paris');
 
 class Security
 {
+
     public function login(): void
     {
         session_start();
@@ -72,8 +74,7 @@ class Security
 
     public function commentaire()
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -109,9 +110,7 @@ class Security
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 
@@ -121,8 +120,7 @@ class Security
      */
     public function article(): void
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -152,16 +150,13 @@ class Security
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 
     public function user(): void
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -189,9 +184,7 @@ class Security
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 
