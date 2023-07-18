@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Forms\AddComment;
 use App\Models\Commentaire;
 
+
 date_default_timezone_set('Europe/Paris');
 
 
@@ -70,6 +71,7 @@ class Add
 
     function addComment()
     {
+        $error = null;
         session_start();
         if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
@@ -78,14 +80,18 @@ class Add
             $user_role = $userData['role'];
 
             $commentaire = new Commentaire();
-            //ICI MODIFIER
 
-            $id = $_GET['id'];
-            $user = new User();
-            $user->setIdValue($id);
+            $result = null;
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $user = new User();
+                $user->setIdValue((int)$id); // Convertir la valeur de $id en un entier
+                $date = new \DateTime();
+                $result = $user->getById($id);
+                // Reste du code ici...
+            }
+
             $date = new \DateTime();
-            $result = $user->getById($id);
-
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addUser", "user");
             $form = new AddComment();
@@ -100,16 +106,18 @@ class Add
                     } else {
                         $content = $_POST['content'];
 
-                        //fonction modifier commentaire meme que ajouter
-                        header('Location: accueil?action=updated&entity=commentaire');
-                        exit;
+                        if (!$error) {
+                            $commentaire->actionCommentaire($_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
+                            header('Location: accueil?action=updated&entity=commentaire');
+                            exit;
+                        }
                     }
                 }
+            } else {
+                http_response_code(404);
+                include('./Views/Error/404.view.php');
+                exit;
             }
-        } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
         }
     }
 
