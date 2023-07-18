@@ -173,6 +173,7 @@ class Update
 
     public function modifyComment()
     {
+        $error = null;
         session_start();
         if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
             $user = new User();
@@ -181,8 +182,6 @@ class Update
             $user_role = $userData['role'];
 
             $commentaire = new Commentaire();
-            //ICI MODIFIER
-
             $id = $_GET['id'];
             $user = new User();
             $user->setIdValue($id);
@@ -203,9 +202,13 @@ class Update
                     } else {
                         $content = $_POST['content'];
 
-                        //fonction modifier commentaire meme que ajouter
-                        header('Location: accueil?action=updated&entity=commentaire');
-                        exit;
+                        if (!$error) {
+                            $commentaire->actionModifyCommentaire($id, $content, $_SESSION['id'], $formattedDate, $formattedDate);
+
+                            // Redirection vers la page de confirmation
+                            header('Location: accueil?action=updated&entity=commentaire');
+                            exit;
+                        }
                     }
                 }
             }
