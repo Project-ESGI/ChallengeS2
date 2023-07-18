@@ -20,8 +20,7 @@ class Add
 {
     public function addArticle(): void
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -54,17 +53,14 @@ class Add
                 }
             }
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 
     function addComment()
     {
-        $error = null;
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -92,31 +88,30 @@ class Add
 
             if ($user !== null) {
                 if ($form->isSubmit()) {
-                    if (empty($_POST['content'])) {
-                        exit;
-                    } else {
-                        $content = $_POST['content'];
+                    $error = Verificator::form($form->getConfig(), $_POST);
 
-                        if (!$error) {
-                            $commentaire->actionCommentaire($_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
-                            header('Location: accueil?action=updated&entity=commentaire');
-                            exit;
-                        }
+                    foreach ($error as $e => $data) {
+                        $form->addError($e, $data);
+                    }
+
+                    $view->assign('form', $form->getConfig($_POST));
+
+                    if (!$error) {
+                        $commentaire->actionCommentaire($_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
+                        header('Location: accueil?action=updated&entity=commentaire');
+                        exit;
                     }
                 }
-            } else {
-                http_response_code(404);
-                include('./Views/Error/404.view.php');
-                exit;
             }
+        } else {
+            AuthorizationHelper::redirectTo404();
         }
     }
 
 
     public function addUser(): void
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -134,8 +129,8 @@ class Add
 
                 $error = Verificator::form($form->getConfig(), $_POST);
 
-                foreach ($error as $e => $data){
-                    $form->addError($e,$data);
+                foreach ($error as $e => $data) {
+                    $form->addError($e, $data);
                 }
 
                 $view->assign('form', $form->getConfig($_POST));
@@ -147,9 +142,8 @@ class Add
                 }
             }
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 }
+

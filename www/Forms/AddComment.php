@@ -9,7 +9,7 @@ class AddComment extends AForm
 
     protected $method = "POST";
 
-    public function getConfig($row = []): array
+    public function getConfig($row = [], $maj = null): array
     {
         $inputs = [
             "content" => [
@@ -23,8 +23,8 @@ class AddComment extends AForm
         ];
 
 
-        $submit = $row ? "Ajouter" : "Créer";
-        $typeUser = $row ? "Ajouter" : "Créer";
+        $submit = $maj ? "Ajouter" : "Créer";
+        $typeUser = $maj ? "Ajouter" : "Créer";
 
         return [
             "config" => [
@@ -50,6 +50,6 @@ class AddComment extends AForm
 
     public function getErrors(): array
     {
-        return $this->errors;
+        return $this->errors ?? [];
     }
 }

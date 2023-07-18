@@ -8,13 +8,13 @@ use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
 
+session_start();
 date_default_timezone_set('Europe/Paris');
 
 class Main
 {
     public function index()
     {
-        session_start();
         if (isset($_SESSION['email'])) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);

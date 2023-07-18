@@ -24,8 +24,7 @@ class Update
 
     public function modifyArticle()
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -65,17 +64,14 @@ class Update
                 }
             }
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 
 
     public function modifyUser()
     {
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -125,17 +121,14 @@ class Update
                 }
             }
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 
     public function modifyComment()
     {
-        $error = null;
-        session_start();
-        if (isset($_SESSION['email']) && $_SESSION['role'] === 'admin') {
+
+        if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -148,6 +141,7 @@ class Update
             $date = new \DateTime();
             $result = $user->getById($id);
 
+
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addComment", "comment");
             $form = new AddComment();
@@ -157,25 +151,22 @@ class Update
 
             if ($user !== null) {
                 if ($form->isSubmit()) {
-                    if (empty($_POST['content'])) {
+                    $error = false;
+
+
+                    $view->assign('form', $form->getConfig($_POST, 1));
+
+                    if (!$error) {
+                        $commentaire->actionModifyCommentaire($id, $_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
+
+                        // Redirection vers la page de confirmation
+                        header('Location: accueil?action=updated&entity=commentaire');
                         exit;
-                    } else {
-                        $content = $_POST['content'];
-
-                        if (!$error) {
-                            $commentaire->actionModifyCommentaire($id, $content, $_SESSION['id'], $formattedDate, $formattedDate);
-
-                            // Redirection vers la page de confirmation
-                            header('Location: accueil?action=updated&entity=commentaire');
-                            exit;
-                        }
                     }
                 }
             }
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 }
