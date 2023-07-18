@@ -193,7 +193,7 @@ abstract class Sql
     function checkSpecialCharacters($fields)
     {
         $invalidFields = [];
-        $specialChars = array('/', '*', '-', '+', '°', '$', '#', '!', '&', '%', '^', '(', ')', '[', ']', '{', '}', '=', '<', '>', '~', '`', ':', ';', '|', '@','\\');
+        $specialChars = array('/', '*', '+', '°', '$', '#', '!', '&', '%', '^', '(', ')', '[', ']', '{', '}', '=', '<', '>', '~', '`', ':', ';', '|', '@','\\');
 
         foreach ($fields as $field => $value) {
             if ($field === 'email') {

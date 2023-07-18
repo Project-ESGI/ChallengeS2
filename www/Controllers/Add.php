@@ -135,28 +135,27 @@ class Add
                 $user = new User();
                 $error = false;
                 $email = $_POST['email'];
-
-                if (empty($_POST['firstname'])) {
-                    $form->addError('firstname', 'Veuillez saisir votre prénom.');
+                foreach ($_POST as $key => $value) {
+                    var_dump($value);
+                    $_POST[$key] = trim($value);
+                }
+                if (strlen($_POST['firstname']) < 3) {
+                    $form->addError('firstname', 'Veuillez saisir un prénom valide.');
                     $error = true;
                 }
-                if (empty($_POST['lastname'])) {
-                    $form->addError('lastname', 'Veuillez saisir votre nom.');
+                if (strlen($_POST['lastname']) < 3) {
+                    $form->addError('lastname', 'Veuillez saisir un nom valide.');
                     $error = true;
                 }
-                if (empty($_POST['pseudo'])) {
-                    $form->addError('pseudo', 'Veuillez saisir votre pseudo.');
+                if (strlen($_POST['pseudo']) < 3) {
+                    $form->addError('pseudo', 'Veuillez saisir un pseudo valide.');
                     $error = true;
                 }
-                if (empty($email)) {
-                    $form->addError('email', 'Veuillez saisir votre email.');
+                if (strlen($_POST['firstname']) < 5 || strpos($email, '@') === false) {
+                    $form->addError('email', 'Veuillez saisir un email valide.');
                     $error = true;
-                } elseif ($user->existsWithEmail($email)) {
+                } elseif ($user->existsWithEmail($email, $user->getId())) {
                     $form->addError('email', 'Cet e-mail est déjà utilisé. Veuillez en choisir un autre.');
-                    $error = true;
-                }
-                if (empty($_POST['password'])) {
-                    $form->addError('password', 'Veuillez saisir votre mot de passe.');
                     $error = true;
                 }
 
@@ -164,7 +163,7 @@ class Add
                     'firstname' => $_POST['firstname'],
                     'lastname' => $_POST['lastname'],
                     'pseudo' => $_POST['pseudo'],
-                    'email' => $_POST['email'],
+                    'email' => $email,
                     'country' => $_POST['country'],
                     'role' => $_POST['role']
                 );
