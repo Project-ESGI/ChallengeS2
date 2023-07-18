@@ -181,11 +181,13 @@ abstract class Sql
      * @param int $id
      * @return array
      */
-    public function setIdValue(int $id): array
+    public function setIdValue(int $id): ?array
     {
         $data = $this->getById($id);
-        foreach ($data as $key => $value) {
-            $this->$key = $value;
+        if ($data !== null) {
+            foreach ($data as $key => $value) {
+                $this->$key = $value;
+            }
         }
         return $data;
     }
@@ -286,6 +288,7 @@ abstract class Sql
             return $statement->execute();
         } else {
             // L'utilisateur n'existe pas, effectuer une insertion
+
             $query = "INSERT INTO " . $this->table . " (firstname, lastname, pseudo, email, password, country, role, date_inserted, date_updated)
         VALUES (:firstname, :lastname, :pseudo, :email, :password, :country, :role, :date_inserted, :date_updated)";
 
@@ -368,6 +371,44 @@ abstract class Sql
             $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
 
             return $statement->execute();
+        }
+    }
+
+
+    public function actionCommentaire($content, $author, $dateInserted, $dateUpdated)
+    {
+        try {
+            $query = "INSERT INTO " . $this->table . " (content, author, date_inserted, date_updated)
+                  VALUES (:content, :author, :date_inserted, :date_updated)";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':content', $content, \PDO::PARAM_STR);
+            $statement->bindValue(':author', $author, \PDO::PARAM_INT);
+            $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+            $statement->execute();
+        } catch (PDOException $e) {
+            // Gérer l'exception PDO ici
+            echo "Une erreur PDO s'est produite : " . $e->getMessage();
+        }
+    }
+
+    public function actionModifyCommentaire($id, $content, $author, $dateInserted, $dateUpdated)
+    {
+        try {
+            $query = "UPDATE " . $this->table . " SET content = :content, author = :author, date_inserted = :date_inserted, date_updated = :date_updated WHERE id = :id";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':content', $content, \PDO::PARAM_STR);
+            $statement->bindValue(':author', $author, \PDO::PARAM_INT);
+            $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+            $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+
+            $statement->execute();
+        } catch (PDOException $e) {
+            // Gérer l'exception PDO ici
+            echo "Une erreur PDO s'est produite : " . $e->getMessage();
         }
     }
 
