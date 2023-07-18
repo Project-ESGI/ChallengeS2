@@ -81,8 +81,13 @@ class Delete
 
             if ($user->getId()) {
                 $commentaire->deleteByAuthor($user->getId()); // Supprime les commentaires associés à l'auteur
+
+                if($user->getId() === $_SESSION['id']){
+                    header('Location: logout');
+                } else {
+                    header('Location: user?action=deleted&entity=utilisateur');
+                }
                 $user->delete(); // Supprime l'utilisateur
-                header('Location: user?action=deleted&entity=utilisateur');
                 exit;
             }
         } else {
