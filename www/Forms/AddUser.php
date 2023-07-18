@@ -10,7 +10,7 @@ class AddUser extends AForm
     protected $method = "POST";
     protected $errors = [];
 
-    public function getConfig($row = []): array
+    public function getConfig($row = [], $maj = null): array
     {
         $inputs = [
             "firstname" => [
@@ -18,7 +18,7 @@ class AddUser extends AForm
                 "placeholder" => "prénom",
                 "min" => 2,
                 "max" => 45,
-                "error" => "Prénom incorrect!",
+                "error" => "Veuillez saisir un prénom valide.",
                 "value" => $row ? trim($row['firstname']) : ''
             ],
             "lastname" => [
@@ -26,7 +26,7 @@ class AddUser extends AForm
                 "placeholder" => "nom",
                 "min" => 2,
                 "max" => 45,
-                "error" => "Nom incorrect!",
+                "error" => "Veuillez saisir un nom valide.",
                 "value" => $row ? trim($row['lastname']) : ''
             ],
             "pseudo" => [
@@ -34,7 +34,7 @@ class AddUser extends AForm
                 "min" => 4,
                 "max" => 255,
                 "placeholder" => "pseudo",
-                "error" => "pseudo incorrect!",
+                "error" => "Veuillez saisir un pseudo valide.",
                 "value" => $row ? trim($row['pseudo']) : ''
             ],
             "email" => [
@@ -42,25 +42,23 @@ class AddUser extends AForm
                 "min" => 5,
                 "max" => 255,
                 "placeholder" => "email",
-                "error" => "email incorrect!",
+                "error" => "Veuillez saisir un email valide.",
                 "value" => $row ? trim($row['email']) : ''
             ],
             "country" => [
                 "type" => "select",
                 "options" => ["FR", "PL"],
                 "value" => $row ? trim($row['country']) : '',
-                "error" => "Pays incorrect"
             ],
             "role" => [
                 "type" => "select",
                 "options" => ["user", "admin"],
                 "value" => $row ? trim($row['role']) : '',
-                "error" => "rôle incorrect!"
             ],
         ];
 
         // Exclure le champ du mot de passe si $row est défini
-        if (!$row) {
+        if (!$maj) {
             $inputs["password"] = [
                 "type" => "password",
                 "min" => 8,
@@ -70,8 +68,8 @@ class AddUser extends AForm
             ];
         }
 
-        $submit = $row ? "Modifier" : "Créer";
-        $typeUser = $row ? "Modifier" : "Créer";
+        $submit = $maj ? "Modifier" : "Créer";
+        $typeUser = $maj ? "Modifier" : "Créer";
 
         return [
             "config" => [

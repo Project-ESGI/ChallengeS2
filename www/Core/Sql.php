@@ -184,34 +184,36 @@ abstract class Sql
     public function setIdValue(int $id): array
     {
         $data = $this->getById($id);
+        var_dump($data);
         foreach ($data as $key => $value) {
             $this->$key = $value;
         }
         return $data;
     }
 
-    function checkSpecialCharacters($fields)
+    /**
+     * Vérifie la présence de caractères spéciaux non autorisés dans une valeur donnée.
+     *
+     * @param string $value La valeur à vérifier.
+     * @param string $name Le nom de l'input associé à la valeur.
+     * @return array Tableau des champs invalides contenant des caractères spéciaux non autorisés.
+     */
+    function checkSpecialCharacters($value, $name)
     {
         $invalidFields = [];
-        $specialChars = array('/', '*', '+', '°', '$', '#', '!', '&', '%', '^', '(', ')', '[', ']', '{', '}', '=', '<', '>', '~', '`', ':', ';', '|', '@','\\');
+        $specialChars = array('/', '*', '+', '°', '$', '#', '!', '&', '%', '^', '(', ')', '[', ']', '{', '}', '=', '<', '>', '~', '`', ':', ';', '|', '@', '\\');
 
-        foreach ($fields as $field => $value) {
-            if ($field === 'email') {
-                // Vérification spéciale pour l'e-mail
-                $invalidChars = array_diff($specialChars, ['@']);
-                foreach ($invalidChars as $char) {
-                    if (strpos($value, $char) !== false) {
-                        $invalidFields[] = $field;
-                        break;
-                    }
-                }
-            } else {
-                // Vérification générale pour les autres champs
-                foreach ($specialChars as $char) {
-                    if (strpos($value, $char) !== false) {
-                        $invalidFields[] = $field;
-                        break;
-                    }
+        if ($name === 'email' || $name === 'confirm_email') {
+            $specialChars = array_diff($specialChars, ['@']);
+        }
+        $countDashes = substr_count($value, '-');
+        if ($countDashes > 1 || (strlen($value) > 1 && $value[0] === '-' && $value[strlen($value) - 1] === '-')) {
+            $invalidFields[] = $value;
+        } else {
+            foreach ($specialChars as $char) {
+                if (strpos($value, $char) !== false) {
+                    $invalidFields[] = $value;
+                    break;
                 }
             }
         }

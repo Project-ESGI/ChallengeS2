@@ -18,7 +18,7 @@ class Registration extends AForm
                 "placeholder" => "Prénom",
                 "min" => 2,
                 "max" => 45,
-                "error" => "Prénom incorrect!",
+                "error" => "Veuillez saisir un prénom valide.",
                 "value" => $row ? trim($row['firstname']) : ''
             ],
             "lastname" => [
@@ -26,7 +26,7 @@ class Registration extends AForm
                 "placeholder" => "Nom",
                 "min" => 2,
                 "max" => 45,
-                "error" => "Nom incorrect!",
+                "error" => "Veuillez saisir un nom valide.",
                 "value" => $row ? trim($row['lastname']) : ''
             ],
             "pseudo" => [
@@ -34,6 +34,7 @@ class Registration extends AForm
                 "min" => 4,
                 "max" => 255,
                 "placeholder" => "pseudo",
+                "error" => "Veuillez saisir un pseudo valide.",
                 "value" => $row ? trim($row['pseudo']) : ''
             ],
             "email" => [
@@ -42,6 +43,7 @@ class Registration extends AForm
                 "max" => 255,
                 "placeholder" => "email",
                 "confirm" => "email",
+                "error" => "Veuillez saisir un email valide.",
                 "value" => $row ? trim($row['email']) : ''
             ],
             "confirm_email" => [
@@ -49,6 +51,7 @@ class Registration extends AForm
                 "min" => 5,
                 "max" => 255,
                 "placeholder" => "Confirmation de l'email",
+                "error" => "Veuillez saisir un email valide.",
                 "confirm" => "email",
             ],
             "password" => [
@@ -56,12 +59,14 @@ class Registration extends AForm
                 "min" => 8,
                 "max" => 45,
                 "placeholder" => "Votre mot de passe",
+                "error" => "Veuillez saisir un mot de passe valide.",
             ],
             "confirm_password" => [
                 "type" => "password",
                 "min" => 8,
                 "max" => 45,
                 "placeholder" => "Confirmation de votre mot de passe",
+                "error" => "Veuillez saisir un mot de passe valide.",
                 "confirm" => "password",
             ],
             "country" => [
@@ -96,20 +101,20 @@ class Registration extends AForm
         return $this->errors ?? [];
     }
 
-    public function verifyEmailConfirmation(array $data): bool
-    {
-        $email = $data['email'];
-        $confirmEmail = $data['confirm_email'];
-
-        return $email === $confirmEmail;
-    }
-
-    public function verifyPasswordConfirmation(array $data): bool
-    {
-        $password = $data['password'];
-        $confirmPassword = $data['confirm_password'];
-
-        return $password === $confirmPassword;
-    }
+//    public function verifyEmailConfirmation(array $data): bool
+//    {
+//        $email = $data['email'];
+//        $confirmEmail = $data['confirm_email'];
+//
+//        return $email === $confirmEmail;
+//    }
+//
+//    public function verifyPasswordConfirmation(array $data): bool
+//    {
+//        $password = $data['password'];
+//        $confirmPassword = $data['confirm_password'];
+//
+//        return $password === $confirmPassword;
+//    }
 
 }

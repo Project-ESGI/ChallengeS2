@@ -31,7 +31,7 @@
                                value="<?= isset($input["value"]) ? $input["value"] : '' ?>">
                     <?php endif; ?>
                     <?php if (isset($config["config"]["errors"][$name])): ?>
-                        <div class="text-danger"><?= $config["config"]["errors"][$name] ?></div>
+                        <div class="text-danger error-message"><?= $config["config"]["errors"][$name] ?></div>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
