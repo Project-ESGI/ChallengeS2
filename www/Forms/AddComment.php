@@ -21,19 +21,9 @@ class AddComment extends AForm
             ],
         ];
 
-        // Exclure le champ du mot de passe si $row est défini
-        if (!$row) {
-            $inputs["password"] = [
-                "type" => "password",
-                "min" => 8,
-                "max" => 45,
-                "placeholder" => "mot de passe",
-                "error" => "Mot de passe trop faible."
-            ];
-        }
 
-        $submit = $row ? "Modifier" : "Créer";
-        $typeUser = $row ? "Modifier" : "Créer";
+        $submit = $row ? "Ajouter" : "Créer";
+        $typeUser = $row ? "Ajouter" : "Créer";
 
         return [
             "config" => [
