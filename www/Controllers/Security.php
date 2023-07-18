@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Core\Verificator;
 use App\Core\View;
-use App\Forms\AddUser;
 use App\Forms\ConnectionUser;
 use App\Forms\Registration;
 use App\Models\Article;
@@ -14,7 +13,6 @@ use App\Models\User;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
-//use PHPMailer\PHPMailer\Exception;
 date_default_timezone_set('Europe/Paris');
 
 
@@ -38,7 +36,9 @@ class Security
                 header('Location: accueil');
                 exit;
             } else {
-                echo "Email ou mot de passe incorrect!";
+                $form->addError('email', 'Email ou mot de passe incorrect!');
+                $form->addError('password', 'Email ou mot de passe incorrect!');
+                $view->assign('form', $form->getConfig());
             }
         }
     }
@@ -53,22 +53,46 @@ class Security
         $formattedDate = $date->format('Y-m-d');
         if ($form->isSubmit()) {
             $user = new User();
-            if (empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['country'])) {
-                exit;
+            $error = false;
+            $email = $_POST['email'];
+
+            if (empty($_POST['firstname'])) {
+                $form->addError('firstname', 'Veuillez saisir votre prénom.');
+                $error = true;
+            }
+            if (empty($_POST['lastname'])) {
+                $form->addError('lastname', 'Veuillez saisir votre nom.');
+                $error = true;
+            }
+            if (empty($_POST['pseudo'])) {
+                $form->addError('pseudo', 'Veuillez saisir votre pseudo!');
+                $error = true;
+            }
+            if (empty($email)) {
+                $form->addError('email', 'Veuillez saisir votre email.');
+                $error = true;
             } else if (!$form->verifyEmailConfirmation($_POST)) {
-                echo 'Les adresses e-mail ne correspondent pas.';
+                $form->addError('email', 'Les deux emails sont différents.');
+                $form->addError('confirm_email', 'Les deux emails sont différents.');
+                $error = true;
+            } elseif ($user->existsWithEmail($email)) {
+                $form->addError('email', 'Cet e-mail est déjà utilisé. Veuillez en choisir un autre.');
+                $error = true;
+            }
+            if (empty($_POST['password'])) {
+                $form->addError('password', 'Veuillez saisir votre mot de passe.');
+                $error = true;
             } else if (!$form->verifyPasswordConfirmation($_POST)) {
-                echo 'Les mots de passe ne correspondent pas.';
-            } else {
-                $email = $_POST['email'];
-                if ($user->existsWithEmail($email)) {
-                    header('Location: register?action=doublon&type=email&entity=utilisateur');
-                } else {
-                    $user->saveUser($_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $email, $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
-                    $_SESSION['email'] = $email;
-                    header('Location: accueil');
+                $form->addError('password', 'Les mots de passe ne correspondent pas.');
+                $form->addError('confirm_password', 'Les mots de passe ne correspondent pas.');
+                $error = true;
+            }
+            $view->assign('form', $form->getConfig($_POST));
+            if (!$error) {
+                $user->saveUser($_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $email, $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
+                $_SESSION['email'] = $email;
+                header('Location: accueil');
 //                $mail = new PHPMailer();
-                }
             }
             exit;
         }

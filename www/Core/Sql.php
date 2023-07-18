@@ -190,6 +190,35 @@ abstract class Sql
         return $data;
     }
 
+    function checkSpecialCharacters($fields)
+    {
+        $invalidFields = [];
+        $specialChars = array('/', '*', '-', '+', '°', '$', '#', '!', '&', '%', '^', '(', ')', '[', ']', '{', '}', '=', '<', '>', '~', '`', ':', ';', '|', '@','\\');
+
+        foreach ($fields as $field => $value) {
+            if ($field === 'email') {
+                // Vérification spéciale pour l'e-mail
+                $invalidChars = array_diff($specialChars, ['@']);
+                foreach ($invalidChars as $char) {
+                    if (strpos($value, $char) !== false) {
+                        $invalidFields[] = $field;
+                        break;
+                    }
+                }
+            } else {
+                // Vérification générale pour les autres champs
+                foreach ($specialChars as $char) {
+                    if (strpos($value, $char) !== false) {
+                        $invalidFields[] = $field;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $invalidFields;
+    }
+
     /**
      * Enregistre un nouvel utilisateur dans la base de données ou met à jour un utilisateur existant.
      *

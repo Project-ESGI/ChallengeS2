@@ -8,6 +8,7 @@ class AddUser extends AForm
 {
 
     protected $method = "POST";
+    protected $errors = [];
 
     public function getConfig($row = []): array
     {
@@ -77,6 +78,7 @@ class AddUser extends AForm
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
+                "errors" => $this->getErrors(),
                 "submit" => $submit,
                 "typeUser" => $typeUser
             ],
@@ -96,6 +98,6 @@ class AddUser extends AForm
 
     public function getErrors(): array
     {
-        return $this->errors;
+        return $this->errors ?? [];
     }
 }
