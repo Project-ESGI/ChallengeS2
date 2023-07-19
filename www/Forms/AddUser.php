@@ -68,18 +68,16 @@ class AddUser extends AForm
             ];
         }
 
-        $submit = $maj ? "Modifier" : "Créer";
-        $typeUser = $maj ? "Modifier" : "Créer";
+        $submit = $maj ? "Modifier" : "Ajouter";
 
         return [
             "config" => [
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
-                "titre" => "Ajouter un utilisateur",
+                "titre" => $submit." un utilisateur",
                 "errors" => $this->getErrors(),
                 "submit" => $submit,
-                "typeUser" => $typeUser
             ],
             "inputs" => $inputs
         ];
