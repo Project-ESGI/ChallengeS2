@@ -55,7 +55,7 @@ class Update
                     $view->assign('form', $form->getConfig($_POST, 1));
 
                     if (!$error) {
-                        $page->actionArticle($id,$_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], null, $formattedDate);
+                        $page->actionArticle($id, $_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], null, $formattedDate);
                         header('Location: article?action=updated&entity=article');
                         exit;
                     } else {
@@ -114,7 +114,11 @@ class Update
                             null,
                             $formattedDate
                         );
-                        header('Location: user?action=updated&entity=utilisateur');
+                        if ($user->getId() === $_SESSION['id'] && $user->getEmail() !== $_SESSION['email']) {
+                            header('Location: logout');
+                        } else {
+                            header('Location: user?action=updated&entity=utilisateur');
+                        }
                         exit;
                     } else {
                         exit;
