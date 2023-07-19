@@ -84,39 +84,17 @@ abstract class Sql
     }
 
     /**
-     * Vérifie si un enregistrement avec le même titre existe déjà dans la base de données.
+     * Vérifie si un enregistrement avec la même valeur existe déjà dans la base de données.
      *
-     * @param string $title Le titre à vérifier.
+     * @param string $column Le nom de la colonne à vérifier.
+     * @param mixed $value La valeur à vérifier.
      * @param int|null $id L'ID de l'enregistrement actuel (facultatif).
-     * @return bool True si un enregistrement avec le même titre existe déjà, sinon False.
+     * @return bool True si un enregistrement avec la même valeur existe déjà, sinon False.
      */
-    public function existsWith(string $title, int $id = null): bool
+    public function existsWithValue(string $column, $value, int $id = null): bool
     {
-        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE title = :title";
-        $parameters = [':title' => $title];
-
-        if ($id !== null) {
-            $query .= " AND id <> :id";
-            $parameters[':id'] = $id;
-        }
-
-        $queryPrepared = $this->pdo->prepare($query);
-        $queryPrepared->execute($parameters);
-
-        return $queryPrepared->fetchColumn() > 0;
-    }
-
-    /**
-     * Vérifie si un enregistrement avec le même titre existe déjà dans la base de données.
-     *
-     * @param string $email Le titre à vérifier.
-     * @param int|null $id L'ID de l'enregistrement actuel (facultatif).
-     * @return bool True si un enregistrement avec le même titre existe déjà, sinon False.
-     */
-    public function existsWithEmail(string $email, int $id = null): bool
-    {
-        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE email = :email";
-        $parameters = [':email' => $email];
+        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE $column = :value";
+        $parameters = [':value' => $value];
 
         if ($id !== null) {
             $query .= " AND id <> :id";

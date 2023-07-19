@@ -7,6 +7,7 @@ use App\Core\View;
 use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
+use App\Core\Mail;
 
 session_start();
 date_default_timezone_set('Europe/Paris');

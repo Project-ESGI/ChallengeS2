@@ -141,7 +141,6 @@ class Security
         }
     }
 
-
     /**
      * @Route("/article", name="article")
      * @Security("is_granted('ROLE_ADMIN')")
@@ -165,6 +164,7 @@ class Security
                 $table[] = [
                     'id' => $page['id'],
                     'title' => $page['title'],
+                    'slug' => $page['slug'],
                     'content' => $page['content'],
                     'author' => $userData['lastname'] . ' ' . $userData['firstname'] . ' (' . $userData['pseudo'] . ')',
                     'category' => $page['category'],

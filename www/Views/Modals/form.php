@@ -27,6 +27,8 @@
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
+    <input type="hidden" id="slugInput" name="slugInput">
+
     <input class="btn btn-lg btn-primary btn-block mt-3" type="submit" name="submit"
            value="<?= $config["config"]["submit"] ?>">
 
@@ -39,3 +41,17 @@
         CKEDITOR.replace('content');
     </script>
 <?php endif; ?>
+
+<script>
+    const slugify = str => str.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/[\s_-]+/g, "-").replace(/^-+|-+$/g, "");
+
+    // Écouteur d'événement pour détecter les modifications du champ de saisie du slug
+    const slugInput = document.getElementById("slug");
+    const slugInputHidden = document.getElementById("slugInput");
+
+    slugInput.addEventListener("input", function() {
+        const slug = slugify(this.value);
+        slugInputHidden.value = slug; // Stocke l'URL générée dans le champ de formulaire "slugInput"
+    });
+</script>
+

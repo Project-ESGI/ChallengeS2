@@ -96,7 +96,7 @@ class Add
                     $view->assign('form', $form->getConfig($_POST));
 
                     if (!$error) {
-                        $commentaire->saveCommentaire(null,$_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
+                        $commentaire->saveCommentaire(null, $_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
                         header('Location: accueil?action=created&entity=commentaire');
                         exit;
                     }
@@ -134,7 +134,7 @@ class Add
                 $view->assign('form', $form->getConfig($_POST));
 
                 if (!$error) {
-                    $user->saveUser(null,$_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['role'], $formattedDate, $formattedDate);
+                    $user->saveUser(null, $_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['role'], $formattedDate, $formattedDate);
                     header('Location: user?action=created&entity=utilisateur');
                     exit;
                 }
