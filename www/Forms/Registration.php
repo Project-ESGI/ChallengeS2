@@ -79,6 +79,7 @@ class Registration extends AForm
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
+                "titre" => "Inscription",
                 "errors" => $this->getErrors(),
                 "submit" => "S'inscrire",
             ],

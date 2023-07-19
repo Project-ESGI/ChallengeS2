@@ -31,6 +31,7 @@ class AddComment extends AForm
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
+                "titre" => "Ajouter un commentaire",
                 "submit" => $submit,
                 "typeUser" => $typeUser
             ],

@@ -76,6 +76,7 @@ class AddUser extends AForm
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
+                "titre" => "Ajouter un utilisateur",
                 "errors" => $this->getErrors(),
                 "submit" => $submit,
                 "typeUser" => $typeUser

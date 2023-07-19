@@ -32,6 +32,7 @@ class ConnectionUser extends AForm
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
+                "titre" => "Connexion",
                 "errors" => $this->getErrors(),
                 "submit" => "Se Connecter",
                 "cancel" => "Annuler"

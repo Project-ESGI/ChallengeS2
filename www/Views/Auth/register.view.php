@@ -1,14 +1,12 @@
-<h2 class="text-center mt-4">Inscription</h2>
-
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-10"> <!-- Utilisez la classe col-md-8 pour définir la largeur de la div -->
             <?php print_r($errors??null);?>
-
             <?php $this->modal("form", $form );?>
         </div>
     </div>
 </div>
+
 
 <div class="container text-center mt-4">
     <p class="text-white">Vous avez déjà un compte ? <a href="/login">Connectez-vous</a> ici.</p>

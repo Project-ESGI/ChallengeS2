@@ -1,4 +1,3 @@
-<h2 class="text-center mt-4">Connexion</h2>
 
 <div class="container">
     <div class="row justify-content-center">
