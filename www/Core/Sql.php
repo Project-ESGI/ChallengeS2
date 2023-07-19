@@ -258,10 +258,11 @@ abstract class Sql
     /**
      * Enregistre un nouvel utilisateur dans la base de données ou met à jour un utilisateur existant.
      *
+     * @param int|null $id L'ID de l'utilisateur (facultatif).
      * @param string $firstname Le prénom de l'utilisateur.
      * @param string $lastname Le nom de famille de l'utilisateur.
      * @param string $pseudo Le pseudo de l'utilisateur.
-     * @param string $email L'adresse e-mail de l'utilisateur.
+     * @param string|null $email L'adresse e-mail de l'utilisateur (facultatif).
      * @param string|null $password Le mot de passe de l'utilisateur (facultatif).
      * @param string $country Le pays de l'utilisateur.
      * @param string $role Le rôle de l'utilisateur.
@@ -269,7 +270,7 @@ abstract class Sql
      * @param string $dateUpdated La date de mise à jour de l'utilisateur.
      * @return bool True si l'utilisateur est enregistré ou mis à jour avec succès, sinon False.
      */
-    public function saveUser($firstname, $lastname, $pseudo, $email, $password = null, $country, $role, $dateInserted = null, $dateUpdated)
+    public function saveUser($id = null, $firstname, $lastname, $pseudo, $email = null, $password = null, $country, $role, $dateInserted = null, $dateUpdated)
     {
         $hashedPassword = null;
         $passwordParam = null;
@@ -278,73 +279,95 @@ abstract class Sql
             $passwordParam = ':password';
         }
 
-        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE email = :email";
-        $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':email', $email, \PDO::PARAM_STR);
-        $statement->execute();
-        $count = $statement->fetchColumn();
-
-        if ($count > 0) {
-            // L'utilisateur existe déjà, effectuer une mise à jour
-            $query = "UPDATE " . $this->table . " SET firstname = :firstname, lastname = :lastname, pseudo = :pseudo";
-
-            if ($passwordParam !== null) {
-                $query .= ", password = CASE WHEN $passwordParam IS NOT NULL THEN $passwordParam ELSE password END";
-            }
-
-            $query .= ", country = :country, role = :role, date_updated = :date_updated";
-
-            if ($dateInserted !== null) {
-                $query .= ", date_inserted = :date_inserted";
-            }
-
-            $query .= " WHERE email = :email";
-
+        if ($id !== null) {
+            $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE id = :id";
             $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
-            $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
-            $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
+            $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+            $statement->execute();
+            $count = $statement->fetchColumn();
 
-            if ($passwordParam !== null) {
-                $statement->bindValue(':password', $hashedPassword, \PDO::PARAM_STR);
+            if ($count > 0) {
+                // L'utilisateur existe déjà, effectuer une mise à jour
+                $query = "UPDATE " . $this->table . " SET firstname = :firstname, lastname = :lastname, pseudo = :pseudo";
+
+                if ($email !== null) {
+                    $query .= ", email = :email";
+                }
+
+                if ($passwordParam !== null) {
+                    $query .= ", password = CASE WHEN $passwordParam IS NOT NULL THEN $passwordParam ELSE password END";
+                }
+
+                $query .= ", country = :country, role = :role, date_updated = :date_updated";
+
+                if ($dateInserted !== null) {
+                    $query .= ", date_inserted = :date_inserted";
+                }
+
+                $query .= " WHERE id = :id";
+
+                $statement = $this->pdo->prepare($query);
+                $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+                $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+                $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+                $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
+
+                if ($email !== null) {
+                    $statement->bindValue(':email', $email, \PDO::PARAM_STR);
+                }
+
+                if ($passwordParam !== null) {
+                    $statement->bindValue(':password', $hashedPassword, \PDO::PARAM_STR);
+                }
+
+                $statement->bindValue(':country', $country, \PDO::PARAM_STR);
+                $statement->bindValue(':role', $role, \PDO::PARAM_STR);
+                $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+
+                if ($dateInserted !== null) {
+                    $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+                }
+
+                return $statement->execute();
             }
-
-            $statement->bindValue(':country', $country, \PDO::PARAM_STR);
-            $statement->bindValue(':role', $role, \PDO::PARAM_STR);
-            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
-
-            if ($dateInserted !== null) {
-                $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
-            }
-
-            $statement->bindValue(':email', $email, \PDO::PARAM_STR);
-
-            return $statement->execute();
-        } else {
-            // L'utilisateur n'existe pas, effectuer une insertion
-
-            $query = "INSERT INTO " . $this->table . " (firstname, lastname, pseudo, email, password, country, role, date_inserted, date_updated)
-        VALUES (:firstname, :lastname, :pseudo, :email, :password, :country, :role, :date_inserted, :date_updated)";
-
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
-            $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
-            $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
-            $statement->bindValue(':email', $email, \PDO::PARAM_STR);
-            $statement->bindValue(':password', $hashedPassword, \PDO::PARAM_STR);
-            $statement->bindValue(':country', $country, \PDO::PARAM_STR);
-            $statement->bindValue(':role', $role, \PDO::PARAM_STR);
-            $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
-            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
-
-            return $statement->execute();
         }
+
+        // L'utilisateur n'existe pas ou l'ID est null, effectuer une insertion
+        $query = "INSERT INTO " . $this->table . " (id, firstname, lastname, pseudo, email, password, country, role, date_inserted, date_updated)
+        VALUES (DEFAULT, :firstname, :lastname, :pseudo, :email, :password, :country, :role, :date_inserted, :date_updated)";
+
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+        $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+        $statement->bindValue(':pseudo', $pseudo, \PDO::PARAM_STR);
+        $statement->bindValue(':email', $email, \PDO::PARAM_STR);
+        $statement->bindValue(':password', $hashedPassword, \PDO::PARAM_STR);
+        $statement->bindValue(':country', $country, \PDO::PARAM_STR);
+        $statement->bindValue(':role', $role, \PDO::PARAM_STR);
+        $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+        $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+
+        return $statement->execute();
     }
 
-    public function actionArticle($title, $slug, $content, $category, $author = null, $dateUpdated)
+
+    /**
+     * Effectue la création d'un nouvel article ou met à jour un article existant dans la base de données.
+     *
+     * @param null $id L'ID de l'article.
+     * @param string $title Le titre de l'article.
+     * @param string $slug Le slug de l'article.
+     * @param string $content Le contenu de l'article.
+     * @param string $category La catégorie de l'article.
+     * @param null $author L'id de l'auteur de l'article.
+     * @param null $dateInserted La date d'insertion de l'article.
+     * @param string $dateUpdated La date de mise à jour de l'article.
+     * @return bool True si l'article est enregistré avec succès, sinon False.
+     */
+    public function actionArticle($id = null, $title, $slug, $content, $category, $author = null, $dateInserted = null, $dateUpdated)
     {
-        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE title = :title";
-        $parameters = [':title' => $title];
+        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE id = :id";
+        $parameters = [':id' => $id];
 
         $statement = $this->pdo->prepare($query);
         $statement->execute($parameters);
@@ -352,15 +375,20 @@ abstract class Sql
 
         if ($count > 0) {
             // L'article existe déjà, effectuer une mise à jour
-            $query = "UPDATE " . $this->table . " SET slug = :slug, content = :content, category = :category, date_updated = :date_updated";
+            $query = "UPDATE " . $this->table . " SET title = :title, slug = :slug, content = :content, category = :category, date_updated = :date_updated";
 
             if ($author !== null) {
                 $query .= ", author = :author";
             }
 
-            $query .= " WHERE title = :title";
+            if ($dateInserted !== null) {
+                $query .= ", date_inserted = :date_inserted";
+            }
+
+            $query .= " WHERE id = :id";
 
             $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':title', $title, \PDO::PARAM_STR);
             $statement->bindValue(':slug', $slug, \PDO::PARAM_STR);
             $statement->bindValue(':content', $content, \PDO::PARAM_STR);
             $statement->bindValue(':category', $category, \PDO::PARAM_STR);
@@ -370,13 +398,17 @@ abstract class Sql
                 $statement->bindValue(':author', $author, \PDO::PARAM_INT);
             }
 
-            $statement->bindValue(':title', $title, \PDO::PARAM_STR);
+            if ($dateInserted !== null) {
+                $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+            }
+
+            $statement->bindValue(':id', $id, \PDO::PARAM_INT);
 
             return $statement->execute();
         } else {
             // L'article n'existe pas, effectuer une insertion
-            $query = "INSERT INTO " . $this->table . " (title, slug, content, category, author, date_updated)
-        VALUES (:title, :slug, :content, :category, :author, :date_updated)";
+            $query = "INSERT INTO " . $this->table . " (title, slug, content, category, author, date_inserted, date_updated)
+        VALUES (:title, :slug, :content, :category, :author, :date_inserted, :date_updated)";
 
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(':title', $title, \PDO::PARAM_STR);
@@ -384,47 +416,60 @@ abstract class Sql
             $statement->bindValue(':content', $content, \PDO::PARAM_STR);
             $statement->bindValue(':category', $category, \PDO::PARAM_STR);
             $statement->bindValue(':author', $author, \PDO::PARAM_INT);
+            $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
             $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
 
             return $statement->execute();
         }
     }
 
-
-    public function actionCommentaire($content, $author, $dateInserted, $dateUpdated)
+    public function saveCommentaire($id = null, $content, $author, $dateInserted = null, $dateUpdated)
     {
-        try {
+        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE id = :id";
+        $parameters = [':id' => $id];
+
+        $statement = $this->pdo->prepare($query);
+        $statement->execute($parameters);
+        $count = $statement->fetchColumn();
+
+        if ($count > 0) {
+            // Le commentaire existe déjà, effectuer une mise à jour
+            $query = "UPDATE " . $this->table . " SET content = :content, author = :author, date_updated = :date_updated";
+
+            if ($dateInserted !== null) {
+                $query .= ", date_inserted = :date_inserted";
+            }
+
+            $query .= " WHERE id = :id";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->bindValue(':content', $content, \PDO::PARAM_STR);
+            $statement->bindValue(':author', $author, \PDO::PARAM_INT);
+            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
+
+            if ($dateInserted !== null) {
+                $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+            }
+
+            $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+
+            return $statement->execute();
+        } else {
+            // Le commentaire n'existe pas, effectuer une insertion
             $query = "INSERT INTO " . $this->table . " (content, author, date_inserted, date_updated)
                   VALUES (:content, :author, :date_inserted, :date_updated)";
 
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(':content', $content, \PDO::PARAM_STR);
             $statement->bindValue(':author', $author, \PDO::PARAM_INT);
-            $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+
+            if ($dateInserted !== null) {
+                $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
+            }
+
             $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
-            $statement->execute();
-        } catch (PDOException $e) {
-            // Gérer l'exception PDO ici
-            echo "Une erreur PDO s'est produite : " . $e->getMessage();
-        }
-    }
 
-    public function actionModifyCommentaire($id, $content, $author, $dateInserted, $dateUpdated)
-    {
-        try {
-            $query = "UPDATE " . $this->table . " SET content = :content, author = :author, date_inserted = :date_inserted, date_updated = :date_updated WHERE id = :id";
-
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':content', $content, \PDO::PARAM_STR);
-            $statement->bindValue(':author', $author, \PDO::PARAM_INT);
-            $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
-            $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
-            $statement->bindValue(':id', $id, \PDO::PARAM_INT);
-
-            $statement->execute();
-        } catch (PDOException $e) {
-            // Gérer l'exception PDO ici
-            echo "Une erreur PDO s'est produite : " . $e->getMessage();
+            return $statement->execute();
         }
     }
 

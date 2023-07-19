@@ -55,7 +55,7 @@ class Update
                     $view->assign('form', $form->getConfig($_POST, 1));
 
                     if (!$error) {
-                        $page->actionArticle($_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], null, $formattedDate);
+                        $page->actionArticle($id,$_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], null, $formattedDate);
                         header('Location: article?action=updated&entity=article');
                         exit;
                     } else {
@@ -103,6 +103,7 @@ class Update
 
                     if (!$error) {
                         $user->saveUser(
+                            $id,
                             $_POST['firstname'],
                             $_POST['lastname'],
                             $_POST['pseudo'],
@@ -156,7 +157,7 @@ class Update
                     $view->assign('form', $form->getConfig($_POST, 1));
 
                     if (!$error) {
-                        $commentaire->actionModifyCommentaire($id, $_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
+                        $commentaire->saveCommentaire($id, $_POST['content'], $_SESSION['id'], null, $formattedDate);
 
                         // Redirection vers la page de confirmation
                         header('Location: accueil?action=updated&entity=commentaire');

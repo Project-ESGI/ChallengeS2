@@ -90,7 +90,7 @@ class Security
 
             $view->assign('form', $form->getConfig($_POST));
             if (!$error) {
-                $user->saveUser($_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
+                $user->saveUser(null,$_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
                 $_SESSION['email'] = $_POST['email'];
                 header('Location: accueil');
 //                $mail = new PHPMailer();
@@ -126,12 +126,12 @@ class Security
                     'id' => $com['id'],
                     'content' => $com['content'],
                     'author' => $userData['lastname'] . ' ' . $userData['firstname'] . ' (' . $userData['pseudo'] . ')',
-                    'answer' => $com['answer'],
                     'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
                     'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
                     'is_reported' => $com['report']
                 ];
             }
+
             $view = new View("Auth/comment", "comment");
             $view->assign('table', $table);
             $view->assign('user_pseudo', $user_pseudo);
@@ -140,6 +140,7 @@ class Security
             AuthorizationHelper::redirectTo404();
         }
     }
+
 
     /**
      * @Route("/article", name="article")
