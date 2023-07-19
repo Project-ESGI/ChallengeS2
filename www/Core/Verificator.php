@@ -39,7 +39,7 @@ class Verificator
                         }
                     }
 
-                    if ($name !== "password" && $name !== "confirm_password") {
+                    if ($name !== "password" && $name !== "confirm_password" && $name !== "content") {
                         $invalidFields = $user->checkSpecialCharacters($data[$name], $name);
                         if ($invalidFields) {
                             $listOfErrors[$name] = 'Le champ contient des caractères spéciaux non autorisés.';
