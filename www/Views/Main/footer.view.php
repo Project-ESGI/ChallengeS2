@@ -1,3 +1,4 @@
+<?php if ($user_pseudo !== null) : ?>
 <footer>
     <div class="container">
         <div class="row">
@@ -16,3 +17,4 @@
         </div>
     </div>
 </footer>
+<?php endif; ?>
