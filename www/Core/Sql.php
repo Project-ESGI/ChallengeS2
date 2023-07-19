@@ -341,19 +341,7 @@ abstract class Sql
         }
     }
 
-    /**
-     * Effectue la création d'un nouvel article ou met à jour un article existant dans la base de données.
-     *
-     * @param string $title Le titre de l'article.
-     * @param string $slug Le slug de l'article.
-     * @param string $content Le contenu de l'article.
-     * @param string $category La catégorie de l'article.
-     * @param null $author L'id de l'auteur de l'article.
-     * @param null $dateInserted La date d'insertion de l'article.
-     * @param string $dateUpdated La date de mise à jour de l'article.
-     * @return bool True si l'article est enregistré avec succès, sinon False.
-     */
-    public function actionArticle($title, $slug, $content, $category, $author = null, $dateInserted = null, $dateUpdated)
+    public function actionArticle($title, $slug, $content, $category, $author = null, $dateUpdated)
     {
         $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE title = :title";
         $parameters = [':title' => $title];
@@ -370,10 +358,6 @@ abstract class Sql
                 $query .= ", author = :author";
             }
 
-            if ($dateInserted !== null) {
-                $query .= ", date_inserted = :date_inserted";
-            }
-
             $query .= " WHERE title = :title";
 
             $statement = $this->pdo->prepare($query);
@@ -386,17 +370,13 @@ abstract class Sql
                 $statement->bindValue(':author', $author, \PDO::PARAM_INT);
             }
 
-            if ($dateInserted !== null) {
-                $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
-            }
-
             $statement->bindValue(':title', $title, \PDO::PARAM_STR);
 
             return $statement->execute();
         } else {
             // L'article n'existe pas, effectuer une insertion
-            $query = "INSERT INTO " . $this->table . " (title, slug, content, category, author, date_inserted, date_updated)
-        VALUES (:title, :slug, :content, :category, :author, :date_inserted, :date_updated)";
+            $query = "INSERT INTO " . $this->table . " (title, slug, content, category, author, date_updated)
+        VALUES (:title, :slug, :content, :category, :author, :date_updated)";
 
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(':title', $title, \PDO::PARAM_STR);
@@ -404,12 +384,12 @@ abstract class Sql
             $statement->bindValue(':content', $content, \PDO::PARAM_STR);
             $statement->bindValue(':category', $category, \PDO::PARAM_STR);
             $statement->bindValue(':author', $author, \PDO::PARAM_INT);
-            $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
             $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
 
             return $statement->execute();
         }
     }
+
 
     public function actionCommentaire($content, $author, $dateInserted, $dateUpdated)
     {

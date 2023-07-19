@@ -55,7 +55,7 @@ class Update
                     $view->assign('form', $form->getConfig($_POST, 1));
 
                     if (!$error) {
-                        $page->actionArticle($_POST['title'], $_POST['content'], $_POST['category'], null, null, $formattedDate);
+                        $page->actionArticle($_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], null, $formattedDate);
                         header('Location: article?action=updated&entity=article');
                         exit;
                     } else {

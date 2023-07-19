@@ -10,8 +10,9 @@ class Verificator
     {
         $listOfErrors = [];
         $user = new User();
+
         if (isset($_GET['id'])) {
-            $user->setIdValue($_GET['id']);
+            $user->setIdValueString($_GET['id']);
         }
 
         foreach ($config["inputs"] as $name => $input) {
