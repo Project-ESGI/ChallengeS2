@@ -6,10 +6,13 @@ use App\Core\Verificator;
 use App\Core\View;
 use App\Forms\ConnectionUser;
 use App\Forms\Registration;
+use App\Forms\ResetPassword;
 use App\Models\Article;
 use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use App\Controllers\AuthorizationHelper;
 
@@ -42,6 +45,30 @@ class Security
             }
         }
     }
+
+    public function reset(): void
+    {
+        session_start();
+        $form = new ResetPassword();
+        $view = new View("Auth/reset", "reset");
+        $view->assign('form', $form->getConfig());
+
+        if ($form->isSubmit()) {
+            $user = new User();
+            $user->setEmail($_POST['email']);
+            $userExists = $user->existUser($user->getEmail());
+            if ($userExists) {
+//                $mail = new PHPMailer(true);
+                $_SESSION['email'] = $user->getEmail();
+                header('Location: accueil');
+                exit;
+            } else {
+                $form->addError('email', 'Email ou mot de passe incorrect!');
+                $view->assign('form', $form->getConfig());
+            }
+        }
+    }
+
 
     public function register(): void
     {

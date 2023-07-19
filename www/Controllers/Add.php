@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Forms\AddComment;
 use App\Models\Commentaire;
 
+
 date_default_timezone_set('Europe/Paris');
 
 
@@ -65,14 +66,18 @@ class Add
             $user_role = $userData['role'];
 
             $commentaire = new Commentaire();
-            //ICI MODIFIER
 
-            $id = $_GET['id'];
-            $user = new User();
-            $user->setIdValue($id);
+            $result = null;
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $user = new User();
+                $user->setIdValueString((int)$id); // Convertir la valeur de $id en un entier
+                $date = new \DateTime();
+                $result = $user->getById($id);
+                // Reste du code ici...
+            }
+
             $date = new \DateTime();
-            $result = $user->getById($id);
-
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addUser", "user");
             $form = new AddComment();
@@ -82,12 +87,16 @@ class Add
 
             if ($user !== null) {
                 if ($form->isSubmit()) {
-                    if (empty($_POST['content'])) {
-                        exit;
-                    } else {
-                        $content = $_POST['content'];
+                    $error = Verificator::form($form->getConfig(), $_POST);
 
-                        //fonction modifier commentaire meme que ajouter
+                    foreach ($error as $e => $data) {
+                        $form->addError($e, $data);
+                    }
+
+                    $view->assign('form', $form->getConfig($_POST));
+
+                    if (!$error) {
+                        $commentaire->actionCommentaire($_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
                         header('Location: accueil?action=updated&entity=commentaire');
                         exit;
                     }
@@ -135,3 +144,4 @@ class Add
         }
     }
 }
+

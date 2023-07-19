@@ -39,7 +39,7 @@ class Update
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addArticle", "article");
             $form = new AddArticle();
-            $view->assign('form', $form->getConfig($result,1));
+            $view->assign('form', $form->getConfig($result, 1));
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
 
@@ -52,7 +52,7 @@ class Update
                         $form->addError($e, $data);
                     }
 
-                    $view->assign('form', $form->getConfig($_POST,1));
+                    $view->assign('form', $form->getConfig($_POST, 1));
 
                     if (!$error) {
                         $page->actionArticle($_POST['title'], $_POST['content'], $_POST['category'], null, null, $formattedDate);
@@ -134,13 +134,12 @@ class Update
             $user_role = $userData['role'];
 
             $commentaire = new Commentaire();
-            //ICI MODIFIER
-
             $id = $_GET['id'];
             $user = new User();
-            $user->setIdValue($id);
+            $user->setIdValueString($id);
             $date = new \DateTime();
             $result = $user->getById($id);
+
 
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addComment", "comment");
@@ -151,12 +150,15 @@ class Update
 
             if ($user !== null) {
                 if ($form->isSubmit()) {
-                    if (empty($_POST['content'])) {
-                        exit;
-                    } else {
-                        $content = $_POST['content'];
+                    $error = false;
 
-                        //fonction modifier commentaire meme que ajouter
+
+                    $view->assign('form', $form->getConfig($_POST, 1));
+
+                    if (!$error) {
+                        $commentaire->actionModifyCommentaire($id, $_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
+
+                        // Redirection vers la page de confirmation
                         header('Location: accueil?action=updated&entity=commentaire');
                         exit;
                     }

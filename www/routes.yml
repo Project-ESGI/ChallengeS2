@@ -48,6 +48,10 @@
   controller: Security
   action: register
 
+/reset:
+  controller: Security
+  action: reset
+
 /article:
   controller: Security
   action: article
