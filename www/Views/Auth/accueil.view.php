@@ -35,10 +35,11 @@
                     </div>
                 <?php endforeach; ?>
             </div>
-            <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
-                <div class="form-group">
-                    <a href="addcomment" class="btn btn-primary">Publier un
-                        commentaire</a>
+            <div class="row justify-content-center mt-4">
+                <div class="col-lg-6 col-md-8 col-sm-10">
+                    <div class="form-group text-center">
+                        <a href="addcomment" class="btn btn-primary">Publier un commentaire</a>
+                    </div>
                 </div>
             </div>
         </div>
