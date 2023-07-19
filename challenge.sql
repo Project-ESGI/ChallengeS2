@@ -10,7 +10,7 @@ CREATE TABLE "public"."esgi_article" (
     "content" text NOT NULL,
     "author" integer NOT NULL,
     "category" character varying NOT NULL,
-    "date_inserted" timestamp NOT NULL,
+    "date_inserted" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "date_updated" timestamp NOT NULL,
     "slug" character varying,
     CONSTRAINT "esgi_article_pkey" PRIMARY KEY ("id")
@@ -29,7 +29,7 @@ CREATE TABLE "public"."esgi_commentaire" (
     "id" integer DEFAULT nextval('esgi_commentaire_id_seq') NOT NULL,
     "content" text NOT NULL,
     "answer" character varying NOT NULL,
-    "date_inserted" timestamp NOT NULL,
+    "date_inserted" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "date_updated" timestamp NOT NULL,
     "author" integer NOT NULL,
     "report" integer,
@@ -49,7 +49,7 @@ CREATE TABLE "public"."esgi_signalement" (
     "id" integer DEFAULT nextval('esgi_signalement_id_seq') NOT NULL,
     "comment_id" integer NOT NULL,
     "user_id" integer NOT NULL,
-    "date_inserted" time without time zone NOT NULL,
+    "date_inserted" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "esgi_signalement_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 
@@ -66,7 +66,7 @@ CREATE TABLE "public"."esgi_user" (
     "firstname" character varying(48) NOT NULL,
     "lastname" character varying(48) NOT NULL,
     "email" character varying(320) NOT NULL,
-    "date_inserted" timestamp NOT NULL,
+    "date_inserted" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "date_updated" timestamp NOT NULL,
     "country" character(2) NOT NULL,
     "password" character varying NOT NULL,
