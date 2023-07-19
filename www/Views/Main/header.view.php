@@ -26,10 +26,10 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="./user">UTILISATEURS</a>
                                 </li>
-                                <li class="nav-item">
+                            <?php endif ?>
+                            <li class="nav-item">
                                     <a class="nav-link" href="./article">ARTICLES</a>
                                 </li>
-                            <?php endif ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">

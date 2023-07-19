@@ -45,13 +45,13 @@ class Main
                     'id' => $com['id'],
                     'content' => $com['content'],
                     'author' => $userData['pseudo'],
-                    'answer' => $com['answer'],
                     'authorId' => $com['author'],
                     'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
                     'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
                     'is_reported' => $commentaireSignale
                 ];
             }
+
             $view = new View("Auth/accueil", "dashboard");
             $view->assign('table', $table);
             $view->assign('user_pseudo', $user_pseudo);

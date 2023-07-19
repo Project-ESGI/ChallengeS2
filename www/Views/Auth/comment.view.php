@@ -4,7 +4,6 @@
         <th scope="col">ID</th>
         <th scope="col">Contenu</th>
         <th scope="col">Auteur</th>
-        <th scope="col">Réponse</th>
         <th scope="col">Date d'insertion</th>
         <th scope="col">Date de mise à jour</th>
         <th scope="col">Signalement(s)</th>
@@ -17,7 +16,6 @@
             <td><?php echo $commentaire['id']; ?></td>
             <td><?php echo $commentaire['content']; ?></td>
             <td><?php echo $commentaire['author']; ?></td>
-            <td><?php echo $commentaire['answer']; ?></td>
             <td><?php echo $commentaire['date_inserted']; ?></td>
             <td><?php echo $commentaire['date_updated']; ?></td>
             <td><?php echo $commentaire['is_reported'] ?></td>

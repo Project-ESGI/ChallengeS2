@@ -20,7 +20,7 @@ class Add
 {
     public function addArticle(): void
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -45,7 +45,7 @@ class Add
                 $view->assign('form', $form->getConfig($_POST));
 
                 if (!$error) {
-                    $page->actionArticle($_POST['title'], $_POST['content'], $_POST['category'], $_SESSION['id'], $formattedDate, $formattedDate);
+                    $page->actionArticle(null, $_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], $formattedDate, $formattedDate);
                     header('Location: article?action=created&entity=article');
                     exit;
                 } else {
@@ -59,8 +59,7 @@ class Add
 
     function addComment()
     {
-
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -97,8 +96,8 @@ class Add
                     $view->assign('form', $form->getConfig($_POST));
 
                     if (!$error) {
-                        $commentaire->actionCommentaire($_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
-                        header('Location: accueil?action=updated&entity=commentaire');
+                        $commentaire->saveCommentaire(null,$_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
+                        header('Location: accueil?action=created&entity=commentaire');
                         exit;
                     }
                 }
@@ -107,7 +106,6 @@ class Add
             AuthorizationHelper::redirectTo404();
         }
     }
-
 
     public function addUser(): void
     {
@@ -136,7 +134,7 @@ class Add
                 $view->assign('form', $form->getConfig($_POST));
 
                 if (!$error) {
-                    $user->saveUser($_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['role'], $formattedDate, $formattedDate);
+                    $user->saveUser(null,$_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['role'], $formattedDate, $formattedDate);
                     header('Location: user?action=created&entity=utilisateur');
                     exit;
                 }

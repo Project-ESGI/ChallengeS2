@@ -13,7 +13,7 @@ class Delete
 
     function deleteArticle()
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $id = $_GET['id'];
             $page = new Article();
             $page->setId($id);
@@ -43,7 +43,12 @@ class Delete
             if ($commentaire->getId()) {
                 $signalement->deleteByCommentId($commentaire->getId());
                 $commentaire->delete();
-                header('Location: comment?action=deleted&entity=commentaire');
+
+                if (isset($_GET['accueil'])) {
+                    header('Location: accueil?action=deleted&entity=commentaire');
+                } else {
+                    header('Location: comment?action=deleted&entity=commentaire');
+                }
                 exit;
             }
         } else {
@@ -72,7 +77,7 @@ class Delete
             if ($user->getId()) {
                 $commentaire->deleteByAuthor($user->getId()); // Supprime les commentaires associés à l'auteur
 
-                if($user->getId() === $_SESSION['id']){
+                if ($user->getId() === $_SESSION['id']) {
                     header('Location: logout');
                 } else {
                     header('Location: user?action=deleted&entity=utilisateur');

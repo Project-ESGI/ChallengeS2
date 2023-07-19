@@ -24,7 +24,7 @@ class Update
 
     public function modifyArticle()
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -39,7 +39,7 @@ class Update
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addArticle", "article");
             $form = new AddArticle();
-            $view->assign('form', $form->getConfig($result));
+            $view->assign('form', $form->getConfig($result, 1));
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
 
@@ -52,10 +52,10 @@ class Update
                         $form->addError($e, $data);
                     }
 
-                    $view->assign('form', $form->getConfig($_POST));
+                    $view->assign('form', $form->getConfig($_POST, 1));
 
                     if (!$error) {
-                        $page->actionArticle($_POST['title'], $_POST['content'], $_POST['category'], null, null, $formattedDate);
+                        $page->actionArticle($id,$_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], null, $formattedDate);
                         header('Location: article?action=updated&entity=article');
                         exit;
                     } else {
@@ -103,6 +103,7 @@ class Update
 
                     if (!$error) {
                         $user->saveUser(
+                            $id,
                             $_POST['firstname'],
                             $_POST['lastname'],
                             $_POST['pseudo'],
@@ -127,8 +128,7 @@ class Update
 
     public function modifyComment()
     {
-
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -157,7 +157,7 @@ class Update
                     $view->assign('form', $form->getConfig($_POST, 1));
 
                     if (!$error) {
-                        $commentaire->actionModifyCommentaire($id, $_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
+                        $commentaire->saveCommentaire($id, $_POST['content'], $_SESSION['id'], null, $formattedDate);
 
                         // Redirection vers la page de confirmation
                         header('Location: accueil?action=updated&entity=commentaire');

@@ -9,16 +9,20 @@ class AuthorizationHelper
     /**
      * Vérifie si l'utilisateur a la permission requise.
      *
-     * @param string $requiredRole Le rôle requis pour accéder à la fonctionnalité
+     * @param string|null $requiredRole Le rôle requis pour accéder à la fonctionnalité (optionnel)
      * @return bool Retourne true si l'utilisateur a la permission, sinon false
      */
-    public static function hasPermission($requiredRole): bool
+    public static function hasPermission(?string $requiredRole = null): bool
     {
-        if (isset($_SESSION['email']) && $_SESSION['role'] === $requiredRole) {
-            return true;
+        if (isset($_SESSION['email'])) {
+            if ($requiredRole === null || $_SESSION['role'] === $requiredRole) {
+                return true;
+            }
         }
+
         return false;
     }
+
 
     /**
      * Effectue une redirection vers la page d'erreur 404.

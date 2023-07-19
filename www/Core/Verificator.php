@@ -10,8 +10,9 @@ class Verificator
     {
         $listOfErrors = [];
         $user = new User();
+
         if (isset($_GET['id'])) {
-            $user->setIdValue($_GET['id']);
+            $user->setIdValueString($_GET['id']);
         }
 
         foreach ($config["inputs"] as $name => $input) {
@@ -39,7 +40,7 @@ class Verificator
                         }
                     }
 
-                    if ($name !== "password" && $name !== "confirm_password") {
+                    if ($name !== "password" && $name !== "confirm_password" && $name !== "content") {
                         $invalidFields = $user->checkSpecialCharacters($data[$name], $name);
                         if ($invalidFields) {
                             $listOfErrors[$name] = 'Le champ contient des caractères spéciaux non autorisés.';
