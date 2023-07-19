@@ -24,14 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
             alert(`Commentaire déjà signalé !`);
             location = pageName;
             break;
-        // case "empty":
-        //     alert(`L\'${entity} doit avoir un ${type} !`);
-        //     location = pageName + (id ? "?id=" + id : "");
-        //     break;
-        // case "doublon":
-        //     alert(`Un ${entity} avec ce ${type} existe déjà !`);
-        //     location = pageName + (id ? "?id=" + id : "");
-        //     break;
     }
 
     if (location) {
