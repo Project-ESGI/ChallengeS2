@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="./images/soccerBallBlack.svg">
-    <title>okokkkkk</title>
+    <title></title>
 </head>
 <body>
 <div class="container-fluid vh-100 custom-background">
