@@ -19,7 +19,7 @@ class Add
 {
     public function addArticle(): void
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -44,7 +44,7 @@ class Add
                 $view->assign('form', $form->getConfig($_POST));
 
                 if (!$error) {
-                    $page->actionArticle($_POST['title'], $_POST['content'], $_POST['category'], $_SESSION['id'], $formattedDate, $formattedDate);
+                    $page->actionArticle($_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], $formattedDate, $formattedDate);
                     header('Location: article?action=created&entity=article');
                     exit;
                 } else {
@@ -58,7 +58,7 @@ class Add
 
     function addComment()
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -98,7 +98,6 @@ class Add
         }
     }
 
-
     public function addUser(): void
     {
         if (AuthorizationHelper::hasPermission('admin')) {
@@ -119,8 +118,8 @@ class Add
 
                 $error = Verificator::form($form->getConfig(), $_POST);
 
-                foreach ($error as $e => $data){
-                    $form->addError($e,$data);
+                foreach ($error as $e => $data) {
+                    $form->addError($e, $data);
                 }
 
                 $view->assign('form', $form->getConfig($_POST));
