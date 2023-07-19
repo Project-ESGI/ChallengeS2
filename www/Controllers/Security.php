@@ -120,14 +120,14 @@ class Security
      */
     public function article(): void
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
             $page = new Article();
-            $pages = $page->getAllValue();
+            $pages = $page->getAllValueByUser($_SESSION['id']);
             $table = [];
 
             foreach ($pages as $page) {

@@ -24,7 +24,7 @@ class Update
 
     public function modifyArticle()
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];
@@ -39,7 +39,7 @@ class Update
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addArticle", "article");
             $form = new AddArticle();
-            $view->assign('form', $form->getConfig($result));
+            $view->assign('form', $form->getConfig($result,1));
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
 
@@ -52,7 +52,7 @@ class Update
                         $form->addError($e, $data);
                     }
 
-                    $view->assign('form', $form->getConfig($_POST));
+                    $view->assign('form', $form->getConfig($_POST,1));
 
                     if (!$error) {
                         $page->actionArticle($_POST['title'], $_POST['content'], $_POST['category'], null, null, $formattedDate);
@@ -127,7 +127,7 @@ class Update
 
     public function modifyComment()
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
             $user_pseudo = $userData['pseudo'];

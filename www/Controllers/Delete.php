@@ -13,7 +13,7 @@ class Delete
 
     function deleteArticle()
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
+        if (AuthorizationHelper::hasPermission()) {
             $id = $_GET['id'];
             $page = new Article();
             $page->setId($id);
