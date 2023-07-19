@@ -6,7 +6,7 @@
             <div class="mb-3">
                 <label for="<?= $name; ?>" class="form-label"><?= ucfirst($name); ?>:</label>
                 <?php if ($input["type"] == "select"): ?>
-                    <select class="form-select" name="<?= $name; ?>">
+                    <select class="form-select" id="<?= $name ?>" name="<?= $name; ?>">
                         <?php foreach ($input["options"] as $option): ?>
                             <option <?= ($option === ($input["value"] ?? null)) ? "selected" : "" ?>>
                                 <?= $option; ?>
@@ -14,11 +14,11 @@
                         <?php endforeach; ?>
                     </select>
                 <?php elseif ($input["type"] == "textarea"): ?>
-                    <textarea class="form-control" name="<?= $name; ?>" type="<?= $input["type"] ?>"
+                    <textarea class="form-control" name="<?= $name; ?>" id="<?= $name ?>" type="<?= $input["type"] ?>"
                               placeholder="<?= $input["placeholder"] ?>"
                               rows="5"><?= isset($input["value"]) ? $input["value"] : '' ?></textarea>
                 <?php else: ?>
-                    <input class="form-control" name="<?= $name; ?>" type="<?= $input["type"] ?>"
+                    <input class="form-control" id="<?= $name ?>" name="<?= $name; ?>" type="<?= $input["type"] ?>"
                            placeholder="<?= $input["placeholder"] ?>"
                            value="<?= isset($input["value"]) ? $input["value"] : '' ?>">
                 <?php endif; ?>
@@ -32,9 +32,8 @@
 
     </form>
 
-    <p class="my-3 text-center">
-        <a href="https://github.com/coliff/bootstrap-show-password-toggle" class="text-muted">
-            &copy; 2023
-        </a>
-    </p>
-
+    <script src="./ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.config.language = 'fr';
+        CKEDITOR.replace('content');
+    </script>
