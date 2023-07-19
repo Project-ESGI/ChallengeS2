@@ -13,6 +13,7 @@
 </head>
 <body>
 <?php include "Main/header.view.php"; ?>
-    <?php include $this->view; ?><?php include "Main/footer.view.php"; ?>
+<?php include $this->view; ?>
+<?php include "Main/footer.view.php"; ?>
 </body>
 </html>
