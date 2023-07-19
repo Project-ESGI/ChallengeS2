@@ -39,7 +39,7 @@ class ResetPassword extends AForm
                 "enctype" => "",
                 "titre" => "Inscription",
                 "errors" => $this->getErrors(),
-                "submit" => "S'inscrire",
+                "submit" => "Envoyer un e-mail de récupération",
             ],
             "inputs" => $inputs
         ];

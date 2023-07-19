@@ -50,7 +50,7 @@ class Security
     {
         session_start();
         $form = new ResetPassword();
-        $view = new View("Auth/reset", "reset");
+        $view = new View("Auth/reinitialisation", "reset");
         $view->assign('form', $form->getConfig());
 
         if ($form->isSubmit()) {
