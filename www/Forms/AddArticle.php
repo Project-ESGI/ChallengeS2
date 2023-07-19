@@ -59,6 +59,7 @@ class AddArticle extends AForm
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
+                "ckeditor" => true,
                 "titre" => $submit." un article",
                 "errors" => $this->getErrors(),
                 "submit" => $submit,
