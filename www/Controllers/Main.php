@@ -118,5 +118,4 @@ class Main
             $view->assign('articleData', $articleData);
         }
     }
-
 }
