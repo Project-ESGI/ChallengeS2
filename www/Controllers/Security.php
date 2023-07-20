@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\Mail;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Forms\ConnectionUser;
@@ -91,38 +92,8 @@ class Security
                 // Création de l'utilisateur dans la base de données
                 $user->saveUser(null, $_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
                 $_SESSION['email'] = $_POST['email'];
-
-                // Envoi de l'e-mail de confirmation d'inscription
-                $userEmail = 'jackmbappekoum@outlook.fr';// Assurez-vous que cette variable contient l'adresse e-mail du destinataire
-
-
-
-                $mail = new PHPMailer(true);
-                // Configurer les paramètres du serveur SMTP
-                $mail->isSMTP();
-                $mail->Host       = 'smtp.live.com'; // Remplacez par l'adresse de votre serveur SMTP
-                $mail->SMTPAuth   = true;
-                $mail->Username   = 'jackmbappekoum@outlook.fr'; // Remplacez par l'adresse e-mail de l'expéditeur
-                $mail->Password   = 'DouglasCosta90!'; // Remplacez par le mot de passe de l'expéditeur
-                $mail->SMTPSecure = 'ssl'; // Selon votre serveur, utilisez 'ssl' ou 'tls'
-                $mail->Port       = 587; // Remplacez par le port SMTP souhaité
-
-                // Paramètres de l'expéditeur et du destinataire
-                $mail->setFrom('jmbappekoum@myges.fr', 'Jasam'); // Remplacez par l'adresse e-mail de l'expéditeur
-                $mail->addAddress($userEmail); // Adresse e-mail du destinataire
-
-                // Contenu de l'e-mail
-                $mail->isHTML(true);
-                $mail->Subject = 'Confirmation d\'inscription';
-                $mail->Body    = 'Bienvenue ! Votre inscription a été confirmée.';
-
-                // Envoyer l'e-mail
-                try {
-                    $mail->send();
-                    // E-mail envoyé avec succès
-                } catch (Exception $e) {
-                    echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo; // Erreur lors de l'envoi de l'e-mail, vous pouvez afficher un message d'erreur ou journaliser l'erreur
-                }
+//                $mail = new Mail("email","sujet","message");
+//                $mail->sendEmail();
 
                 header('Location: accueil');
                 exit;
