@@ -19,8 +19,8 @@
     <?php foreach ($table as $page) : ?>
         <tr>
             <td><?php echo $page['id']; ?></td>
-            <td><?php echo $page['title']; ?></td>
             <td><?php echo $page['slug']; ?></td>
+            <td><?php echo $page['title']; ?></td>
             <td><?php echo $page['author']; ?></td>
             <td><?php echo $page['content']; ?></td>
             <td><?php echo $page['category']; ?></td>

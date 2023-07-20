@@ -27,8 +27,7 @@
                                 <p class="text-danger font-weight-bold mb-0">Signalé</p>
                             <?php else : ?>
                                 <div class="mr-3">
-                                    <a href="report?id=<?php echo $commentaire['id']; ?>" class="btn btn-link p-0">Signaler
-                                        le commentaire</a>
+                                    <a href="report?id=<?php echo $commentaire['id']; ?>" class="btn btn-link p-0">Signaler le commentaire</a>
                                 </div>
                             <?php endif; ?>
                         </div>

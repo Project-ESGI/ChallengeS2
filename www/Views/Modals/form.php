@@ -27,7 +27,6 @@
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
-    <input type="hidden" id="slugInput" name="slugInput">
 
     <input class="btn btn-lg btn-primary btn-block mt-3" type="submit" name="submit"
            value="<?= $config["config"]["submit"] ?>">
