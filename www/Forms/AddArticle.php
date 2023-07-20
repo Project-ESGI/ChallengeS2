@@ -20,14 +20,6 @@ class AddArticle extends AForm
         ];
 
         $inputs = [
-            "title" => [
-                "type" => "text",
-                "placeholder" => "Titre",
-                "min" => 2,
-                "max" => 45,
-                "error" => "Veuillez saisir un titre valide.",
-                "value" => $row ? trim($row['title']) : ''
-            ],
             "slug" => [
                 "type" => "text",
                 "placeholder" => "Slug",
@@ -35,6 +27,14 @@ class AddArticle extends AForm
                 "max" => 45,
                 "error" => "Veuillez saisir un slug valide.",
                 "value" => $row ? trim($row['slug']) : ''
+            ],
+            "title" => [
+                "type" => "text",
+                "placeholder" => "Titre",
+                "min" => 2,
+                "max" => 45,
+                "error" => "Veuillez saisir un titre valide.",
+                "value" => $row ? trim($row['title']) : ''
             ],
             "category" => [
                 "type" => "select",

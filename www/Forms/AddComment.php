@@ -8,6 +8,7 @@ class AddComment extends AForm
 {
 
     protected $method = "POST";
+    protected $errors = [];
 
     public function getConfig($row = [], $maj = null): array
     {
@@ -23,17 +24,16 @@ class AddComment extends AForm
         ];
 
 
-        $submit = $maj ? "Ajouter" : "Créer";
-        $typeUser = $maj ? "Ajouter" : "Créer";
+        $submit = $maj ? "Modifier" : "Ajouter";
 
         return [
             "config" => [
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
-                "titre" => "Ajouter un commentaire",
+                "titre" => $submit." un commentaire",
+                "errors" => $this->getErrors(),
                 "submit" => $submit,
-                "typeUser" => $typeUser
             ],
             "inputs" => $inputs
         ];
