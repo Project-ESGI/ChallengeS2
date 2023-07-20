@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Forms\Registration;
+use App\Models\Article;
 use App\Models\User;
 
 class Verificator
@@ -10,18 +12,25 @@ class Verificator
     {
         $listOfErrors = [];
         $user = new User();
+        $article = new Article();
 
         if (isset($_GET['id'])) {
             $user->setIdValueString($_GET['id']);
+            $article->setIdValueString($_GET['id']);
         }
 
         foreach ($config["inputs"] as $name => $input) {
             if (isset($data[$name])) {
-                if($name === "email" || $name !== "pseudo" || $name === "titre" || $name === "slug")
-                if ($user->existsWithValue($name, $data[$name], $user->getId())) {
-                    $listOfErrors[$name] = "Ce ". $name." est déjà utilisé. Veuillez en choisir un autre.";
+                if ($name === "email" || $name === "pseudo") {
+                    if ($user->existsWithValue("esgi_user", $name, $data[$name], $user->getId())) {
+                        $listOfErrors[$name] = "Ce " . $name . " est déjà utilisé. Veuillez en choisir un autre.";
+                    }
                 } elseif (strlen($data[$name]) < 3 && isset($input["error"]) && $name !== "email") {
                     $listOfErrors[$name] = $input["error"];
+                } elseif ($name === "title" || $name === "slug") {
+                    if ($user->existsWithValue("esgi_article", $name, $data[$name], $article->getId())) {
+                        $listOfErrors[$name] = "Ce " . $name . " est déjà utilisé. Veuillez en choisir un autre.";
+                    }
                 } else {
                     if ($name === "email" || $name === "confirm_email") {
                         if (strlen($data[$name]) < 5 || strpos($data[$name], '@') === false) {

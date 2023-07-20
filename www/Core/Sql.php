@@ -84,16 +84,17 @@ abstract class Sql
     }
 
     /**
-     * Vérifie si un enregistrement avec la même valeur existe déjà dans la base de données.
+     * Vérifie si un enregistrement avec la même valeur existe déjà dans une table spécifique de la base de données.
      *
+     * @param string $table Le nom de la table à vérifier.
      * @param string $column Le nom de la colonne à vérifier.
      * @param mixed $value La valeur à vérifier.
      * @param int|null $id L'ID de l'enregistrement actuel (facultatif).
      * @return bool True si un enregistrement avec la même valeur existe déjà, sinon False.
      */
-    public function existsWithValue(string $column, $value, int $id = null): bool
+    public function existsWithValue(string $table, string $column, $value, int $id = null): bool
     {
-        $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE $column = :value";
+        $query = "SELECT COUNT(*) FROM " . $table . " WHERE $column = :value";
         $parameters = [':value' => $value];
 
         if ($id !== null) {
@@ -187,16 +188,21 @@ abstract class Sql
     }
 
     /**
-     * Mettre a jour les données de l'utilisateur par l'id
+     * Mettre à jour les données de l'utilisateur par l'id
      * @param int $id
-     * @return array
+     * @return array|null
      */
     public function setIdValueString(int $id): ?array
     {
         $data = $this->getById($id);
         if (!empty($data)) {
             foreach ($data as $key => $value) {
-                $this->$key = $value;
+                if ($key === 'report' && is_null($value)) {
+                    // Si la clé est "report" et sa valeur est null, définissez la propriété comme 0 (ou toute autre valeur appropriée).
+                    $this->$key = 0;
+                } else {
+                    $this->$key = $value;
+                }
             }
             return $data;
         }
