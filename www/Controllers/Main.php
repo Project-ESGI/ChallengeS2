@@ -114,7 +114,7 @@ class Main
             $slug = basename($currentURL);
             $articleData = $article->getBySlug($slug, $_SESSION['id']);
 
-            $view = new View("Auth/articleNouveau", "nouveauArticle");
+            $view = new View("Auth/articleNew", "nouveauArticle");
             $view->assign('articleData', $articleData);
         }
     }
