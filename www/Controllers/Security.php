@@ -100,15 +100,15 @@ class Security
                 $mail = new PHPMailer(true);
                 // Configurer les paramètres du serveur SMTP
                 $mail->isSMTP();
-                $mail->Host       = 'smtp.live.com'; // Remplacez par l'adresse de votre serveur SMTP
+                $mail->Host       = 'smtp.gmail.com'; // Remplacez par l'adresse de votre serveur SMTP
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'jackmbappekoum@outlook.fr'; // Remplacez par l'adresse e-mail de l'expéditeur
-                $mail->Password   = 'DouglasCosta90!'; // Remplacez par le mot de passe de l'expéditeur
+                $mail->Username   = 'jufc608767@gmail.com'; // Remplacez par l'adresse e-mail de l'expéditeur
+                $mail->Password   = 'swbgtukfzvndtjkl'; // Remplacez par le mot de passe de l'expéditeur
                 $mail->SMTPSecure = 'ssl'; // Selon votre serveur, utilisez 'ssl' ou 'tls'
-                $mail->Port       = 587; // Remplacez par le port SMTP souhaité
+                $mail->Port       = 465; // Remplacez par le port SMTP souhaité
 
                 // Paramètres de l'expéditeur et du destinataire
-                $mail->setFrom('jmbappekoum@myges.fr', 'Jasam'); // Remplacez par l'adresse e-mail de l'expéditeur
+                $mail->setFrom('jufc608767@gmail.com', 'jufc'); // Remplacez par l'adresse e-mail de l'expéditeur
                 $mail->addAddress($userEmail); // Adresse e-mail du destinataire
 
                 // Contenu de l'e-mail
