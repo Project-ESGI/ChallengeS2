@@ -21,8 +21,7 @@ class Add
     public function addArticle(): void
     {
         if (AuthorizationHelper::hasPermission()) {
-            $user = new User();
-            $userData = $user->getByEmail($_SESSION['email']);
+            $userData = AuthorizationHelper::getCurrentUserData();
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 

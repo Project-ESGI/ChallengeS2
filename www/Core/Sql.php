@@ -414,8 +414,19 @@ abstract class Sql
         }
     }
 
+    /**
+     * Sauvegarde un commentaire dans la base de données. Effectue une mise à jour si l'ID existe déjà, sinon effectue une insertion.
+     *
+     * @param int|null $id L'ID du commentaire à sauvegarder (facultatif).
+     * @param string $content Le contenu du commentaire.
+     * @param int $author L'ID de l'auteur du commentaire.
+     * @param string|null $dateInserted La date d'insertion du commentaire (facultatif).
+     * @param string $dateUpdated La date de mise à jour du commentaire.
+     * @return bool True en cas de succès, False en cas d'échec.
+     */
     public function saveCommentaire($id = null, $content, $author, $dateInserted = null, $dateUpdated)
     {
+        // Vérifier si le commentaire existe déjà en comptant le nombre d'occurrences avec l'ID fourni
         $query = "SELECT COUNT(*) FROM " . $this->table . " WHERE id = :id";
         $parameters = [':id' => $id];
 
@@ -425,41 +436,52 @@ abstract class Sql
 
         if ($count > 0) {
             // Le commentaire existe déjà, effectuer une mise à jour
+
+            // Requête SQL pour la mise à jour du commentaire
             $query = "UPDATE " . $this->table . " SET content = :content, author = :author, date_updated = :date_updated";
 
+            // Vérifier si la date d'insertion est fournie
             if ($dateInserted !== null) {
                 $query .= ", date_inserted = :date_inserted";
             }
 
             $query .= " WHERE id = :id";
 
+            // Préparation de la requête
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(':content', $content, \PDO::PARAM_STR);
             $statement->bindValue(':author', $author, \PDO::PARAM_INT);
             $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
 
+            // Vérifier si la date d'insertion est fournie et la lier à la requête
             if ($dateInserted !== null) {
                 $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
             }
 
             $statement->bindValue(':id', $id, \PDO::PARAM_INT);
 
+            // Exécuter la mise à jour et retourner le résultat
             return $statement->execute();
         } else {
             // Le commentaire n'existe pas, effectuer une insertion
+
+            // Requête SQL pour l'insertion du commentaire
             $query = "INSERT INTO " . $this->table . " (content, author, date_inserted, date_updated)
                   VALUES (:content, :author, :date_inserted, :date_updated)";
 
+            // Préparation de la requête
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(':content', $content, \PDO::PARAM_STR);
             $statement->bindValue(':author', $author, \PDO::PARAM_INT);
 
+            // Vérifier si la date d'insertion est fournie et la lier à la requête
             if ($dateInserted !== null) {
                 $statement->bindValue(':date_inserted', $dateInserted, \PDO::PARAM_STR);
             }
 
             $statement->bindValue(':date_updated', $dateUpdated, \PDO::PARAM_STR);
 
+            // Exécuter l'insertion et retourner le résultat
             return $statement->execute();
         }
     }
@@ -582,11 +604,20 @@ abstract class Sql
     }
 
 
+    /**
+     * Récupère tous les slugs des articles associés à un utilisateur spécifique.
+     *
+     * @param int $id L'ID de l'utilisateur pour lequel récupérer les slugs.
+     * @return array Un tableau contenant tous les slugs associés à l'utilisateur.
+     */
     public function getAllSlug($id)
     {
         $query = "SELECT slug FROM esgi_article WHERE author = :id";
+
         $statement = $this->pdo->prepare($query);
+
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+
         $statement->execute();
 
         $slugs = $statement->fetchAll(\PDO::FETCH_COLUMN);
