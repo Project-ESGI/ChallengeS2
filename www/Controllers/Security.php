@@ -24,7 +24,6 @@ class Security
 
     public function login(): void
     {
-        session_start();
         $form = new ConnectionUser();
         $view = new View("Auth/connection", "connection");
         $view->assign('form', $form->getConfig());
@@ -49,7 +48,6 @@ class Security
 
     public function reset(): void
     {
-        session_start();
         $form = new ResetPassword();
         $view = new View("Auth/reinitialisation", "reset");
         $view->assign('form', $form->getConfig());
@@ -73,7 +71,6 @@ class Security
 
     public function register(): void
     {
-        session_start();
         $form = new Registration();
         $view = new View("Auth/register", "inscription");
         $view->assign('form', $form->getConfig());
@@ -252,7 +249,6 @@ class Security
 
     public function logout(): void
     {
-        session_start();
         session_unset(); // Supprime toutes les variables de session
         session_destroy(); // Détruit la session
         header('Location: /login');

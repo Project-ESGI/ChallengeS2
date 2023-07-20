@@ -4,19 +4,20 @@ namespace App\Controllers;
 
 use App\Core\Menu;
 use App\Core\View;
+use App\Models\Article;
 use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
 use App\Core\Mail;
+use App\Core\Response;
 
-session_start();
 date_default_timezone_set('Europe/Paris');
 
 class Main
 {
     public function index()
     {
-        if (isset($_SESSION['email'])) {
+        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
 
@@ -61,9 +62,7 @@ class Main
             $view->assign('user_id', $user_id);
 
         } else {
-            http_response_code(404);
-            include('./Views/Error/404.view.php');
-            exit;
+            AuthorizationHelper::redirectTo404();
         }
     }
 
@@ -74,7 +73,8 @@ class Main
 
     public function report()
     {
-        if (isset($_SESSION['email'])) {
+        if (AuthorizationHelper::hasPermission()) {
+
             $id = $_GET['id'];
             $comment = new Commentaire();
             $comment->setIdValue($id);
@@ -100,12 +100,23 @@ class Main
                 }
                 header('Location: accueil');
                 exit;
-
             } else {
-                http_response_code(404);
-                include('./Views/Error/404.view.php');
-                exit;
+                AuthorizationHelper::redirectTo404();
             }
         }
     }
+
+    public function show()
+    {
+        if (AuthorizationHelper::hasPermission()) {
+            $article = new Article();
+            $currentURL = $_SERVER['REQUEST_URI'];
+            $slug = basename($currentURL);
+            $articleData = $article->getBySlug($slug, $_SESSION['id']);
+
+            $view = new View("Auth/articleNouveau", "nouveauArticle");
+            $view->assign('articleData', $articleData);
+        }
+    }
+
 }
