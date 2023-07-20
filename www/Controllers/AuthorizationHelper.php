@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
+
 session_start();
 
 class AuthorizationHelper
@@ -22,6 +24,42 @@ class AuthorizationHelper
 
         return false;
     }
+
+    /**
+     * Obtient les informations de l'utilisateur actuel à partir de $_SESSION.
+     *
+     * @return array|null Les informations de l'utilisateur ou null si l'email n'est pas trouvé.
+     */
+    public static function getCurrentUserData(): ?array
+    {
+        if (isset($_SESSION['email'])) {
+            $user = new User();
+            return $user->getByEmail($_SESSION['email']);
+        }
+        return null;
+    }
+
+    /**
+     * Obtient les informations d'utilisateur à partir des données de l'utilisateur.
+     *
+     * @param array $userData Les données de l'utilisateur.
+     * @return array Le tableau associatif contenant les valeurs de l'utilisateur.
+     */
+    public static function getUserInfoFromArray(array $userData): array
+    {
+        $user_name = $userData['firstname'] . ' ' . $userData['lastname'];
+        $user_pseudo = $userData['pseudo'];
+        $user_role = $userData['role'];
+        $user_id = $userData['id'];
+
+        return [
+            'user_name' => $user_name,
+            'user_pseudo' => $user_pseudo,
+            'user_role' => $user_role,
+            'user_id' => $user_id,
+        ];
+    }
+
 
 
     /**
