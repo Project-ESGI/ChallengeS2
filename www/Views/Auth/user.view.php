@@ -1,4 +1,4 @@
-<a href="adduser" class="openModalBtn btn btn-primary">Ajouter un utilisateu</a>
+<a href="adduser" class="openModalBtn btn btn-primary">Ajouter un utilisateur</a>
 
 <table class="table table-striped table-bordered">
     <thead class="thead-dark">
