@@ -46,7 +46,9 @@ class Add
 
                 if (!$error) {
                     $page->actionArticle(null, $_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], $formattedDate, $formattedDate);
-                    header('Location: article?action=created&entity=article');
+//                    header('Location: article?action=created&entity=article');
+                    $newUrl = "article/" . $_POST['slug'];
+                    header("Location: " . $newUrl);
                     exit;
                 } else {
                     exit;

@@ -90,9 +90,10 @@ abstract class Sql
      * @param string $column Le nom de la colonne à vérifier.
      * @param mixed $value La valeur à vérifier.
      * @param int|null $id L'ID de l'enregistrement actuel (facultatif).
+     * @param int|null $authorId L'ID de l'auteur (facultatif).
      * @return bool True si un enregistrement avec la même valeur existe déjà, sinon False.
      */
-    public function existsWithValue(string $table, string $column, $value, int $id = null): bool
+    public function existsWithValue(string $table, string $column, $value, int $id = null, int $authorId = null): bool
     {
         $query = "SELECT COUNT(*) FROM " . $table . " WHERE $column = :value";
         $parameters = [':value' => $value];
@@ -102,11 +103,17 @@ abstract class Sql
             $parameters[':id'] = $id;
         }
 
+        if ($authorId !== null) {
+            $query .= " AND author = :authorId";
+            $parameters[':authorId'] = $authorId;
+        }
+
         $queryPrepared = $this->pdo->prepare($query);
         $queryPrepared->execute($parameters);
 
         return $queryPrepared->fetchColumn() > 0;
     }
+
 
     /**
      * Récupère toutes les valeurs de la table.
@@ -549,5 +556,41 @@ abstract class Sql
         $params = array(':user_id' => $userId);
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);
+    }
+
+    /**
+     * Récupère un article par son slug et l'ID de l'auteur.
+     *
+     * @param string $slug Le slug de l'article.
+     * @param int|null $author L'ID de l'auteur (facultatif).
+     * @return array|null Les données de l'article, ou null si l'article n'existe pas ou n'appartient pas à l'auteur.
+     */
+    public function getBySlug($slug, int $author = null): ?array
+    {
+        $query = "SELECT * FROM esgi_article WHERE slug = :slug";
+        $parameters = [':slug' => $slug];
+
+        if ($author !== null) {
+            $query .= " AND author = :author";
+            $parameters[':author'] = $author;
+        }
+
+        $statement = $this->pdo->prepare($query);
+        $statement->execute($parameters);
+
+        return $statement->fetch(\PDO::FETCH_ASSOC) ?: null;
+    }
+
+
+    public function getAllSlug($id)
+    {
+        $query = "SELECT slug FROM esgi_article WHERE author = :id";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+
+        $slugs = $statement->fetchAll(\PDO::FETCH_COLUMN);
+
+        return $slugs;
     }
 }

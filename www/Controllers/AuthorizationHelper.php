@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\User;
 
-session_start();
 
 class AuthorizationHelper
 {
@@ -59,7 +58,6 @@ class AuthorizationHelper
             'user_id' => $user_id,
         ];
     }
-
 
 
     /**
