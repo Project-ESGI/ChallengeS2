@@ -74,8 +74,7 @@ class Main
 
     public function report()
     {
-        session_start();
-        if (isset($_SESSION[' email'])) {
+        if (isset($_SESSION['email'])) {
             $id = $_GET['id'];
             $comment = new Commentaire();
             $comment->setIdValue($id);

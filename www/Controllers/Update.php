@@ -133,37 +133,35 @@ class Update
     public function modifyComment()
     {
         if (AuthorizationHelper::hasPermission()) {
-            $user = new User();
-            $userData = $user->getByEmail($_SESSION['email']);
+            $userData = AuthorizationHelper::getCurrentUserData();
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
             $commentaire = new Commentaire();
             $id = $_GET['id'];
-            $user = new User();
-            $user->setIdValueString($id);
+            $commentaire->setIdValueString($id);
             $date = new \DateTime();
-            $result = $user->getById($id);
-
+            $result = $commentaire->getById($id);
 
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addComment", "comment");
             $form = new AddComment();
-            $view->assign('form', $form->getConfig($result));
+            $view->assign('form', $form->getConfig($result, 1));
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
 
-            if ($user !== null) {
+            if ($commentaire !== null) {
                 if ($form->isSubmit()) {
-                    $error = false;
 
+                    $error = Verificator::form($form->getConfig(), $_POST);
 
+                    foreach ($error as $e => $data) {
+                        $form->addError($e, $data);
+                    }
                     $view->assign('form', $form->getConfig($_POST, 1));
 
                     if (!$error) {
                         $commentaire->saveCommentaire($id, $_POST['content'], $_SESSION['id'], null, $formattedDate);
-
-                        // Redirection vers la page de confirmation
                         header('Location: accueil?action=updated&entity=commentaire');
                         exit;
                     }

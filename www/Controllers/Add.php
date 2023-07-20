@@ -67,21 +67,12 @@ class Add
 
             $commentaire = new Commentaire();
 
-            $result = null;
-            if (isset($_GET['id'])) {
-                $id = $_GET['id'];
-                $user = new User();
-                $user->setIdValueString((int)$id); // Convertir la valeur de $id en un entier
-                $date = new \DateTime();
-                $result = $user->getById($id);
-                // Reste du code ici...
-            }
 
             $date = new \DateTime();
             $formattedDate = $date->format('Y-m-d H:i:s');
             $view = new View("Auth/addUser", "user");
             $form = new AddComment();
-            $view->assign('form', $form->getConfig($result));
+            $view->assign('form', $form->getConfig());
             $view->assign('user_pseudo', $user_pseudo);
             $view->assign('user_role', $user_role);
 
