@@ -4,7 +4,7 @@ namespace App\Forms;
 
 use App\Forms\Abstract\AForm;
 
-class ResetPassword extends AForm
+class TempoPassword extends AForm
 {
 
     protected $method = "POST";
@@ -14,14 +14,20 @@ class ResetPassword extends AForm
     {
         $inputs = [
 
-            "email" => [
-                "type" => "email",
-                "min" => 5,
-                "max" => 255,
-                "placeholder" => "email",
-                "confirm" => "email",
-                "error" => "Veuillez saisir un email valide.",
-                "value" => $row ? trim($row['email']) : ''
+            "password" => [
+                "type" => "password",
+                "min" => 8,
+                "max" => 45,
+                "placeholder" => "Votre mot de passe",
+                "error" => "Veuillez saisir un mot de passe valide.",
+            ],
+            "confirm_password" => [
+                "type" => "password",
+                "min" => 8,
+                "max" => 45,
+                "placeholder" => "Confirmation de votre mot de passe",
+                "error" => "Veuillez saisir un mot de passe valide.",
+                "confirm" => "password",
             ],
 
         ];
@@ -30,9 +36,9 @@ class ResetPassword extends AForm
                 "method" => $this->getMethod(),
                 "action" => "",
                 "enctype" => "",
-                "titre" => "Reinitialiser",
+                "titre" => "Nouveau Mot de passe",
                 "errors" => $this->getErrors(),
-                "submit" => "Envoyer un e-mail de récupération",
+                "submit" => "Entrer",
             ],
             "inputs" => $inputs
         ];

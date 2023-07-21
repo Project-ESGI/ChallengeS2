@@ -60,6 +60,10 @@
   controller: Security
   action: reset
 
+/tempo:
+    controller: Security
+    action: tempo
+
 /article:
   controller: Security
   action: article

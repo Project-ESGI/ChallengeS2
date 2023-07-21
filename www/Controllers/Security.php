@@ -9,6 +9,7 @@ use App\Core\View;
 use App\Forms\ConnectionUser;
 use App\Forms\Registration;
 use App\Forms\ResetPassword;
+use App\Forms\TempoPassword;
 use App\Models\Article;
 use App\Models\Commentaire;
 use App\Models\Signalement;
@@ -17,6 +18,7 @@ use App\Models\User;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
 
 date_default_timezone_set('Europe/Paris');
 
@@ -69,6 +71,29 @@ class Security
         }
     }
 
+    public function tempo(): void
+    {
+        $form = new ResetPassword();
+        $view = new View("Auth/tempopassword", "tempo");
+        $view->assign('form', $form->getConfig());
+
+        if ($form->isSubmit()) {
+            $user = new User();
+            $user->setEmail($_POST['email']);
+            $userExists = $user->existUser($user->getEmail());
+            if ($userExists) {
+//                $mail = new PHPMailer(true);
+                $_SESSION['email'] = $user->getEmail();
+                header('Location: accueil');
+                exit;
+            } else {
+                $form->addError('email', 'Email ou mot de passe incorrect!');
+                $view->assign('form', $form->getConfig());
+            }
+        }
+    }
+
+
 
     public function register(): void
     {
@@ -92,14 +117,27 @@ class Security
                 // Création de l'utilisateur dans la base de données
                 $user->saveUser(null, $_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
                 $_SESSION['email'] = $_POST['email'];
-//                $mail = new Mail("email","sujet","message");
-//                $mail->sendEmail();
 
-                header('Location: accueil');
-                exit;
+                // Envoi de l'e-mail de confirmation d'inscription
+                $userEmail = $_POST['email']; // Récupérer l'adresse e-mail entrée par l'utilisateur
+
+                $mail = new Mail($userEmail, "cest pour ton inscription", "bienvenue");
+                $mail->sendEmail();
+                // Configurer les paramètres du serveur SMTP
+                $mail->Host       = 'smtp.gmail.com'; // Remplacez par l'adresse de votre serveur SMTP
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'jufc608767@gmail.com'; // Remplacez par l'adresse e-mail de l'expéditeur
+                $mail->Password   = 'swbgtukfzvndtjkl'; // Remplacez par le mot de passe de l'expéditeur
+                $mail->SMTPSecure = 'ssl'; // Selon votre serveur, utilisez 'ssl' ou 'tls'
+                $mail->Port       = 465; // Remplacez par le port SMTP souhaité
+
             }
+
+            header('Location: accueil');
+            exit;
         }
     }
+
 
     public function commentaire()
     {
