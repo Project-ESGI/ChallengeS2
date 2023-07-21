@@ -37,7 +37,13 @@ class Security
             $user->setPassword($_POST['password']);
             $userExists = $user->existUser($user->getEmail(), $_POST['password']);
             if ($userExists) {
-//                $mail = new PHPMailer(true);
+                $ip = $_SERVER['REMOTE_ADDR'];
+
+                $mailDescription = "Connexion récente sur votre compte avec l' Adresse IP : $ip";
+
+                $mailSubject = "Connexion UFC Sport";
+                $mail = new Mail($_POST['email'], $mailSubject, $mailDescription);
+                $mail->sendEmail();
                 $_SESSION['email'] = $user->getEmail();
                 header('Location: accueil');
                 exit;
@@ -94,7 +100,6 @@ class Security
     }
 
 
-
     public function register(): void
     {
         $form = new Registration();
@@ -118,19 +123,10 @@ class Security
                 $user->saveUser(null, $_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
                 $_SESSION['email'] = $_POST['email'];
 
-                // Envoi de l'e-mail de confirmation d'inscription
-                $userEmail = $_POST['email']; // Récupérer l'adresse e-mail entrée par l'utilisateur
+                $mailDescription = "Cher utilisateur,\n\nNous sommes ravis de vous compter parmi nous ! Votre inscription a été confirmée avec succès.\n\nMerci de faire partie de notre communauté. Vous pouvez maintenant accéder à toutes les fonctionnalités de notre site et profiter de nos services.\n\nSi vous avez des questions ou avez besoin d'aide, n'hésitez pas à nous contacter. Nous sommes toujours là pour vous aider.\n\nEncore une fois, bienvenue !\n\nCordialement,\nL'équipe de ufc sport";
 
-                $mail = new Mail($userEmail, "cest pour ton inscription", "bienvenue");
+                $mail = new Mail($_POST['email'], $mailDescription, "Inscription réussie");
                 $mail->sendEmail();
-                // Configurer les paramètres du serveur SMTP
-                $mail->Host       = 'smtp.gmail.com'; // Remplacez par l'adresse de votre serveur SMTP
-                $mail->SMTPAuth   = true;
-                $mail->Username   = 'jufc608767@gmail.com'; // Remplacez par l'adresse e-mail de l'expéditeur
-                $mail->Password   = 'swbgtukfzvndtjkl'; // Remplacez par le mot de passe de l'expéditeur
-                $mail->SMTPSecure = 'ssl'; // Selon votre serveur, utilisez 'ssl' ou 'tls'
-                $mail->Port       = 465; // Remplacez par le port SMTP souhaité
-
             }
 
             header('Location: accueil');

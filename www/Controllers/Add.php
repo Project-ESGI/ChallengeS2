@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\Mail;
 use App\Core\Menu;
 use App\Core\Verificator;
 use App\Core\View;
@@ -126,6 +127,12 @@ class Add
                 $view->assign('form', $form->getConfig($_POST));
 
                 if (!$error) {
+
+                    $mailDescription = "Inscription via administrateur";
+
+                    $mailSubject = "Cher utilisateur,\n\nNous sommes ravis de vous compter parmi nous ! Votre inscription a été confirmée avec succès.\n\nUn administrateur réseau a créé votre compte avec l'adresse mail : ".$_POST['email'].".\n\nMerci de faire partie de notre communauté. Vous pouvez maintenant accéder à toutes les fonctionnalités de notre site et profiter de nos services.\n\nSi vous avez des questions ou avez besoin d'aide, n'hésitez pas à nous contacter. Nous sommes toujours là pour vous aider.\n\nEncore une fois, bienvenue !\n\nCordialement,\nL'équipe de UFC Sport";
+                    $mail = new Mail($_POST['email'], $mailSubject, $mailDescription);
+                    $mail->sendEmail();
                     $user->saveUser(null, $_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], $_POST['role'], $formattedDate, $formattedDate);
                     header('Location: user?action=created&entity=utilisateur');
                     exit;
