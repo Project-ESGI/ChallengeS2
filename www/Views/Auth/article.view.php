@@ -7,7 +7,7 @@
         <th scope="col">Slug</th>
         <th scope="col">Titre</th>
         <th scope="col">Auteur</th>
-        <th scope="col">Contenu</th>
+<!--        <th scope="col">Contenu</th>-->
         <th scope="col">Catégorie</th>
         <th scope="col">Date d'insertion</th>
         <th scope="col">Date de mise à jour</th>
@@ -22,7 +22,7 @@
             <td><?php echo $page['slug']; ?></td>
             <td><?php echo $page['title']; ?></td>
             <td><?php echo $page['author']; ?></td>
-            <td><?php echo $page['content']; ?></td>
+<!--            <td>--><?php //echo $page['content']; ?><!--</td>-->
             <td><?php echo $page['category']; ?></td>
             <td><?php echo $page['date_inserted']; ?></td>
             <td><?php echo $page['date_updated']; ?></td>

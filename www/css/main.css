@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .container-header {
   justify-content: space-between;
   max-width: 1200px;
@@ -144,20 +145,13 @@ html, body {
   min-height: 73vh;
 }
 
-.form-ajouter-article {
-  background-image: url("../../images/ajouterPage.jpeg");
-}
-
-.form-modifier-article {
-  background-image: url("../../images/modifierPage.jpg");
-}
-
-.form-ajouter-user {
-  background-image: url("../../images/ajouterUser.jpg");
-}
-
-.form-modifier-user {
-  background-image: url("../../images/modifierUser.jpg");
+/* Style pour le contenu tronqué */
+.truncated-content {
+  max-width: 200px; /* Ajustez la largeur maximale selon vos besoins */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=main.css.map */

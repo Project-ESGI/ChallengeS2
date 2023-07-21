@@ -2,19 +2,18 @@
 
 namespace App\Controllers;
 
+use App\Core\Mail;
 use App\Core\Verificator;
 use App\Core\View;
 use App\Forms\ConnectionUser;
 use App\Forms\Registration;
 use App\Forms\ResetPassword;
+use App\Forms\TempoPassword;
 use App\Models\Article;
 use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
 
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 use App\Controllers\AuthorizationHelper;
 
 date_default_timezone_set('Europe/Paris');
@@ -68,6 +67,29 @@ class Security
         }
     }
 
+    public function tempo(): void
+    {
+        $form = new ResetPassword();
+        $view = new View("Auth/tempopassword", "tempo");
+        $view->assign('form', $form->getConfig());
+
+        if ($form->isSubmit()) {
+            $user = new User();
+            $user->setEmail($_POST['email']);
+            $userExists = $user->existUser($user->getEmail());
+            if ($userExists) {
+//                $mail = new PHPMailer(true);
+                $_SESSION['email'] = $user->getEmail();
+                header('Location: accueil');
+                exit;
+            } else {
+                $form->addError('email', 'Email ou mot de passe incorrect!');
+                $view->assign('form', $form->getConfig());
+            }
+        }
+    }
+
+
 
     public function register(): void
     {
@@ -93,13 +115,11 @@ class Security
                 $_SESSION['email'] = $_POST['email'];
 
                 // Envoi de l'e-mail de confirmation d'inscription
-                $userEmail = 'jackmbappekoum@outlook.fr';// Assurez-vous que cette variable contient l'adresse e-mail du destinataire
+                $userEmail = $_POST['email']; // Récupérer l'adresse e-mail entrée par l'utilisateur
 
-
-
-                $mail = new PHPMailer(true);
+                $mail = new Mail($userEmail, "cest pour ton inscription", "bienvenue");
+                $mail->sendEmail();
                 // Configurer les paramètres du serveur SMTP
-                $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com'; // Remplacez par l'adresse de votre serveur SMTP
                 $mail->SMTPAuth   = true;
                 $mail->Username   = 'jufc608767@gmail.com'; // Remplacez par l'adresse e-mail de l'expéditeur
@@ -107,28 +127,13 @@ class Security
                 $mail->SMTPSecure = 'ssl'; // Selon votre serveur, utilisez 'ssl' ou 'tls'
                 $mail->Port       = 465; // Remplacez par le port SMTP souhaité
 
-                // Paramètres de l'expéditeur et du destinataire
-                $mail->setFrom('jufc608767@gmail.com', 'jufc'); // Remplacez par l'adresse e-mail de l'expéditeur
-                $mail->addAddress($userEmail); // Adresse e-mail du destinataire
-
-                // Contenu de l'e-mail
-                $mail->isHTML(true);
-                $mail->Subject = 'Confirmation d\'inscription';
-                $mail->Body    = 'Bienvenue ! Votre inscription a été confirmée.';
-
-                // Envoyer l'e-mail
-                try {
-                    $mail->send();
-                    // E-mail envoyé avec succès
-                } catch (Exception $e) {
-                    echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo; // Erreur lors de l'envoi de l'e-mail, vous pouvez afficher un message d'erreur ou journaliser l'erreur
-                }
-
-                header('Location: accueil');
-                exit;
             }
+
+            header('Location: accueil');
+            exit;
         }
     }
+
 
     public function commentaire()
     {
