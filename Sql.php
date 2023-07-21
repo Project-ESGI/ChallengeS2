@@ -93,7 +93,11 @@ abstract class Sql
      * @param int|null $authorId L'ID de l'auteur (facultatif).
      * @return bool True si un enregistrement avec la même valeur existe déjà, sinon False.
      */
+<<<<<<< HEAD
+    public function existsWithValue(string $table, string $column, $value, int $id = null): bool
+=======
     public function existsWithValue(string $table, string $column, $value, int $id = null, int $authorId = null): bool
+>>>>>>> 93d4addbb45998656143bee04d02164a93eb421b
     {
         $query = "SELECT COUNT(*) FROM " . $table . " WHERE $column = :value";
         $parameters = [':value' => $value];

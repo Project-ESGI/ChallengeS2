@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Controllers\AuthorizationHelper;
 use App\Core\Mail;
 use App\Core\Verificator;
 use App\Core\View;
@@ -14,7 +15,10 @@ use App\Models\Commentaire;
 use App\Models\Signalement;
 use App\Models\User;
 
-use App\Controllers\AuthorizationHelper;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 
 date_default_timezone_set('Europe/Paris');
 
@@ -185,7 +189,7 @@ class Security
     {
         if (AuthorizationHelper::hasPermission()) {
             $user = new User();
-            $userData = $user->getByEmail($_SESSION['email']);
+            $userData = AuthorizationHelper::getCurrentUserData();
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 

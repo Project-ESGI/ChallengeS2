@@ -25,8 +25,7 @@ class Update
     public function modifyArticle()
     {
         if (AuthorizationHelper::hasPermission()) {
-            $user = new User();
-            $userData = $user->getByEmail($_SESSION['email']);
+            $userData = AuthorizationHelper::getCurrentUserData();
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
@@ -72,8 +71,7 @@ class Update
     public function modifyUser()
     {
         if (AuthorizationHelper::hasPermission('admin')) {
-            $user = new User();
-            $userData = $user->getByEmail($_SESSION['email']);
+            $userData = AuthorizationHelper::getCurrentUserData();
             $user_pseudo = $userData['pseudo'];
             $user_role = $userData['role'];
 
