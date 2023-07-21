@@ -68,7 +68,17 @@ class Main
 
     public function installer()
     {
-        $view = new View("Auth/installer", "installer");
+        new View("Auth/installer", "installer1");
+    }
+
+    public function setupapi()
+    {
+        new View("Auth/installer", "installer2");
+    }
+
+    public function site()
+    {
+        new View("Auth/installer", "installer3");
     }
 
     public function report()

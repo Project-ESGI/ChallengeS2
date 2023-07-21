@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="./images/soccerBallBlack.svg">
 
-    <title>Article</title>
+    <title>Installer</title>
 </head>
 <body>
 <?php include $this->view; ?>

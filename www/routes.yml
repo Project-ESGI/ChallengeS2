@@ -2,6 +2,14 @@
   controller: Main
   action: installer
 
+/setupapi:
+  controller: Main
+  action: setupapi
+
+/site:
+  controller: Main
+  action: site
+
 /accueil:
   controller: Main
   action: index
