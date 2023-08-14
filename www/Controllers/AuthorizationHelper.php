@@ -4,9 +4,15 @@ namespace App\Controllers;
 
 use App\Models\User;
 
-
 class AuthorizationHelper
 {
+    public function __construct()
+    {
+        if (!self::getCurrentUserData()){
+            self::redirectTo404();
+        }
+    }
+
     /**
      * Vérifie si l'utilisateur a la permission requise.
      *
@@ -58,7 +64,6 @@ class AuthorizationHelper
             'user_id' => $user_id,
         ];
     }
-
 
     /**
      * Effectue une redirection vers la page d'erreur 404.

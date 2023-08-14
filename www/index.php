@@ -24,7 +24,6 @@ if (!file_exists("routes.yml")) {
 }
 
 $routes = yaml_parse_file("routes.yml");
-
 // Récupérer tous les slugs depuis la base de données
 $article = new Article();
 $slugs = null;
@@ -41,7 +40,7 @@ if (isset($_SESSION['id'])) {
     }
 }
 
-//Article 404
+//ArticleController 404
 if (empty($routes[$uri])) {
     http_response_code(404);
     include('./Views/Error/404.view.php');

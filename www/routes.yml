@@ -10,40 +10,6 @@
   controller: Main
   action: site
 
-/accueil:
-  controller: Main
-  action: index
-  security: true
-
-/comment:
-  controller: Security
-  action: commentaire
-  security: true
-  role: [ ADMIN ]
-
-/modifycomment:
-  controller: Update
-  action: modifyComment
-  security: true
-  role: [ ADMIN ]
-
-/deletecomment:
-  controller: Delete
-  action: deleteComment
-  security: true
-  role: [ ADMIN ]
-
-/addcomment:
-  controller: Add
-  action: addComment
-  security: true
-  role: [ ADMIN ]
-
-/report:
-  controller: Main
-  action: report
-  security: true
-
 /login:
   controller: Security
   action: login
@@ -56,58 +22,92 @@
   controller: Security
   action: register
 
-/reset:
-  controller: Security
-  action: reset
+/accueil:
+  controller: Main
+  action: index
+  security: true
 
-/tempo:
-    controller: Security
-    action: tempo
+/comment:
+  controller: CommentaireController
+  action: commentaire
+  security: true
+  role: [ ADMIN ]
+
+/addcomment:
+  controller: Comment
+  action: addComment
+  security: true
+  role: [ ADMIN ]
+
+/modifycomment:
+  controller: Comment
+  action: modifyComment
+  security: true
+  role: [ ADMIN ]
+
+/deletecomment:
+  controller: Comment
+  action: deleteComment
+  security: true
+  role: [ ADMIN ]
+
+/report:
+  controller: Main
+  action: report
+  security: true
 
 /article:
-  controller: Security
+  controller: ArticleController
   action: article
   security: true
   role: [ ADMIN ]
 
 /addarticle:
-  controller: Add
+  controller: ArticleController
   action: addArticle
   security: true
   role: [ ADMIN ]
 
-/adduser:
-  controller: Add
-  action: addUser
-  security: true
-  role: [ ADMIN ]
-
 /modifyarticle:
-  controller: Update
+  controller: ArticleController
   action: modifyArticle
   security: true
   role: [ ADMIN ]
 
-/modifyuser:
-  controller: Update
-  action: modifyUser
-  security: true
-  role: [ ADMIN, EDITOR ]
-
 /deletearticle:
-  controller: Delete
+  controller: ArticleController
   action: deleteArticle
   security: true
   role: [ ADMIN ]
 
+/user:
+  controller: UtilisateurController
+  action: user
+  security: true
+  role: [ ADMIN ]
+
+/adduser:
+  controller: UtilisateurController
+  action: addUser
+  security: true
+  role: [ ADMIN ]
+
+/modifyuser:
+  controller: UtilisateurController
+  action: modifyUser
+  security: true
+  role: [ ADMIN, EDITOR ]
+
 /deleteuser:
-  controller: Delete
+  controller: UtilisateurController
   action: deleteUser
   security: true
   role: [ ADMIN, EDITOR ]
 
-/user:
-  controller: Security
-  action: user
-  security: true
-  role: [ ADMIN ]
+/reset:
+  controller: Main
+  action: reset
+
+/tempo:
+  controller: Main
+  action: tempo

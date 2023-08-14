@@ -4,20 +4,19 @@ namespace App\Controllers;
 
 use App\Core\Menu;
 use App\Core\View;
+use App\Forms\ResetPassword;
 use App\Models\Article;
-use App\Models\Commentaire;
+use App\Models\Comment;
 use App\Models\Signalement;
 use App\Models\User;
-use App\Core\Mail;
 use App\Core\Response;
 
 date_default_timezone_set('Europe/Paris');
 
-class Main
+class Main extends AuthorizationHelper
 {
     public function index()
     {
-        if (AuthorizationHelper::hasPermission()) {
             $user = new User();
             $userData = $user->getByEmail($_SESSION['email']);
 
@@ -28,7 +27,7 @@ class Main
             $_SESSION['pseudo'] = $user_pseudo;
             $_SESSION['role'] = $user_role;
             $_SESSION['id'] = $user_id;
-            $commentaire = new Commentaire();
+            $commentaire = new Comment();
             $signalement = new Signalement();
             $commentaires = $commentaire->getAllValue();
             $table = [];
@@ -60,10 +59,6 @@ class Main
             $view->assign('user_name', $user_name);
             $view->assign('user_role', $user_role);
             $view->assign('user_id', $user_id);
-
-        } else {
-            AuthorizationHelper::redirectTo404();
-        }
     }
 
     public function installer()
@@ -81,44 +76,8 @@ class Main
         new View("Auth/installer", "installer3");
     }
 
-    public function report()
-    {
-        if (AuthorizationHelper::hasPermission()) {
-
-            $id = $_GET['id'];
-            $comment = new Commentaire();
-            $comment->setIdValue($id);
-            $report = $comment->getReport() + 1;
-
-            if ($comment->getId()) {
-                $signalement = new Signalement();
-                $signalement->setCommentId($comment->getId());
-                $signalement->setUserId($_SESSION['id']);
-
-                if (!$signalement->existeSignalement()) {
-                    $signalement->setDateInserted(date('Y-m-d H:i:s'));
-                    $signalement->save();
-                    $comment->setReport($report);
-                    $comment->save();
-                } else {
-                    header('Location: accueil?action=existreported');
-                    exit;
-                }
-                if ($comment->reportTrue($comment->getContent()) || $comment->getReport() >= 4) {
-                    $signalement->deleteByCommentId($comment->getId());
-                    $comment->delete();
-                }
-                header('Location: accueil');
-                exit;
-            } else {
-                AuthorizationHelper::redirectTo404();
-            }
-        }
-    }
-
     public function show()
     {
-        if (AuthorizationHelper::hasPermission()) {
             $article = new Article();
             $currentURL = $_SERVER['REQUEST_URI'];
             $slug = basename($currentURL);
@@ -126,6 +85,49 @@ class Main
 
             $view = new View("Auth/articleNew", "nouveauArticle");
             $view->assign('articleData', $articleData);
+    }
+
+    public function reset(): void
+    {
+        $form = new ResetPassword();
+        $view = new View("Auth/reinitialisation", "reset");
+        $view->assign('form', $form->getConfig());
+
+        if ($form->isSubmit()) {
+            $user = new User();
+            $user->setEmail($_POST['email']);
+            $userExists = $user->existUser($user->getEmail());
+            if ($userExists) {
+//                $mail = new PHPMailer(true);
+                $_SESSION['email'] = $user->getEmail();
+                header('Location: accueil');
+                exit;
+            } else {
+                $form->addError('email', 'Email ou mot de passe incorrect!');
+                $view->assign('form', $form->getConfig());
+            }
+        }
+    }
+
+    public function tempo(): void
+    {
+        $form = new ResetPassword();
+        $view = new View("Auth/tempopassword", "tempo");
+        $view->assign('form', $form->getConfig());
+
+        if ($form->isSubmit()) {
+            $user = new User();
+            $user->setEmail($_POST['email']);
+            $userExists = $user->existUser($user->getEmail());
+            if ($userExists) {
+//                $mail = new PHPMailer(true);
+                $_SESSION['email'] = $user->getEmail();
+                header('Location: accueil');
+                exit;
+            } else {
+                $form->addError('email', 'Email ou mot de passe incorrect!');
+                $view->assign('form', $form->getConfig());
+            }
         }
     }
 }

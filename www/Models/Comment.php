@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Core\Sql;
 
-class Commentaire extends Sql
+class Comment extends Sql
 {
 
     protected int $id = 0;
