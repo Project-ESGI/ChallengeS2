@@ -58,6 +58,12 @@ class CommentaireController extends AuthorizationHelper
             $commentaire = new Comment();
             $commentaire->setId($id);
             $commentaire->getById($id);
+
+            $commentData = $commentaire->getById($id);
+            if (!$commentData || $commentData['author'] !== $_SESSION['id']) {
+                AuthorizationHelper::redirectTo404();
+            }
+
             $signalement = new Signalement();
             $signalement->setCommentId($commentaire->getId());
             $signalement->setUserId($_SESSION['id']);
@@ -85,7 +91,11 @@ class CommentaireController extends AuthorizationHelper
         $user_role = $userData['role'];
 
         $commentaire = new Comment();
-        $id = $_POST['id'];
+        $id = $_GET['id'];
+        $commentData = $commentaire->getById($id);
+        if (!$commentData || $commentData['author'] !== $_SESSION['id']) {
+            AuthorizationHelper::redirectTo404();
+        }
         $commentaire->setIdValueString($id);
         $date = new \DateTime();
         $result = $commentaire->getById($id);

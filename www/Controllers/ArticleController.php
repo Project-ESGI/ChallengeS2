@@ -92,6 +92,11 @@ class ArticleController extends AuthorizationHelper
         $page = new Article();
         $page->getById($id);
 
+        $articleData = $page->getById($id);
+        if (!$articleData || $articleData['author'] !== $_SESSION['id']) {
+            AuthorizationHelper::redirectTo404();
+        }
+
         if ($page->getId()) {
             $page->delete();
             header('Location: article?action=deleted&entity=article');
@@ -109,6 +114,10 @@ class ArticleController extends AuthorizationHelper
         $page = new Article();
         $date = new \DateTime();
         $result = $page->getById($id);
+
+        if (!$result || $result['author'] !== $_SESSION['id']) {
+            AuthorizationHelper::redirectTo404();
+        }
 
         $formattedDate = $date->format('Y-m-d H:i:s');
         $view = new View("Auth/addArticle", "article");

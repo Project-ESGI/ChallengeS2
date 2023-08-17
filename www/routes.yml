@@ -52,7 +52,7 @@
   role: [ ADMIN ]
 
 /report:
-  controller: Main
+  controller: CommentaireController
   action: report
   security: true
 
