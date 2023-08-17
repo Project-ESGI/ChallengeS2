@@ -1,4 +1,10 @@
 RewriteEngine On
+
+# Rediriger URLs avec un slash final vers la version sans slash
+RewriteCond %{REQUEST_URI} ^(.+)/$
+RewriteRule ^ %1 [L,R=301]
+
+# Réécriture pour diriger les requêtes vers index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /index.php [L,QSA]
