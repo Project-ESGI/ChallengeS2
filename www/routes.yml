@@ -34,19 +34,19 @@
   role: [ ADMIN ]
 
 /addcomment:
-  controller: Comment
+  controller: CommentaireController
   action: addComment
   security: true
   role: [ ADMIN ]
 
 /modifycomment:
-  controller: Comment
+  controller: CommentaireController
   action: modifyComment
   security: true
   role: [ ADMIN ]
 
 /deletecomment:
-  controller: Comment
+  controller: CommentaireController
   action: deleteComment
   security: true
   role: [ ADMIN ]
