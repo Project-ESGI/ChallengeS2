@@ -113,6 +113,9 @@ class CrudHelper
         $user_id = $userData['id'];
 
         $data = $object->getAllValue();
+        if (($object instanceof Article)) {
+            $data = $object->getAllValueByUser($_SESSION['id']);
+        }
         $table = [];
 
         foreach ($data as $item) {
