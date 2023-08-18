@@ -1,13 +1,13 @@
 /:
-  controller: Main
+  controller: Security
   action: installer
 
 /setupapi:
-  controller: Main
+  controller: Security
   action: setupapi
 
 /site:
-  controller: Main
+  controller: Security
   action: site
 
 /login:
