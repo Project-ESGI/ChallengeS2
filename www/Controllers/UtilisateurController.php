@@ -10,9 +10,7 @@ use App\Models\Signalement;
 use App\Models\User;
 use App\Models\Comment;
 
-
 date_default_timezone_set('Europe/Paris');
-
 
 class UtilisateurController extends AuthorizationHelper
 {
@@ -21,7 +19,7 @@ class UtilisateurController extends AuthorizationHelper
         $user = new User();
         $formData = $_POST;
         $view = new View("Auth/addUser", "user");
-        AuthorizationHelper::modifyCommon($user, null, new AddUser(), $formData, $view, null);
+        CrudHelper::addOrEdit($user, null, new AddUser(), $formData, $view, null);
     }
 
     public function modifyUser()
@@ -31,47 +29,13 @@ class UtilisateurController extends AuthorizationHelper
             $user = new User();
             $formData = $_POST;
             $view = new View("Auth/addUser", "user");
-            AuthorizationHelper::modifyCommon($user, $id, new AddUser(), $formData, $view, 1);
+            CrudHelper::addOrEdit($user, $id, new AddUser(), $formData, $view, 1);
         } else {
             AuthorizationHelper::redirectTo404();
         }
     }
 
-    public function user(): void
-    {
-        if (AuthorizationHelper::hasPermission('admin')) {
-            $user = new User();
-            $userData = $user->getByEmail($_SESSION['email']);
-            $user_pseudo = $userData['pseudo'];
-            $user_role = $userData['role'];
-            $user = new User();
-            $users = $user->getAllValue();
-            $table = [];
-
-            foreach ($users as $user) {
-                $table[] = [
-                    'id' => $user['id'],
-                    'firstname' => $user['firstname'],
-                    'lastname' => $user['lastname'],
-                    'email' => $user['email'],
-                    'date_inserted' => $user['date_inserted'],
-                    'date_updated' => $user['date_updated'],
-                    'country' => $user['country'],
-                    'password' => $user['password'],
-                    'role' => $user['role'],
-                    'pseudo' => $user['pseudo']
-                ];
-            }
-            $view = new View("Auth/user", "user");
-            $view->assign('table', $table);
-            $view->assign('user_pseudo', $user_pseudo);
-            $view->assign('user_role', $user_role);
-        } else {
-            AuthorizationHelper::redirectTo404();
-        }
-    }
-
-    function deleteUser()
+    public function deleteUser()
     {
         if (AuthorizationHelper::hasPermission('admin')) {
             $id = $_GET['id'];
@@ -100,6 +64,18 @@ class UtilisateurController extends AuthorizationHelper
                 $user->delete();
                 exit;
             }
+        } else {
+            AuthorizationHelper::redirectTo404();
+        }
+    }
+
+    public function user(): void
+    {
+        if (AuthorizationHelper::hasPermission('admin')) {
+            $user = new User();
+            $view = new View("Auth/user", "user");
+            CrudHelper::getList($user,$view);
+
         } else {
             AuthorizationHelper::redirectTo404();
         }

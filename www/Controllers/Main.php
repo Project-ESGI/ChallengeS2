@@ -61,21 +61,6 @@ class Main extends AuthorizationHelper
             $view->assign('user_id', $user_id);
     }
 
-    public function installer()
-    {
-        new View("Auth/installer", "installer1");
-    }
-
-    public function setupapi()
-    {
-        new View("Auth/installer", "installer2");
-    }
-
-    public function site()
-    {
-        new View("Auth/installer", "installer3");
-    }
-
     public function show()
     {
             $article = new Article();

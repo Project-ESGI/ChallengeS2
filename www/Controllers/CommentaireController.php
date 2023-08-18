@@ -3,14 +3,11 @@
 namespace App\Controllers;
 
 use App\Core\Menu;
-use App\Core\Verificator;
 use App\Core\View;
 use App\Models\Comment;
 use App\Models\Signalement;
-use App\Models\User;
 use App\Forms\AddComment;
 
-date_default_timezone_set('Europe/Paris');
 
 class CommentaireController extends AuthorizationHelper
 {
@@ -20,7 +17,7 @@ class CommentaireController extends AuthorizationHelper
         $commentaire = new Comment();
         $formData = $_POST;
         $view = new View("Auth/addComment", "comment");
-        AuthorizationHelper::modifyCommon($commentaire, null, new AddComment(), $formData, $view, null);
+        CrudHelper::addOrEdit($commentaire, null, new AddComment(), $formData, $view, null);
     }
 
     public function modifyComment()
@@ -34,21 +31,17 @@ class CommentaireController extends AuthorizationHelper
         } else {
             $formData = $_POST;
             $view = new View("Auth/addComment", "comment");
-            AuthorizationHelper::modifyCommon($commentaire, $id, new AddComment(), $formData, $view, 1);
+            CrudHelper::addOrEdit($commentaire, $id, new AddComment(), $formData, $view, 1);
         }
     }
 
     public function deleteComment()
     {
-        if (AuthorizationHelper::hasPermission('admin')) {
-            $id = $_GET['id'];
-            $commentaire = new Comment();
+        $id = $_GET['id'];
+        $commentaire = new Comment();
+        $commentData = $commentaire->getById($id);
+        if (AuthorizationHelper::hasPermission('admin') || $commentData['author'] !== $_SESSION['id']) {
             $commentaire->setId($id);
-
-            $commentData = $commentaire->getById($id);
-            if (!$commentData || $commentData['author'] !== $_SESSION['id']) {
-                AuthorizationHelper::redirectTo404();
-            }
 
             $signalement = new Signalement();
             $signalement->setCommentId($commentaire->getId());
@@ -59,10 +52,11 @@ class CommentaireController extends AuthorizationHelper
                 $commentaire->delete();
 
                 if (isset($_GET['accueil'])) {
-                    header('Location: accueil?action=delete&entity=commentaire');
+                    $location = "accueil";
                 } else {
-                    header('Location: comment?action=delete&entity=commentaire');
+                    $location = "comment";
                 }
+                header('Location: ' . $location . '?action=delete&entity=commentaire');
                 exit;
             }
         } else {
@@ -73,40 +67,10 @@ class CommentaireController extends AuthorizationHelper
     public function commentaire()
     {
         if (AuthorizationHelper::hasPermission('admin')) {
-            $user = new User();
-            $userData = $user->getByEmail($_SESSION['email']);
-            $user_pseudo = $userData['pseudo'];
-            $user_role = $userData['role'];
-            $user_id = $userData['id'];
-            $_SESSION['pseudo'] = $user_pseudo;
-            $_SESSION['role'] = $user_role;
-            $_SESSION['id'] = $user_id;
-
             $commentaire = new Comment();
             $signalement = new Signalement();
-            $commentaires = $commentaire->getAllValue();
-            $table = [];
-
-            foreach ($commentaires as $com) {
-                $userId = $com['author'];
-                $userData = $user->getById($userId);
-                $signalement->setCommentId($com['id']);
-                $signalement->setUserId($user_id);
-
-                $table[] = [
-                    'id' => $com['id'],
-                    'content' => $com['content'],
-                    'author' => $userData['lastname'] . ' ' . $userData['firstname'] . ' (' . $userData['pseudo'] . ')',
-                    'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
-                    'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
-                    'is_reported' => $com['report']
-                ];
-            }
-
             $view = new View("Auth/comment", "comment");
-            $view->assign('table', $table);
-            $view->assign('user_pseudo', $user_pseudo);
-            $view->assign('user_role', $user_role);
+            CrudHelper::getList($commentaire, $view, $signalement);
         } else {
             AuthorizationHelper::redirectTo404();
         }

@@ -84,4 +84,19 @@ class Security
         header('Location: /login');
         exit;
     }
+
+    public function installer()
+    {
+        new View("Auth/installer", "installer1");
+    }
+
+    public function setupapi()
+    {
+        new View("Auth/installer", "installer2");
+    }
+
+    public function site()
+    {
+        new View("Auth/installer", "installer3");
+    }
 }
