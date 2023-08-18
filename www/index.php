@@ -32,7 +32,8 @@ if (isset($_SESSION['id'])) {
 
 // Créer les routes pour chaque slug
     foreach ($slugs as $slug) {
-        $path = "/article/" . $slug;
+        $encodedSlug = rawurlencode(strtolower($slug));
+        $path = "/article/" . $encodedSlug;
         $routes[$path] = [
             "controller" => "Main",
             "action" => "show"
