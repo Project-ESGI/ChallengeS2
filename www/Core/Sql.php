@@ -560,7 +560,7 @@ abstract class Sql
      */
     public function deleteByCommentAuthor($author)
     {
-        $query = "DELETE FROM esgi_signalement WHERE comment_id IN (SELECT id FROM esgi_commentaire WHERE author = :author)";
+        $query = "DELETE FROM esgi_signalement WHERE comment_id IN (SELECT id FROM esgi_comment WHERE author = :author)";
         $params = array(':author' => $author);
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);

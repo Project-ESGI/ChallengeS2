@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Core\Menu;
-use App\Core\Verificator;
 use App\Core\View;
 use App\Forms\AddArticle;
 use App\Models\Article;
@@ -13,10 +12,46 @@ date_default_timezone_set('Europe/Paris');
 
 class ArticleController extends AuthorizationHelper
 {
-    /**
-     * @Route("/article", name="article")
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
+    public function addArticle(): void
+    {
+        $article = new Article();
+        $formData = $_POST;
+        $view = new View("Auth/addArticle", "article");
+        AuthorizationHelper::modifyCommon($article, null, new AddArticle(), $formData, $view, 0);
+    }
+
+    public function modifyArticle()
+    {
+        $id = $_GET['id'];
+        $article = new Article();
+        $articleData = $article->getById($id);
+        if (!$articleData || $articleData['author'] !== $_SESSION['id']) {
+            AuthorizationHelper::redirectTo404();
+        } else {
+            $formData = $_POST;
+            $view = new View("Auth/addArticle", "article");
+            AuthorizationHelper::modifyCommon($article, $id, new AddArticle(), $formData, $view, 1);
+        }
+    }
+
+    public function deleteArticle()
+    {
+        $id = $_GET['id'];
+        $page = new Article();
+        $page->setId($id);
+
+        $articleData = $page->getById($id);
+        if (!$articleData || $articleData['author'] !== $_SESSION['id']) {
+            AuthorizationHelper::redirectTo404();
+        }
+
+        if ($page->getId()) {
+            $page->delete();
+            header('Location: article?action=delete&entity=article');
+            exit;
+        }
+    }
+
     public function article(): void
     {
         $user = new User();
@@ -49,103 +84,4 @@ class ArticleController extends AuthorizationHelper
         $view->assign('user_pseudo', $user_pseudo);
         $view->assign('user_role', $user_role);
     }
-
-    public function addArticle(): void
-    {
-        $userData = AuthorizationHelper::getCurrentUserData();
-        $user_pseudo = $userData['pseudo'];
-        $user_role = $userData['role'];
-
-        $form = new AddArticle();
-        $view = new View("Auth/addArticle", "article");
-        $date = new \DateTime();
-        $formattedDate = $date->format('Y-m-d H:i:s');
-
-        $view->assign('form', $form->getConfig());
-        $view->assign('user_pseudo', $user_pseudo);
-        $view->assign('user_role', $user_role);
-        if ($form->isSubmit()) {
-            $page = new Article();
-            $error = Verificator::form($form->getConfig(), $_POST);
-
-            foreach ($error as $e => $data) {
-                $form->addError($e, $data);
-            }
-
-            $view->assign('form', $form->getConfig($_POST));
-
-            if (!$error) {
-                $page->actionArticle(null, $_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], $formattedDate, $formattedDate);
-//                    header('Location: article?action=created&entity=article');
-                $newUrl = "article/" . $_POST['slug'];
-                header("Location: " . $newUrl);
-                exit;
-            } else {
-                exit;
-            }
-        }
-    }
-
-    function deleteArticle()
-    {
-        $id = $_GET['id'];
-        $page = new Article();
-        $page->getById($id);
-
-        $articleData = $page->getById($id);
-        if (!$articleData || $articleData['author'] !== $_SESSION['id']) {
-            AuthorizationHelper::redirectTo404();
-        }
-
-        if ($page->getId()) {
-            $page->delete();
-            header('Location: article?action=deleted&entity=article');
-            exit;
-        }
-    }
-
-    public function modifyArticle()
-    {
-        $userData = AuthorizationHelper::getCurrentUserData();
-        $user_pseudo = $userData['pseudo'];
-        $user_role = $userData['role'];
-
-        $id = $_GET['id'];
-        $page = new Article();
-        $date = new \DateTime();
-        $result = $page->getById($id);
-
-        if (!$result || $result['author'] !== $_SESSION['id']) {
-            AuthorizationHelper::redirectTo404();
-        }
-
-        $formattedDate = $date->format('Y-m-d H:i:s');
-        $view = new View("Auth/addArticle", "article");
-        $form = new AddArticle();
-        $view->assign('form', $form->getConfig($result, 1));
-        $view->assign('user_pseudo', $user_pseudo);
-        $view->assign('user_role', $user_role);
-
-        // Vérifier si l'article existe
-        if ($page !== null) {
-            if ($form->isSubmit()) {
-                $error = Verificator::form($form->getConfig(), $_POST);
-
-                foreach ($error as $e => $data) {
-                    $form->addError($e, $data);
-                }
-
-                $view->assign('form', $form->getConfig($_POST, 1));
-
-                if (!$error) {
-                    $page->actionArticle($id, $_POST['title'], $_POST['slug'], $_POST['content'], $_POST['category'], $_SESSION['id'], null, $formattedDate);
-                    header('Location: article?action=updated&entity=article');
-                    exit;
-                } else {
-                    exit;
-                }
-            }
-        }
-    }
 }
-

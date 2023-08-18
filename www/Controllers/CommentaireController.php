@@ -17,37 +17,24 @@ class CommentaireController extends AuthorizationHelper
 
     public function addComment()
     {
-        $user = new User();
-        $userData = $user->getByEmail($_SESSION['email']);
-        $user_pseudo = $userData['pseudo'];
-        $user_role = $userData['role'];
-
         $commentaire = new Comment();
+        $formData = $_POST;
+        $view = new View("Auth/addComment", "comment");
+        AuthorizationHelper::modifyCommon($commentaire, null, new AddComment(), $formData, $view, null);
+    }
 
-        $date = new \DateTime();
-        $formattedDate = $date->format('Y-m-d H:i:s');
-        $view = new View("Auth/addUser", "user");
-        $form = new AddComment();
-        $view->assign('form', $form->getConfig());
-        $view->assign('user_pseudo', $user_pseudo);
-        $view->assign('user_role', $user_role);
+    public function modifyComment()
+    {
+        $id = $_GET['id'];
+        $commentaire = new Comment();
+        $commentData = $commentaire->getById($id);
 
-        if ($user !== null) {
-            if ($form->isSubmit()) {
-                $error = Verificator::form($form->getConfig(), $_POST);
-
-                foreach ($error as $e => $data) {
-                    $form->addError($e, $data);
-                }
-
-                $view->assign('form', $form->getConfig($_POST));
-
-                if (!$error) {
-                    $commentaire->saveCommentaire(null, $_POST['content'], $_SESSION['id'], $formattedDate, $formattedDate);
-                    header('Location: accueil?action=created&entity=commentaire');
-                    exit;
-                }
-            }
+        if (!$commentData || $commentData['author'] !== $_SESSION['id']) {
+            AuthorizationHelper::redirectTo404();
+        } else {
+            $formData = $_POST;
+            $view = new View("Auth/addComment", "comment");
+            AuthorizationHelper::modifyCommon($commentaire, $id, new AddComment(), $formData, $view, 1);
         }
     }
 
@@ -57,7 +44,6 @@ class CommentaireController extends AuthorizationHelper
             $id = $_GET['id'];
             $commentaire = new Comment();
             $commentaire->setId($id);
-            $commentaire->getById($id);
 
             $commentData = $commentaire->getById($id);
             if (!$commentData || $commentData['author'] !== $_SESSION['id']) {
@@ -73,9 +59,9 @@ class CommentaireController extends AuthorizationHelper
                 $commentaire->delete();
 
                 if (isset($_GET['accueil'])) {
-                    header('Location: accueil?action=deleted&entity=commentaire');
+                    header('Location: accueil?action=delete&entity=commentaire');
                 } else {
-                    header('Location: comment?action=deleted&entity=commentaire');
+                    header('Location: comment?action=delete&entity=commentaire');
                 }
                 exit;
             }
@@ -84,49 +70,7 @@ class CommentaireController extends AuthorizationHelper
         }
     }
 
-    public function modifyComment()
-    {
-        $userData = AuthorizationHelper::getCurrentUserData();
-        $user_pseudo = $userData['pseudo'];
-        $user_role = $userData['role'];
-
-        $commentaire = new Comment();
-        $id = $_GET['id'];
-        $commentData = $commentaire->getById($id);
-        if (!$commentData || $commentData['author'] !== $_SESSION['id']) {
-            AuthorizationHelper::redirectTo404();
-        }
-        $commentaire->setIdValueString($id);
-        $date = new \DateTime();
-        $result = $commentaire->getById($id);
-
-        $formattedDate = $date->format('Y-m-d H:i:s');
-        $view = new View("Auth/addComment", "comment");
-        $form = new AddComment();
-        $view->assign('form', $form->getConfig($result, 1));
-        $view->assign('user_pseudo', $user_pseudo);
-        $view->assign('user_role', $user_role);
-
-        if ($commentaire !== null) {
-            if ($form->isSubmit()) {
-
-                $error = Verificator::form($form->getConfig(), $_POST);
-
-                foreach ($error as $e => $data) {
-                    $form->addError($e, $data);
-                }
-                $view->assign('form', $form->getConfig($_POST, 1));
-
-                if (!$error) {
-                    $commentaire->saveCommentaire($id, $_POST['content'], $_SESSION['id'], null, $formattedDate);
-                    header('Location: accueil?action=updated&entity=commentaire');
-                    exit;
-                }
-            }
-        }
-    }
-
-    public function Commentaire()
+    public function commentaire()
     {
         if (AuthorizationHelper::hasPermission('admin')) {
             $user = new User();
@@ -171,7 +115,7 @@ class CommentaireController extends AuthorizationHelper
     public function report()
     {
         $id = $_GET['id'];
-        $comment = new \App\Models\Comment();
+        $comment = new Comment();
         $comment->setIdValueString($id);
         $report = $comment->getReport() + 1;
 

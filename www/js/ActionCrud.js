@@ -8,15 +8,15 @@ document.addEventListener("DOMContentLoaded", function () {
     let location;
 
     switch (action) {
-        case "created":
+        case "add":
             alert(`${entity} créé avec succès !`);
             location = pageName;
             break;
-        case "updated":
+        case "edit":
             alert(`${entity} modifié avec succès !`);
             location = pageName;
             break;
-        case "deleted":
+        case "delete":
             alert(`${entity} supprimé avec succès !`);
             location = pageName;
             break;

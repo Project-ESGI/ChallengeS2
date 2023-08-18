@@ -25,7 +25,9 @@ class Verificator
                     if ($user->existsWithValue("esgi_user", $name, $data[$name], $user->getId())) {
                         $listOfErrors[$name] = "Ce " . $name . " est déjà utilisé. Veuillez en choisir un autre.";
                     }
-                } elseif (strlen($data[$name]) < 3 && isset($input["error"]) && $name !== "email") {
+                }
+
+                if (strlen($data[$name]) < 3 && isset($input["error"]) && $name !== "email") {
                     $listOfErrors[$name] = $input["error"];
                 } else {
                     if ($name === "email" || $name === "confirm_email") {
