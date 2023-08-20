@@ -27,9 +27,7 @@ class Security
             $userExists = $user->existUser($user->getEmail(), $_POST['password']);
             if ($userExists) {
                 $ip = $_SERVER['REMOTE_ADDR'];
-
                 $mailDescription = "Connexion récente sur votre compte avec l'Adresse IP : $ip";
-
                 $mailSubject = "Connexion UFC Sport";
                 $mail = new Mail($_POST['email'], $mailSubject, $mailDescription);
                 $mail->sendEmail();
@@ -63,16 +61,15 @@ class Security
 
             $view->assign('form', $form->getConfig($_POST));
             if (!$error) {
-                // Création de l'utilisateur dans la base de données
                 $user->saveUser(null, $_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
                 $_SESSION['email'] = $_POST['email'];
 
                 $mailDescription = "Cher utilisateur,\n\nNous sommes ravis de vous compter parmi nous ! Votre inscription a été confirmée avec succès.\n\nMerci de faire partie de notre communauté. Vous pouvez maintenant accéder à toutes les fonctionnalités de notre site et profiter de nos services.\n\nSi vous avez des questions ou avez besoin d'aide, n'hésitez pas à nous contacter. Nous sommes toujours là pour vous aider.\n\nEncore une fois, bienvenue !\n\nCordialement,\nL'équipe de ufc sport";
 
-                $mail = new Mail($_POST['email'], $mailDescription, "Inscription réussie");
+                $mail = new Mail($_POST['email'], "Inscription réussie", $mailDescription);
                 $mail->sendEmail();
+                header('Location: accueil');
             }
-            header('Location: accueil');
             exit;
         }
     }

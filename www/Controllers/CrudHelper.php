@@ -47,12 +47,7 @@ class CrudHelper
                 if ($edit !== 1) {
                     $action = "add";
                     $addFormatedDate = $formattedDate;
-                    if ($className === 'User') {
-                        $existPasswd = $_POST['password'];
-                        $mailDescription = "Inscription via administrateur";
-                        $mailSubject = "Cher utilisateur,\n\nNous sommes ravis de vous compter parmi nous ! Votre inscription a été confirmée avec succès.\n\nUn administrateur réseau a créé votre compte avec l'adresse mail : " . $_POST['email'] . ".\n\nMerci de faire partie de notre communauté. Vous pouvez maintenant accéder à toutes les fonctionnalités de notre site et profiter de nos services.\n\nSi vous avez des questions ou avez besoin d'aide, n'hésitez pas à nous contacter. Nous sommes toujours là pour vous aider.\n\nEncore une fois, bienvenue !\n\nCordialement,\nL'équipe de UFC Sport";
-                        $mail = new Mail($_POST['email'], $mailSubject, $mailDescription);
-                    }
+                    $existPasswd = $_POST['password'];
                 } else {
                     $action = "edit";
                 }
@@ -95,8 +90,12 @@ class CrudHelper
                         if ($object->getId() === $_SESSION['id'] && $object->getEmail() !== $_SESSION['email']) {
                             header('Location: logout');
                         }
+                    } elseif ($edit !== 1) {
+                        $mailSubject = "Inscription via administrateur";
+                        $mailDescription = "Cher utilisateur,\n\nNous sommes ravis de vous compter parmi nous ! Votre inscription a été confirmée avec succès.\n\nUn administrateur réseau a créé votre compte avec l'adresse mail : " . $_POST['email'] . ".\n\nMerci de faire partie de notre communauté. Vous pouvez maintenant accéder à toutes les fonctionnalités de notre site et profiter de nos services.\n\nSi vous avez des questions ou avez besoin d'aide, n'hésitez pas à nous contacter. Nous sommes toujours là pour vous aider.\n\nEncore une fois, bienvenue !\n\nCordialement,\nL'équipe de UFC Sport";
+                        $mail = new Mail($_POST['email'], $mailSubject, $mailDescription);
+                        $mail->sendEmail();
                     }
-                    $mail->sendEmail();
                     header('Location: user?action=' . $action . '&entity=utilisateur');
                 }
                 exit;

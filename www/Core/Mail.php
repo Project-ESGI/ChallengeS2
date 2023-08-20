@@ -16,6 +16,8 @@ class Mail {
         $this->email = $email;
         $this->subject = $subject;
         $this->message = $message;
+        $this->message = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $this->message);
+        $this->subject = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $this->subject);
     }
 
     public function sendEmail() :bool{
