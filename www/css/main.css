@@ -1,4 +1,3 @@
-@charset "UTF-8";
 .container-header {
   justify-content: space-between;
   max-width: 1200px;
@@ -100,10 +99,12 @@ img {
   header div button#menu-button {
     background-image: url("../../images/menu.svg");
     margin-left: 15px;
+    background-color: transparent;
   }
   header div button#cancel-button {
     background-image: url("../../images/cancel.svg");
     margin-left: 15px;
+    background-color: transparent;
   }
 }
 @keyframes rotate {
@@ -123,7 +124,7 @@ footer {
 }
 
 .container {
-  margin: 20px;
+  margin-top: 20px;
 }
 
 .custom-background {
@@ -143,15 +144,6 @@ html, body {
   background-position: center;
   background-repeat: no-repeat;
   min-height: 73vh;
-}
-
-/* Style pour le contenu tronqué */
-.truncated-content {
-  max-width: 200px; /* Ajustez la largeur maximale selon vos besoins */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
 }
 
 /*# sourceMappingURL=main.css.map */
