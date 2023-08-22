@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="./images/soccerBallBlack.svg">
     <script src="./js/ActionCrud.js"></script>
+    <script src="./js/article.js"></script>
 
     <title>Article</title>
 </head>

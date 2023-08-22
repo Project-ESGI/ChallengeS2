@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($table as $commentaire) : ?>
+        <?php foreach (array_reverse($table) as $commentaire) : ?>
             <tr>
                 <td><?php echo $commentaire['id']; ?></td>
                 <td><?php echo $commentaire['content']; ?></td>

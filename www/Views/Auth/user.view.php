@@ -1,4 +1,10 @@
-<a href="adduser" class="openModalBtn btn btn-primary">Ajouter un utilisateur</a>
+<div class="container mt-4">
+    <div class="row">
+        <div class="mb-3 text-right-custom"> <!-- Utilisez col-md-9 pour la colonne du bouton -->
+            <a href="adduser" class="openModalBtn btn btn-primary">Ajouter un utilisateur</a>
+        </div>
+    </div>
+</div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
@@ -16,7 +22,7 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($table as $user) : ?>
+        <?php foreach (array_reverse($table) as $user) : ?>
             <tr>
                 <td><?php echo $user['id']; ?></td>
                 <td><?php echo $user['firstname']; ?></td>

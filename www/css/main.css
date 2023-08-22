@@ -146,4 +146,18 @@ html, body {
   min-height: 73vh;
 }
 
+#category-filter {
+  width: 200px;
+}
+
+.justify-content-center-add {
+  justify-content: right;
+}
+
+@media screen and (max-width: 768px) {
+  .justify-content-center-add {
+    justify-content: center;
+  }
+}
+
 /*# sourceMappingURL=main.css.map */

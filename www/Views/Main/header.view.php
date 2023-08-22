@@ -1,7 +1,6 @@
 <?php if ($user_pseudo !== null) : ?>
     <script src="./js/JQuery 3.5.1.js"></script>
-    <script src="../../js/Main.js"></script>
-    <script src="../../js/Menu.js"></script>
+    <script src="../../js/main.js"></script>
     <header>
         <div class="container-fluid">
             <div class="row align-items-center">
@@ -45,6 +44,4 @@
             </div>
         </div>
     </header>
-
-    <div id="sidebar" class="bg-light"></div>
 <?php endif; ?>
