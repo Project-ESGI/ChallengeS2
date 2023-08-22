@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Core\Mail;
-use App\Core\Verificator;
 use App\Models\User;
 
 date_default_timezone_set('Europe/Paris');

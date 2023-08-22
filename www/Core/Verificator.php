@@ -32,8 +32,14 @@ class Verificator
                         }
                     }
 
-                    if ($name === "email" || $name === "pseudo" || $name === "title" || $name === "slug") {
+                    if ( ($name === "email" || $name === "pseudo")) {
                         if ($user->existsWithValue("esgi_user", $name, $data[$name], $user->getId())) {
+                            $listOfErrors[$name] = "Ce " . $name . " est déjà utilisé. Veuillez en choisir un autre.";
+                        }
+                    }
+
+                    if ( ($name === "title" || $name === "slug")) {
+                        if ($user->existsWithValue("esgi_article", $name, $data[$name], $user->getId())) {
                             $listOfErrors[$name] = "Ce " . $name . " est déjà utilisé. Veuillez en choisir un autre.";
                         }
                     }
