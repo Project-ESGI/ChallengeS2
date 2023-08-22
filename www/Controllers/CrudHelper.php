@@ -33,6 +33,10 @@ class CrudHelper
         if ($form->isSubmit()) {
             $error = Verificator::form($form->getConfig(), $formData);
 
+            foreach ($_POST as $key => $value) {
+                $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
+            }
+
             foreach ($error as $e => $data) {
                 $form->addError($e, $data);
             }
@@ -43,10 +47,6 @@ class CrudHelper
                 $className = end($classNameParts);
                 $addFormatedDate = null;
                 $existPasswd = null;
-
-                foreach ($_POST as $key => $value) {
-                    $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
-                }
 
                 if ($edit !== 1) {
                     $action = "add";

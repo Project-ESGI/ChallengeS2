@@ -22,16 +22,18 @@ class Security
 
         if ($form->isSubmit()) {
             $user = new User();
-            $user->setEmail($_POST['email']);
-            $user->setPassword($_POST['password']);
-            $userExists = $user->existUser($user->getEmail(), $_POST['password']);
+            foreach ($_POST as $key => $value) {
+                $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
+            }
+
+            $userExists = $user->existUser($_POST['email'], $_POST['password']);
             if ($userExists) {
                 $ip = $_SERVER['REMOTE_ADDR'];
                 $mailDescription = "Connexion récente sur votre compte avec l'Adresse IP : $ip";
                 $mailSubject = "Connexion UFC Sport";
                 $mail = new Mail($_POST['email'], $mailSubject, $mailDescription);
                 $mail->sendEmail();
-                $_SESSION['email'] = $user->getEmail();
+                $_SESSION['email'] = $_POST['email'];
                 header('Location: accueil');
                 exit;
             } else {
@@ -55,12 +57,17 @@ class Security
 
             $error = Verificator::form($form->getConfig(), $_POST);
 
+            foreach ($_POST as $key => $value) {
+                $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
+            }
+
             foreach ($error as $e => $data) {
                 $form->addError($e, $data);
             }
 
             $view->assign('form', $form->getConfig($_POST));
             if (!$error) {
+
                 $user->saveUser(null, $_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
                 $_SESSION['email'] = $_POST['email'];
 
