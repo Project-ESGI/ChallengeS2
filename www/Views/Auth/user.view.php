@@ -1,8 +1,6 @@
-<div class="container mt-4">
-    <div class="row">
-        <div class="mb-3 text-right-custom"> <!-- Utilisez col-md-9 pour la colonne du bouton -->
-            <a href="adduser" class="openModalBtn btn btn-primary">Ajouter un utilisateur</a>
-        </div>
+<div class="d-flex justify-content-center-add container mt-4">
+    <div class="d-flex justify-content-center-add col-md-9 mb-3">
+        <a href="adduser" class="openModalBtn btn btn-primary">Ajouter un utilisateur</a>
     </div>
 </div>
 <div class="table-responsive">
