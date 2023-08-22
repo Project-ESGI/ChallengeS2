@@ -2,7 +2,6 @@
 
 namespace App\Core;
 
-use App\Forms\Registration;
 use App\Models\Article;
 use App\Models\User;
 
@@ -21,12 +20,9 @@ class Verificator
 
         foreach ($config["inputs"] as $name => $input) {
             if (isset($data[$name])) {
-                if ($name === "email" || $name === "pseudo") {
-                    if ($user->existsWithValue("esgi_user", $name, $data[$name], $user->getId())) {
-                        $listOfErrors[$name] = "Ce " . $name . " est déjà utilisé. Veuillez en choisir un autre.";
-                    }
-                }
-
+//                if($data[$name] !== strip_tags($data[$name])){
+//                    $listOfErrors[$name] = "Tentative de hack";
+//                }
                 if (strlen($data[$name]) < 3 && isset($input["error"]) && $name !== "email") {
                     $listOfErrors[$name] = $input["error"];
                 } else {
@@ -36,15 +32,9 @@ class Verificator
                         }
                     }
 
-                    if ($name === "title") {
-                        if ($article->existsWithValue("esgi_article", $name, $data[$name], $article->getId(), $_SESSION['id'])) {
-                            $listOfErrors[$name] = "Ce titre est déjà utilisé. Veuillez en choisir un autre.";
-                        }
-                    }
-
-                    if ($name === "slug") {
-                        if ($article->existsWithValue("esgi_article", $name, $data[$name], $article->getId(), $_SESSION['id'])) {
-                            $listOfErrors[$name] = "Ce slug est déjà utilisé. Veuillez en choisir un autre.";
+                    if ($name === "email" || $name === "pseudo" || $name === "title" || $name === "slug") {
+                        if ($user->existsWithValue("esgi_user", $name, $data[$name], $user->getId())) {
+                            $listOfErrors[$name] = "Ce " . $name . " est déjà utilisé. Veuillez en choisir un autre.";
                         }
                     }
 
@@ -60,7 +50,7 @@ class Verificator
                         }
                     }
 
-                    if ($name !== "password" && $name !== "confirm_password" && $name !== "content") {
+                    if ($name !== "password" && $name !== "confirm_password" && $name !== "content" && $name !== "email" && $name !== "confirm_email") {
                         $invalidFields = $user->checkSpecialCharacters($data[$name], $name);
                         if ($invalidFields) {
                             $listOfErrors[$name] = 'Le champ contient des caractères spéciaux non autorisés.';

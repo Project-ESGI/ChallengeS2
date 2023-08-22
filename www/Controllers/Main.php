@@ -17,59 +17,59 @@ class Main extends AuthorizationHelper
 {
     public function index()
     {
-            $user = new User();
-            $userData = $user->getByEmail($_SESSION['email']);
+        $user = new User();
+        $userData = $user->getByEmail($_SESSION['email']);
+        $user_name = $userData['firstname'] . ' ' . $userData['lastname'];
+        $user_pseudo = $userData['pseudo'];
+        $user_role = $userData['role'];
+        $user_id = $userData['id'];
+        $_SESSION['pseudo'] = $user_pseudo;
+        $_SESSION['role'] = $user_role;
+        $_SESSION['id'] = $user_id;
+        $commentaire = new Comment();
+        $signalement = new Signalement();
+        $commentaires = $commentaire->getAllValue();
+        $table = [];
 
-            $user_name = $userData['firstname'] . ' ' . $userData['lastname'];
-            $user_pseudo = $userData['pseudo'];
-            $user_role = $userData['role'];
-            $user_id = $userData['id'];
-            $_SESSION['pseudo'] = $user_pseudo;
-            $_SESSION['role'] = $user_role;
-            $_SESSION['id'] = $user_id;
-            $commentaire = new Comment();
-            $signalement = new Signalement();
-            $commentaires = $commentaire->getAllValue();
-            $table = [];
+        foreach ($commentaires as $com) {
+            $userId = $com['author'];
+            $userData = $user->getById($userId);
+            $signalement->setCommentId($com['id']);
+            $signalement->setUserId($user_id);
+            $commentaireSignale = false;
 
-            foreach ($commentaires as $com) {
-                $userId = $com['author'];
-                $userData = $user->getById($userId);
-                $signalement->setCommentId($com['id']);
-                $signalement->setUserId($user_id);
-                if ($signalement->existeSignalement()) {
-                    $commentaireSignale = true;
-                } else {
-                    $commentaireSignale = false;
-                }
-                $table[] = [
-                    'id' => $com['id'],
-                    'content' => $com['content'],
-                    'author' => $userData['pseudo'],
-                    'authorId' => $com['author'],
-                    'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
-                    'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
-                    'is_reported' => $commentaireSignale
-                ];
+            if ($signalement->existeSignalement()) {
+                $commentaireSignale = true;
             }
 
-            $view = new View("Auth/accueil", "dashboard");
-            $view->assign('table', $table);
-            $view->assign('user_pseudo', $user_pseudo);
-            $view->assign('user_name', $user_name);
-            $view->assign('user_role', $user_role);
-            $view->assign('user_id', $user_id);
+            $table[] = [
+                'id' => $com['id'],
+                'content' => $com['content'],
+                'author' => $userData['pseudo'],
+                'authorId' => $com['author'],
+                'date_inserted' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_inserted'])),
+                'date_updated' => strftime('%e %B %Y à %H:%M:%S', strtotime($com['date_updated'])),
+                'is_reported' => $commentaireSignale
+            ];
+        }
+
+        $view = new View("Auth/accueil", "dashboard");
+        $view->assign('table', $table);
+        $view->assign('user_pseudo', $user_pseudo);
+        $view->assign('user_name', $user_name);
+        $view->assign('user_role', $user_role);
+        $view->assign('user_id', $user_id);
     }
 
     public function show()
     {
-            $article = new Article();
-            $currentURL = $_SERVER['REQUEST_URI'];
-            $slug = basename($currentURL);
-            $articleData = $article->getBySlug($slug, $_SESSION['id']);
+        $article = new Article();
+        $currentURL = $_SERVER['REQUEST_URI'];
+        $slug = basename($currentURL);
+        $articleData = $article->getBySlug($slug, $_SESSION['id']);
 
-            $view = new View("Auth/articleNew", "nouveauArticle");
-            $view->assign('articleData', $articleData);
+        $view = new View("Auth/articleNew", "nouveauArticle");
+        $view->assign('articleData', $articleData);
     }
 
     public function reset(): void

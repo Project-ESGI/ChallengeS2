@@ -44,6 +44,10 @@ class CrudHelper
                 $addFormatedDate = null;
                 $existPasswd = null;
 
+                foreach ($_POST as $key => $value) {
+                    $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
+                }
+
                 if ($edit !== 1) {
                     $action = "add";
                     $addFormatedDate = $formattedDate;
