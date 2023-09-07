@@ -1,18 +1,10 @@
 /:
   controller: Security
-  action: installer
+  action: login
 
 /setupapi:
   controller: Security
-  action: setupapi
-
-/site:
-  controller: Security
-  action: site
-
-/login:
-  controller: Security
-  action: login
+  action: installer
 
 /logout:
   controller: Security

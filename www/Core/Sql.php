@@ -62,13 +62,13 @@ abstract class Sql
         $queryPrepared->bindValue(':email', $email, \PDO::PARAM_STR);
         $queryPrepared->execute();
 
-        $hash = $queryPrepared->fetchColumn();
+        $pass = $queryPrepared->fetchColumn();
 
-        if (!$hash) {
+        if ($pass === $password) {
+            return true;
+        } else {
             return false;
         }
-
-        return password_verify($password, $hash);
     }
 
 

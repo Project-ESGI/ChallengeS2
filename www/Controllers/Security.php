@@ -16,6 +16,12 @@ class Security
 
     public function login(): void
     {
+        $config = file_get_contents('application.yml');
+        if ($config) {
+            header('Location: setupapi');
+            exit();
+        }
+
         $form = new ConnectionUser();
         $view = new View("Auth/connection", "connection");
         $view->assign('form', $form->getConfig());
@@ -46,6 +52,12 @@ class Security
 
     public function register(): void
     {
+        $config = file_get_contents('application.yml');
+        if ($config) {
+            header('Location: setupapi');
+            exit();
+        }
+
         $form = new Registration();
         $view = new View("Auth/register", "inscription");
         $view->assign('form', $form->getConfig());
@@ -91,16 +103,12 @@ class Security
 
     public function installer()
     {
-        new View("Auth/installer", "installer1");
+        $file = file_get_contents('application.yml');
+        if ($file) {
+            AuthorizationHelper::redirectTo404();
+            exit();
+        }
+        new View("Auth/installer", "installer");
     }
 
-    public function setupapi()
-    {
-        new View("Auth/installer", "installer2");
-    }
-
-    public function site()
-    {
-        new View("Auth/installer", "installer3");
-    }
 }
