@@ -4,7 +4,9 @@
 
     <?php foreach ($config["inputs"] as $name => $input): ?>
         <div class="mb-3">
-            <label for="<?= $name; ?>" class="form-label"><?= ucfirst($name); ?>:</label>
+            <?php if ($input["type"] != "hidden"): ?>
+                <label for="<?= $name; ?>" class="form-label"><?= ucfirst($name); ?>:</label>
+            <?php endif; ?>
             <?php if ($input["type"] == "select"): ?>
                 <select class="form-select" id="<?= $name ?>" name="<?= $name; ?>">
                     <?php foreach ($input["options"] as $option): ?>

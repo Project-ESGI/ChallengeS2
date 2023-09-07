@@ -1,0 +1,9 @@
+class Installer {
+
+    private $queries = [
+
+    ]
+
+
+
+}

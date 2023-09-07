@@ -11,6 +11,7 @@ class ConnectionUser extends AForm
 
     public function getConfig(): array
     {
+        $digest = $this->rand_char(10);
         $inputs = [
             "email" => [
                 "type" => "email",
@@ -26,6 +27,11 @@ class ConnectionUser extends AForm
                 "placeholder" => "mot de passe",
                 "error" => "L'email ou le mot de passe est incorrect!"
             ],
+            "digest" => [
+                "type" => "hidden",
+                "placeholder" => "",
+                "value" => $digest
+            ],
         ];
         return [
             "config" => [
@@ -39,6 +45,16 @@ class ConnectionUser extends AForm
             ],
             "inputs" => $inputs
         ];
+
+        $_SESSION['digest'] = $digest;
+    }
+
+    private function rand_char($length) {
+        $random = '';
+        for ($i = 0; $i < $length; $i++) {
+            $random .= chr(mt_rand(33, 126));
+        }
+        return $random;
     }
 
     public function addError(string $fieldName, string $errorMessage)
