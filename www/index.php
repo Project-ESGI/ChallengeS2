@@ -41,7 +41,7 @@ if (isset($_SESSION['id'])) {
     }
 }
 
-//ArticleController 404
+//404
 if (empty($routes[$uri])) {
     http_response_code(404);
     include('./Views/Error/404.view.php');

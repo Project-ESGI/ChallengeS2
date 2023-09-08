@@ -16,8 +16,8 @@ class Security
 
     public function login(): void
     {
-        $config = file_get_contents('application.yml');
-        if ($config) {
+        $file = file_get_contents('application.yml');
+        if ($file) {
             header('Location: setupapi');
             exit();
         }
