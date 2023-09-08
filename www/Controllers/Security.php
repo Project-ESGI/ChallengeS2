@@ -33,7 +33,7 @@ class Security
             }
 
             $userExists = $user->existUser($_POST['email'], $_POST['password']);
-            if (!$userExists) {
+            if ($userExists) {
                 $ip = $_SERVER['REMOTE_ADDR'];
                 $mailDescription = "Connexion récente sur votre compte avec l'Adresse IP : $ip";
                 $mailSubject = "Connexion UFC Sport";
@@ -97,7 +97,7 @@ class Security
     {
         session_unset(); // Supprime toutes les variables de session
         session_destroy(); // Détruit la session
-        header('Location: /login');
+        header('Location: /');
         exit;
     }
 
