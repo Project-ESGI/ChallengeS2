@@ -25,3 +25,4 @@ function toggleMenu() {
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('menu-button').addEventListener('click', toggleMenu);
 });
+

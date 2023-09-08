@@ -56,15 +56,18 @@ abstract class Sql
      * @param string $password Le mot de passe de l'utilisateur à vérifier.
      * @return bool True si l'utilisateur existe avec les identifiants donnés, sinon False.
      */
-    public function existUser($email, $password): bool
+    public function existUser($email, $password, $digest): bool
     {
         $queryPrepared = $this->pdo->prepare("SELECT password FROM " . $this->table . " WHERE email = :email");
         $queryPrepared->bindValue(':email', $email, \PDO::PARAM_STR);
         $queryPrepared->execute();
 
-        $pass = $queryPrepared->fetchColumn();
+        $pwd = $queryPrepared->fetchColumn();
 
-        if ($pass === $password) {
+        $sha = sha1($email.$pwd.$digest);
+var_dump($sha);
+var_dump($password);
+        if ($sha === $password) {
             return true;
         } else {
             return false;
