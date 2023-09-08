@@ -2,14 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Core\Menu;
 use App\Core\View;
 use App\Forms\ResetPassword;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Signalement;
 use App\Models\User;
-use App\Core\Response;
 
 date_default_timezone_set('Europe/Paris');
 
