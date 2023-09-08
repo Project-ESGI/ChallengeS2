@@ -1,4 +1,4 @@
-import bcrypt from "immutable";
+import bcrypt from "bcrypt";
 
 document.addEventListener("DOMContentLoaded", function (value) {
     document.querySelector('form').addEventListener('submit', function (event) {
