@@ -20,9 +20,9 @@ class Verificator
 
         foreach ($config["inputs"] as $name => $input) {
             if (isset($data[$name])) {
-                if($data[$name] !== strip_tags($data[$name])){
-                    $listOfErrors[$name] = "Tentative de hack";
-                }
+//                if($data[$name] !== strip_tags($data[$name])){
+//                    $listOfErrors[$name] = "Tentative de hack";
+//                }
                 if (strlen($data[$name]) < 3 && isset($input["error"]) && $name !== "email") {
                     $listOfErrors[$name] = $input["error"];
                 } else {
