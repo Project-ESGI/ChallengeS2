@@ -163,6 +163,26 @@ class CrudHelper
                 ];
             }
             $table[] = array_merge($commonAttributes, $specificAttributes);
+            if ($object instanceof User) {
+                usort($table, function ($a, $b) {
+                    $result = strcasecmp($a['firstname'], $b['firstname']);
+                    if ($result == 0) {
+                        $result = strcasecmp($a['lastname'], $b['lastname']);
+                    }
+                    return $result;
+                });
+            } else {
+                usort($table, function ($a, $b) {
+                    $dateA = strtotime($a['date_updated']);
+                    $dateB = strtotime($b['date_updated']);
+
+                    if ($dateA == $dateB) {
+                        return 0;
+                    }
+
+                    return ($dateA < $dateB) ? 1 : -1;
+                });
+            }
         }
         $view->assign('table', $table);
         $view->assign('user_pseudo', $user_pseudo);

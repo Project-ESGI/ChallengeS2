@@ -20,7 +20,7 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach (array_reverse($table) as $user) : ?>
+        <?php foreach ($table as $user) : ?>
             <tr>
                 <td><?php echo $user['id']; ?></td>
                 <td><?php echo $user['firstname']; ?></td>
