@@ -65,15 +65,13 @@ abstract class Sql
         $pwd = $queryPrepared->fetchColumn();
 
         $sha = sha1($email.$pwd.$digest);
-var_dump($sha);
-var_dump($password);
+
         if ($sha === $password) {
             return true;
         } else {
             return false;
         }
     }
-
 
     /**
      * Supprime l'enregistrement de la base de données.
@@ -269,7 +267,7 @@ var_dump($password);
         $hashedPassword = null;
         $passwordParam = null;
         if ($password !== null) {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $hashedPassword = sha1($password);
             $passwordParam = ':password';
         }
 

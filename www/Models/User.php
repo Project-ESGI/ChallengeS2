@@ -123,7 +123,7 @@ class User extends Sql
      */
     public function setPassword(string $password): void
     {
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = sha1($password);
     }
 
     /**

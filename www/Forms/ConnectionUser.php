@@ -12,6 +12,8 @@ class ConnectionUser extends AForm
     public function getConfig(): array
     {
         $digest = $this->rand_char(10);
+        $_SESSION['digest'] = $digest;
+
         $inputs = [
             "email" => [
                 "type" => "email",
@@ -45,8 +47,6 @@ class ConnectionUser extends AForm
             ],
             "inputs" => $inputs
         ];
-
-        $_SESSION['digest'] = $digest;
     }
 
     private function rand_char($length) {
