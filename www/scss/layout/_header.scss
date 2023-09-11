@@ -56,13 +56,13 @@ img {
 	max-width: 100%;
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1001px) {
 	#menu-button {
 		display: none;
 	}
 }
 
-@media screen and (max-width: 999px) {
+@media screen and (max-width: 1001px) {
 	.lien-nav {
 		flex-direction: column;
 		height: 300px;
@@ -75,6 +75,12 @@ img {
 	}
 
 	header {
+		& div.align-items-center{
+			justify-content: space-between;
+		}
+		& div.col-6{
+			width: 0;
+		}
 		& nav {
 			position: fixed;
 			left: 0;
