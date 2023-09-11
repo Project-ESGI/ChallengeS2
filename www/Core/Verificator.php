@@ -39,7 +39,7 @@ class Verificator
                     }
 
                     if ( ($name === "title" || $name === "slug")) {
-                        if ($user->existsWithValue("esgi_article", $name, $data[$name], $user->getId())) {
+                        if ($user->existsWithValue("esgi_article", $name, $data[$name], $article->getId())) {
                             $listOfErrors[$name] = "Ce " . $name . " est déjà utilisé. Veuillez en choisir un autre.";
                         }
                     }
