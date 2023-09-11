@@ -16,7 +16,6 @@ class Security
 
     public function login(): void
     {
-
         $form = new ConnectionUser();
         $view = new View("Auth/connection", "connection");
         $view->assign('form', $form->getConfig());

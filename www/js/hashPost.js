@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             success: function (response) {
                 // document.querySelector('form').submit();
-                form.submit();
+                window.location.href = "/accueil";
             }
         });
     });
