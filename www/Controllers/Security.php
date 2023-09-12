@@ -36,6 +36,7 @@ class Security
             $mail = new Mail($_POST['email'], $mailSubject, $mailDescription);
             $mail->sendEmail();
             $_SESSION['email'] = $_POST['email'];
+            unset($_SESSION['digest']);
             header('Location: /');
             exit;
         }

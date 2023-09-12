@@ -8,7 +8,7 @@
                     <button id="menu-button" onclick="changeSvg('-')"></button>
                 </div>
                 <div class="col-4">
-                    <a href="./accueil">
+                    <a href="./">
                         <img class="rotate-image" src="./images/soccerBall.svg" width="200px" alt="MC">
                     </a>
                 </div>
@@ -16,7 +16,7 @@
                     <nav id="site-nav">
                         <ul class="nav flex-nowrap">
                             <li class="nav-item">
-                                <a class="nav-link" href="./accueil">ACCUEIL</a>
+                                <a class="nav-link" href="./">ACCUEIL</a>
                             </li>
                             <?php if ($user_role === 'admin') : ?>
                                 <li class="nav-item">

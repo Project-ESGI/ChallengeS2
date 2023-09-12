@@ -7,12 +7,16 @@ abstract class Sql
 
     private $pdo;
     private $table;
+    private static $cfgFile = 'application.yml';
 
     public function __construct()
     {
+        $config = yaml_parse_file(
+            self::$cfgFile
+        );
         //Mettre en place un SINGLETON
         try {
-            $this->pdo = new \PDO("pgsql:host=database;port=5432;dbname=challenge", "s2", "Test1234");
+            $this->pdo = new \PDO($config['url'], $config['username'], $config['password']);
         } catch (\Exception $e) {
             die("Erreur SQL : " . $e->getMessage());
         }
