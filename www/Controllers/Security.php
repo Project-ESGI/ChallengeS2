@@ -54,7 +54,7 @@ class Security
         if ($form->isSubmit()) {
             $user = new User();
             $date = new \DateTime();
-            $formattedDate = $date->format('Y-m-d');
+            $formattedDate = $date->format('Y-m-d H:i:s');
 
             $error = Verificator::form($form->getConfig(), $_POST);
 
