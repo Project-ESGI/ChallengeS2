@@ -152,6 +152,10 @@ html, body {
   min-height: 73vh;
 }
 
+.error {
+  color: red;
+}
+
 #category-filter {
   width: 200px;
 }

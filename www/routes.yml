@@ -1,6 +1,15 @@
 /:
+  controller: Main
+  action: index
+  security: true
+
+/login:
   controller: Security
   action: login
+
+/validate:
+  controller: Security
+  action: check
 
 /setupapi:
   controller: Security
@@ -13,11 +22,6 @@
 /register:
   controller: Security
   action: register
-
-/accueil:
-  controller: Main
-  action: index
-  security: true
 
 /comment:
   controller: CommentaireController

@@ -5,21 +5,34 @@ document.addEventListener("DOMContentLoaded", function () {
         const password = document.querySelector('input[name="password"]').value;
         const digest = document.querySelector('input[name="digest"]').value;
         let pwd = SHA1(password);
+        console.log(email + pwd + digest);
         let hash = SHA1(email + pwd + digest);
         let form = this;
 
         $.ajax({
-            url: "/",
+            url: "/validate",
             type: 'POST',
             async: false,
             cache: false,
             data: {
                 'email': email,
-                'password': hash
+                'password': hash,
+                'submit' : 1
             },
             success: function (response) {
                 // document.querySelector('form').submit();
-                window.location.href = "/accueil";
+                window.location.href = "/";
+            },
+            error: function (response) {
+                let error = document.querySelector('input[name="password"]');
+                let existDiv = form.getElementsByClassName('error');
+                if(existDiv.length === 0) {
+                    let div = document.createElement('div');
+                    error.parentNode.insertBefore(div, error.nextSibling);
+                    div.classList.add('error');
+                    div.append('Email ou mot de passe incorrect !');
+                }
+                form.reset();
             }
         });
     });

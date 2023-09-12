@@ -13,36 +13,35 @@ date_default_timezone_set('Europe/Paris');
 
 class Security
 {
-
     public function login(): void
     {
         $form = new ConnectionUser();
         $view = new View("Auth/connection", "connection");
         $view->assign('form', $form->getConfig());
+    }
 
-        if ($form->isSubmit()) {
-            $user = new User();
-            foreach ($_POST as $key => $value) {
-                $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
-            }
-
-            $userExists = $user->existUser($_POST['email'], $_POST['password'],$_SESSION['digest']);
-
-            if ($userExists) {
-                $ip = $_SERVER['REMOTE_ADDR'];
-                $mailDescription = "Connexion récente sur votre compte avec l'Adresse IP : $ip";
-                $mailSubject = "Connexion UFC Sport";
-                $mail = new Mail($_POST['email'], $mailSubject, $mailDescription);
-                $mail->sendEmail();
-                $_SESSION['email'] = $_POST['email'];
-                header('Location: accueil');
-                exit;
-            } else {
-                $form->addError('email', 'Email ou mot de passe incorrect!');
-                $form->addError('password', 'Email ou mot de passe incorrect!');
-                $view->assign('form', $form->getConfig());
-            }
+    public function check(): void
+    {
+        $user = new User();
+        foreach ($_POST as $key => $value) {
+            $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
         }
+
+        $userExists = $user->existUser($_POST['email'], $_POST['password'],$_SESSION['digest']);
+
+        if ($userExists) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $mailDescription = "Connexion récente sur votre compte avec l'Adresse IP : $ip";
+            $mailSubject = "Connexion UFC Sport";
+            $mail = new Mail($_POST['email'], $mailSubject, $mailDescription);
+            $mail->sendEmail();
+            $_SESSION['email'] = $_POST['email'];
+            header('Location: /');
+            exit;
+        }
+
+        header('HTTP/1.0 420 Forbidden');
+        exit;
     }
 
     public function register(): void

@@ -11,7 +11,7 @@ class AuthorizationHelper
     public function __construct()
     {
         if (!self::getCurrentUserData()) {
-            self::redirectTo404();
+            self::redirectToLogin();
         }
     }
 
@@ -54,6 +54,16 @@ class AuthorizationHelper
     {
         http_response_code(404);
         include('./Views/Error/404.view.php');
+        exit;
+    }
+
+    /**
+     * Effectue une redirection vers la page d'erreur 404.
+     * Cette fonction arrête l'exécution du script après la redirection.
+     */
+    public static function redirectToLogin()
+    {
+        header('Location: '.'/login');
         exit;
     }
 }
