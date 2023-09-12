@@ -76,7 +76,7 @@ class CrudHelper
                         $addFormatedDate,
                         $formattedDate
                     );
-                    header('Location: accueil?action=' . $action . '&entity=commentaire');
+                    header('Location: /?action=' . $action . '&entity=commentaire');
                 } elseif ($className === 'User') {
                     $object->saveUser(
                         $id,

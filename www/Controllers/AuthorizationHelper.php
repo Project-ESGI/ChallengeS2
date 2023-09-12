@@ -11,7 +11,7 @@ class AuthorizationHelper
     public function __construct()
     {
         if (!self::getCurrentUserData()) {
-            self::redirectToLogin();
+            self::redirectTo404();
         }
     }
 

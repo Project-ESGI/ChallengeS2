@@ -68,7 +68,6 @@ class Security
 
             $view->assign('form', $form->getConfig($_POST));
             if (!$error) {
-
                 $user->saveUser(null, $_POST['firstname'], $_POST['lastname'], $_POST['pseudo'], $_POST['email'], $_POST['password'], $_POST['country'], 'user', $formattedDate, $formattedDate);
                 $_SESSION['email'] = $_POST['email'];
 
@@ -76,7 +75,7 @@ class Security
 
                 $mail = new Mail($_POST['email'], "Inscription réussie", $mailDescription);
                 $mail->sendEmail();
-                header('Location: accueil');
+                header('Location: /');
             }
             exit;
         }

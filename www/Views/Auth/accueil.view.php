@@ -22,7 +22,7 @@
                             <?php if ($user_id === $commentaire['authorId']): ?>
                                 <a href="modifycomment?id=<?php echo $commentaire['id']; ?>" class="btn btn-link p-0">Modifier
                                     mon commentaire</a>
-                                <a href="deletecomment?accueil&id=<?php echo $commentaire['id']; ?>" class="btn btn-link">Supprimer</a>
+                                <a href="deletecomment?/&id=<?php echo $commentaire['id']; ?>" class="btn btn-link">Supprimer</a>
                             <?php elseif ($commentaire['is_reported']): ?>
                                 <p class="text-danger font-weight-bold mb-0">Signalé</p>
                             <?php else : ?>

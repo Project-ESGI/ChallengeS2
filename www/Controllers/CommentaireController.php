@@ -8,7 +8,6 @@ use App\Models\Comment;
 use App\Models\Signalement;
 use App\Forms\AddComment;
 
-
 class CommentaireController extends AuthorizationHelper
 {
 
@@ -51,8 +50,8 @@ class CommentaireController extends AuthorizationHelper
                 $signalement->deleteByCommentId($commentaire->getId());
                 $commentaire->delete();
 
-                if (isset($_GET['accueil'])) {
-                    $location = "accueil";
+                if (isset($_GET['/'])) {
+                    $location = "/";
                 } else {
                     $location = "comment";
                 }
@@ -94,14 +93,14 @@ class CommentaireController extends AuthorizationHelper
                 $comment->setReport($report);
                 $comment->save();
             } else {
-                header('Location: accueil?action=existreported');
+                header('Location: /?action=existreported');
                 exit;
             }
             if ($comment->reportTrue($comment->getContent()) || $comment->getReport() >= 4) {
                 $signalement->deleteByCommentId($comment->getId());
                 $comment->delete();
             }
-            header('Location: accueil');
+            header('Location: /');
             exit;
         }
     }

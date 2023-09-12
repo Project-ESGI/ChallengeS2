@@ -83,7 +83,7 @@ class Main extends AuthorizationHelper
             if ($userExists) {
 //                $mail = new PHPMailer(true);
                 $_SESSION['email'] = $user->getEmail();
-                header('Location: accueil');
+                header('Location: /');
                 exit;
             } else {
                 $form->addError('email', 'Email ou mot de passe incorrect!');
@@ -105,7 +105,7 @@ class Main extends AuthorizationHelper
             if ($userExists) {
 //                $mail = new PHPMailer(true);
                 $_SESSION['email'] = $user->getEmail();
-                header('Location: accueil');
+                header('Location: /');
                 exit;
             } else {
                 $form->addError('email', 'Email ou mot de passe incorrect!');
