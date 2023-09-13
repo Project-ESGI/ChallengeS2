@@ -39,7 +39,8 @@ class CommentaireController extends AuthorizationHelper
         $id = $_GET['id'];
         $commentaire = new Comment();
         $commentData = $commentaire->getById($id);
-        if (AuthorizationHelper::hasPermission('admin') || $commentData['author'] !== $_SESSION['id']) {
+
+        if (AuthorizationHelper::hasPermission('admin') || $commentData['author'] === $_SESSION['id']) {
             $commentaire->setId($id);
 
             $signalement = new Signalement();
