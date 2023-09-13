@@ -26,27 +26,30 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="inputServer">Serveur</label>
-                                        <input type="text" class="form-control" id="inputServer" name="db_server"
-                                               placeholder="Nom ou adresse du serveur de la base de données" required>
+                                        <label for="inputSystem">Système</label>
+                                        <input type="text" class="form-control" id="inputSystem" name="db_system"
+                                               value="PostgreSQL" placeholder="Nom du système de la base de données"
+                                               readonly disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPort">Port</label>
                                         <input type="text" class="form-control" id="inputPort" name="db_port"
-                                               placeholder="Numéro du port de la base de données">
+                                               value="5432" placeholder="Numéro du port de la base de données" readonly
+                                               disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputServer">Serveur</label>
+                                        <input type="text" class="form-control" id="inputServer" name="db_server"
+                                               placeholder="Nom ou adresse du serveur de la base de données" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputDatabase">Base de données</label>
                                         <input type="text" class="form-control" id="inputDatabase" name="db_name"
                                                placeholder="Nom de la base de données">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="inputSystem">Système</label>
-                                        <input type="text" class="form-control" id="inputSystem" name="db_system"
-                                               value="PostgreSQL" placeholder="Nom du système de la base de données" readonly disabled>
-                                    </div>
                                     <div class="d-flex justify-content-end pt-3">
-                                        <button type="submit" class="btn btn-primary" id="next-button-1">Suivant</button>
+                                        <button type="submit" class="btn btn-primary" id="next-button-1">Suivant
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +80,8 @@
                                     <div class="d-flex justify-content-between pt-3">
                                         <button type="button" class="btn btn-secondary" id="prev-button-2">Précédent
                                         </button>
-                                        <button type="submit" class="btn btn-primary" id="next-button-2">Suivant</button>
+                                        <button type="submit" class="btn btn-primary" id="next-button-2">Suivant
+                                        </button>
                                     </div>
                                 </div>
                             </div>

@@ -47,6 +47,26 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         if (isStep1Valid()) {
             showStep(2);
+        } else {
+            let existDiv = document.querySelector('form').getElementsByClassName('error');
+            if (existDiv.length === 0) {
+                let error = document.querySelector('div.card-body');
+                let div = document.createElement('div');
+                div.classList.add('error');
+                div.textContent = 'Tous les champs doivent être remplis !';
+
+                // Insérer la nouvelle div en avant-dernière position
+                let children = error.children;
+                if (children.length >= 2) {
+                    error.insertBefore(div, children[children.length - 1]);
+                } else {
+                    error.appendChild(div);
+                }
+
+                setTimeout(function() {
+                    div.remove();
+                }, Math.floor(Math.random() * 2000) + 3000);
+            }
         }
     });
 
