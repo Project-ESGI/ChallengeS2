@@ -103,7 +103,7 @@ class Security
 
     public function installer()
     {
-        if (yaml_parse_file('application.yml')) {
+        if (!yaml_parse_file('application.yml')) {
             new View("Auth/installer", "installer");
         } else {
             AuthorizationHelper::redirectTo404();
@@ -112,7 +112,7 @@ class Security
 
     public function setupapi()
     {
-        if (yaml_parse_file('application.yml') && $_POST) {
+        if (!yaml_parse_file('application.yml') && $_POST) {
             $installer = new Installer();
             $installer->installation();
         } else {
