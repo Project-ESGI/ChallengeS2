@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-5 col-md-6 col-12 pb-4">
                 <h1>Commentaires</h1>
-                <?php foreach (array_reverse($table) as $commentaire) : ?>
+                <?php foreach ($table as $commentaire) : ?>
                     <div class="comment mt-4">
                         <div class="d-flex align-items-center">
                             <img src="https://i.imgur.com/CFpa3nK.jpg" width="20" height="20"
