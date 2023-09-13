@@ -33,7 +33,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach (array_reverse($table) as $page) : ?>
+                <?php foreach ($table as $page) : ?>
                     <tr>
                         <td><?php echo $page['id']; ?></td>
                         <td><?php echo $page['slug']; ?></td>
@@ -42,9 +42,10 @@
                         <td><?php echo $page['category']; ?></td>
                         <td><?php echo $page['date_inserted']; ?></td>
                         <td><?php echo $page['date_updated']; ?></td>
-                        <td>
+                        <td class="d-flex">
                             <a href="modifyarticle?id=<?php echo $page['id']; ?>" class="btn btn-primary">Modifier</a>
                             <a href="deletearticle?id=<?php echo $page['id']; ?>" class="btn btn-danger">Supprimer</a>
+                            <a href="article/<?php echo $page['slug']; ?>" class="btn btn-warning">Voir</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

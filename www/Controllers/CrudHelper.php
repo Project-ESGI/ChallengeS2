@@ -34,7 +34,9 @@ class CrudHelper
             $error = Verificator::form($form->getConfig(), $formData);
 
             foreach ($_POST as $key => $value) {
-                $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
+                if (!$key === 'content') {
+                    $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
+                }
             }
 
             foreach ($error as $e => $data) {
