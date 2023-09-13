@@ -7,6 +7,7 @@ use App\Core\Verificator;
 use App\Core\View;
 use App\Forms\ConnectionUser;
 use App\Forms\Registration;
+use App\Installer\Installer;
 use App\Models\User;
 
 date_default_timezone_set('Europe/Paris');
@@ -22,6 +23,9 @@ class Security
 
     public function check(): void
     {
+        if(!$_POST){
+            AuthorizationHelper::redirectTo404();
+        }
         $user = new User();
         foreach ($_POST as $key => $value) {
             $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
@@ -92,6 +96,15 @@ class Security
     public function installer()
     {
         new View("Auth/installer", "installer");
+    }
+
+    public function setupapi()
+    {
+        var_dump($_POST);
+        exit();
+        $installer = new Installer();
+        $installer->executeQueries();
+
     }
 
 }
