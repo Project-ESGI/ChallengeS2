@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 'submit' : 1
             },
             success: function (response) {
-                // document.querySelector('form').submit();
                 window.location.href = "/";
             },
             error: function (response) {

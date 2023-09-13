@@ -23,7 +23,7 @@ class Security
 
     public function check(): void
     {
-        if(!$_POST){
+        if (!$_POST) {
             AuthorizationHelper::redirectTo404();
         }
         $user = new User();
@@ -31,7 +31,7 @@ class Security
             $_POST[$key] = htmlspecialchars(strip_tags($value), ENT_QUOTES, 'UTF-8');
         }
 
-        $userExists = $user->existUser($_POST['email'], $_POST['password'],$_SESSION['digest']);
+        $userExists = $user->existUser($_POST['email'], $_POST['password'], $_SESSION['digest']);
 
         if ($userExists) {
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -95,16 +95,21 @@ class Security
 
     public function installer()
     {
-        new View("Auth/installer", "installer");
+        if (yaml_parse_file('application.yml')) {
+            new View("Auth/installer", "installer");
+        } else {
+            AuthorizationHelper::redirectTo404();
+        }
     }
 
     public function setupapi()
     {
-        var_dump($_POST);
-        exit();
-        $installer = new Installer();
-        $installer->executeQueries();
-
+        if (yaml_parse_file('application.yml') && $_POST) {
+            $installer = new Installer();
+            $installer->installation();
+        } else {
+            AuthorizationHelper::redirectTo404();
+        }
     }
 
 }
