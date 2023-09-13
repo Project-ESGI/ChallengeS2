@@ -11,9 +11,13 @@
   controller: Security
   action: check
 
-/setupapi:
+/setup:
   controller: Security
   action: installer
+
+/setupapi:
+  controller: Security
+  action: setupapi
 
 /logout:
   controller: Security
